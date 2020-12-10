@@ -38,7 +38,10 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: [
+    "~/plugins/axios",
+    "~/plugins/vue-lazyload",
+  ],
 
   env: {
     baseUrl: process.env.CLIENT_BASE_URL || "http://localhost:3000",
@@ -84,6 +87,15 @@ module.exports = {
     // Doc: https://auth.nuxtjs.org/
     "@nuxtjs/auth",
     "cookie-universal-nuxt",
+    // [
+    //   "@nuxtjs/recaptcha",
+    //   {
+    //     hideBadge: true,
+    //     language: "vi",
+    //     siteKey: "6LcGFbwUAAAAAKKx9MgGbOP8n--vLLPXqyl6vQ5D",
+    //     version: 3
+    //   }
+    // ],
   ],
   buildModules: ["@nuxtjs/vuetify"],
   vuetify: {
