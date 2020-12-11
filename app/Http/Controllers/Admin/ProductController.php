@@ -8,12 +8,16 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\Admin\ProductCollection;
 
 class ProductController extends Controller
 {
   public function index(Request $request)
   {
-    return Product::with(["brand", "category"])->withCount('orders')->paginate($request->input("per_page", 12));
+    $products = Product::with(["brand:id,name", "category:id,name"])
+      ->withCount('orders')
+      ->paginate($request->input("per_page", 12));
+    return response()->json(new ProductCollection($products));
   }
 
   public function store(ProductRequest $request)

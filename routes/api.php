@@ -20,5 +20,6 @@ Route::group(['prefix' => '/auth', 'middleware' => 'api'], function () {
 });
 Route::group(['prefix' => '/admin', 'middleware' => 'jwtnew'], function () {
   Route::apiResource('products', 'Admin\ProductController');
+  Route::apiResource('categories', 'Admin\CategoryController');
   Route::get("/me", 'Auth\AuthController@user');
 });
