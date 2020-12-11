@@ -18,10 +18,10 @@ class AuthController extends Controller
   {
     $messages = [
       'required' => ':attribute không được để trống',
-      'exists' => ':attribute đã tồn tại',
+      'unique' => ':attribute đã tồn tại',
       'password.min' => 'Mật khẩu dài tối thiếu 8 ký tự',
       'password.confirmed' => 'Mật khẩu nhập lại không khớp',
-      'email' => ':attribute phải là địa chỉ email hợp lệ',
+      'email' => ':attribute chưa hợp lệ hoặc không có thực',
       'max' => ':attribute tối đa 255 ký tự',
       'string' => ':attribute phải là chuỗi'
     ];
@@ -99,13 +99,13 @@ class AuthController extends Controller
       JWTAuth::parseToken()->invalidate();
       return response()->json([
         'success' => true,
-        'message' => "User successfully logged out."
+        'msg' => "Đăng xuất thành công"
       ]);
     } catch (JWTException $e) {
       // có lỗi khi giải mã token
       return response()->json([
         'success' => false,
-        'message' => 'Failed to logout, please try again.'
+        'msg' => 'Có lỗi khi đăng xuất, vui lòng thử lại'
       ], 500);
     }
   }
