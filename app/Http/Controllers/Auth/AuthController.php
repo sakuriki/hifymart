@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -62,9 +61,8 @@ class AuthController extends Controller
       if ($user) {
         return response()->json([
           'success' => true,
-          'data' => $request->user(),
           'token' => $request->input('token')
-        ], 200);
+        ]);
       }
     }
     $messages = [
@@ -100,13 +98,13 @@ class AuthController extends Controller
       // vô hiệu hoá token
       JWTAuth::parseToken()->invalidate();
       return response()->json([
-        'status' => 'success',
+        'success' => true,
         'message' => "User successfully logged out."
       ]);
     } catch (JWTException $e) {
       // có lỗi khi giải mã token
       return response()->json([
-        'status' => 'error',
+        'success' => false,
         'message' => 'Failed to logout, please try again.'
       ], 500);
     }
@@ -114,6 +112,7 @@ class AuthController extends Controller
   public function user()
   {
     return [
+      'success' => true,
       'data' => auth()->user()
     ];
   }

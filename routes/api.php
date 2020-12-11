@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => '/auth', 'middleware' => 'api'], function () {
+  Route::post('/register', 'Auth\AuthController@register')->name('register')->middleware('auth:api');
+  Route::post('/login', 'Auth\AuthController@login')->name('login');
+});
+Route::group(['prefix' => '/admin', 'middleware' => 'jwtnew'], function () {
+  Route::apiResource('products', 'Admin\ProductController');
+  Route::get("/me", 'Auth\AuthController@user');
 });
