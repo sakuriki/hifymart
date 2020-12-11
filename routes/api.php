@@ -14,12 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['prefix' => '/auth', 'middleware' => 'api'], function () {
-  Route::post('/register', 'Auth\AuthController@register')->name('register')->middleware('auth:api');
+Route::group(['prefix' => '/auth', ['middleware' => 'throttle:20,5']], function () {
+  Route::post('/register', 'Auth\AuthController@register')->name('register');
   Route::post('/login', 'Auth\AuthController@login')->name('login');
 });
-Route::group(['prefix' => '/admin', 'middleware' => 'jwtnew'], function () {
-  Route::apiResource('products', 'Admin\ProductController');
-  Route::apiResource('categories', 'Admin\CategoryController');
-  Route::get("/me", 'Auth\AuthController@user');
+Route::group(['middleware' => 'jwtnew'], function () {
+  Route::group(['prefix' => '/admin'], function () {
+    Route::apiResource('products', 'Admin\ProductController');
+    Route::apiResource('categories', 'Admin\CategoryController');
+  });
+  Route::get('/auth/user', 'Auth\AuthController@user');
 });
