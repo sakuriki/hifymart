@@ -1,6 +1,6 @@
 export default {
   theme: {
-    dark: true,
+    dark: false,
     themes: {
       dark: {
         primary: "#4CAF50",

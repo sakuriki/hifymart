@@ -3,7 +3,7 @@ module.exports = {
   buildDir: ".nuxt",
   devtools: true,
   server: {
-    port: process.env.CLIENT_PORT || 3000, // default: 3000
+    port: process.env.CLIENT_PORT || 3000 // default: 3000
   },
   components: true,
   /*
@@ -15,16 +15,16 @@ module.exports = {
       { charset: "utf-8" },
       {
         name: "viewport",
-        content: "width=device-width, initial-scale=1, shrink-to-fit=no",
+        content: "width=device-width, initial-scale=1, shrink-to-fit=no"
       },
       {
         hid: "description",
         name: "description",
         content:
-          "Mua điện thoại thông minh mới nhất 2020. Giảm giá hấp dẫn. Trả góp 0%. Bảo hành chính hãng.",
-      },
+          "Mua điện thoại thông minh mới nhất 2020. Giảm giá hấp dẫn. Trả góp 0%. Bảo hành chính hãng."
+      }
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/192.png" }],
+    link: [{ rel: "icon", type: "image/x-icon", href: "/192.png" }]
   },
   /*
    ** Customize the progress-bar color
@@ -38,20 +38,17 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [
-    "~/plugins/axios",
-    "~/plugins/vue-lazyload",
-  ],
+  plugins: ["~/plugins/axios", "~/plugins/vue-lazyload"],
 
   env: {
     baseUrl: process.env.CLIENT_BASE_URL || "http://localhost:3000",
-    apiUrl: process.env.APP_URL || "http://localhost:8000",
+    apiUrl: process.env.APP_URL || "http://localhost:8000"
   },
   vue: {
     config: {
       productionTip: false,
-      devtools: process.env.APP_DEBUG || true,
-    },
+      devtools: process.env.APP_DEBUG || true
+    }
   },
   auth: {
     strategies: {
@@ -60,22 +57,23 @@ module.exports = {
           login: {
             url: "/auth/login",
             method: "post",
-            propertyName: "token",
+            propertyName: "token"
           },
           user: {
             url: "/auth/user",
             method: "get",
-            propertyName: "data",
+            propertyName: "data"
           },
-          logout: { url: "/auth/logout", method: "post" },
-        },
-      },
+          logout: { url: "/auth/logout", method: "post" }
+        }
+      }
     },
     redirect: {
       login: "/auth/login",
-      home: "/",
+      home: "/"
     },
-    debug: process.env.APP_DEBUG || true,
+    plugins: ["~/plugins/auth"],
+    debug: process.env.APP_DEBUG || true
   },
 
   /*
@@ -86,7 +84,7 @@ module.exports = {
     "@nuxtjs/axios",
     // Doc: https://auth.nuxtjs.org/
     "@nuxtjs/auth",
-    "cookie-universal-nuxt",
+    "cookie-universal-nuxt"
     // [
     //   "@nuxtjs/recaptcha",
     //   {
@@ -99,7 +97,7 @@ module.exports = {
   ],
   buildModules: ["@nuxtjs/vuetify"],
   vuetify: {
-    optionsPath: "./vuetify.options.js",
+    optionsPath: "./vuetify.options.js"
   },
   /*
    ** Axios module configuration
@@ -107,7 +105,7 @@ module.exports = {
    */
   axios: {
     baseURL: process.env.CLIENT_API_URL || "http://localhost:8000/api/",
-    https: process.env.CLIENT_HTTPS || true,
+    https: process.env.CLIENT_HTTPS || true
   },
 
   render: {
@@ -115,13 +113,13 @@ module.exports = {
       shouldPrefetch: (file, type) => {
         if (type === "script") {
           const ignoredRoutes = ["admin"];
-          if (ignoredRoutes.some((r) => file.includes(r))) {
+          if (ignoredRoutes.some(r => file.includes(r))) {
             return false;
           }
         }
         return ["script", "style", "font"].includes(type);
-      },
-    },
+      }
+    }
   },
 
   /*
@@ -135,8 +133,8 @@ module.exports = {
     extractCSS: true,
     optimization: {
       splitChunks: {
-        name: true,
-      },
-    },
-  },
+        name: true
+      }
+    }
+  }
 };

@@ -5,6 +5,12 @@ export const state = () => ({
 export const getters = {
   errors(state) {
     return state.errors;
+  },
+  authenticated(state) {
+    return state.auth.loggedIn;
+  },
+  user(state) {
+    return state.auth.user;
   }
 };
 
