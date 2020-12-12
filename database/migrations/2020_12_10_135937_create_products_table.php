@@ -20,7 +20,8 @@ class CreateProductsTable extends Migration
       $table->string('title');
       $table->string('slug')->unique();
       $table->text('description');
-      $table->integer('price');
+      $table->integer('price')->unsigned();
+      $table->integer('quantity')->unsigned();
       $table->text('featured_image');
       $table->timestamps();
 

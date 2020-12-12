@@ -16,8 +16,22 @@ class CreateOrdersTable extends Migration
     Schema::create('orders', function (Blueprint $table) {
       $table->increments('id');
       $table->string('status');
-      $table->integer('customer_id')->unsigned();
-      $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+      $table->integer('user_id')->unsigned()->nullable();
+      $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+      $table->string('billing_email')->nullable();
+      $table->string('billing_name')->nullable();
+      $table->string('billing_address')->nullable();
+      $table->string('billing_city')->nullable();
+      $table->string('billing_province')->nullable();
+      $table->string('billing_note')->nullable();
+      $table->string('billing_phone')->nullable();
+      $table->integer('billing_discount')->unsigned()->default(0);
+      $table->string('billing_discount_code')->nullable();
+      $table->integer('billing_subtotal')->unsigned();
+      $table->integer('billing_tax')->unsigned();
+      $table->integer('billing_total')->unsigned();
+      $table->boolean('shipped')->default(false);
+      $table->string('error')->nullable();
       $table->timestamps();
     });
 
@@ -27,6 +41,7 @@ class CreateOrdersTable extends Migration
       $table->integer('order_id')->unsigned();
       $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
       $table->primary(['product_id', 'order_id']);
+      $table->integer('quantity')->unsigned();
     });
   }
 
