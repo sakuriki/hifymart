@@ -12,6 +12,7 @@
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3.1|^7.0.1",
+        "hoangphi/vietnam-maps": "^1.1",
         "itsgoingd/clockwork": "^5.0",
         "laravel/framework": "^7.29",
         "laravel/tinker": "^2.5",
