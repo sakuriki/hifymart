@@ -24,7 +24,7 @@ class ProductController extends Controller
   {
     try {
       DB::beginTransaction();
-      if (!$request->file("featured_image")) {
+      if (!$request->hasFile("featured_image")) {
         return response()->json([
           "success" => false,
           "errors" => [
@@ -52,6 +52,7 @@ class ProductController extends Controller
       ]);
     } catch (\Exception $exception) {
       DB::rollBack();
+      dd($exception);
       return response()->json([
         "success" => false,
         "errors" => $exception->getMessage()

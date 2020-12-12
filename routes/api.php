@@ -20,8 +20,12 @@ Route::group(['prefix' => '/auth', ['middleware' => 'throttle:20,5']], function 
 });
 Route::group(['middleware' => 'jwtnew'], function () {
   Route::group(['prefix' => '/admin'], function () {
+    Route::apiResource('orders', 'Admin\OrderController');
     Route::apiResource('products', 'Admin\ProductController');
     Route::apiResource('categories', 'Admin\CategoryController');
   });
   Route::get('/auth/user', 'Auth\AuthController@user');
+});
+Route::group(['middleware' => 'jwtoptinal'], function () {
+  Route::post('/checkout', 'CheckoutController@store');
 });
