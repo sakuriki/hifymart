@@ -11,7 +11,7 @@ class OrderController extends Controller
 {
   public function index(Request $request)
   {
-    $order = Order::with("order_product")
+    $order = Order::with(["province", "district", "order_product"])
       ->paginate($request->input("per_page", 12));
     return response()->json(new OrderCollection($order));
   }

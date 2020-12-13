@@ -59,11 +59,11 @@ class CheckoutController extends Controller
       $total = $subTotal + $tax;
       $order = Order::create([
         'user_id' => auth()->user() ? auth()->user()->id : null,
+        'district_id' => $request->district_id,
+        'province_id' => $request->province_id,
         'billing_email' => $request->email,
         'billing_name' => $request->name,
         'billing_address' => $request->address,
-        'billing_district' => $request->district,
-        'billing_province' => $request->province,
         'billing_phone' => $request->phone,
         'billing_discount' => $discount,
         // 'billing_discount_code' => $coupon->code,

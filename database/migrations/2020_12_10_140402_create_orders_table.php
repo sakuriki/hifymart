@@ -18,11 +18,13 @@ class CreateOrdersTable extends Migration
       $table->string('status');
       $table->integer('user_id')->unsigned()->nullable();
       $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+      $table->integer('province_id')->unsigned()->nullable();
+      $table->foreign('province_id')->references('id')->on('provinces')->onDelete('set null');
+      $table->integer('district_id')->unsigned()->nullable();
+      $table->foreign('district_id')->references('id')->on('districts')->onDelete('set null');
       $table->string('billing_email')->nullable();
       $table->string('billing_name')->nullable();
       $table->string('billing_address')->nullable();
-      $table->string('billing_city')->nullable();
-      $table->string('billing_province')->nullable();
       $table->string('billing_note')->nullable();
       $table->string('billing_phone')->nullable();
       $table->integer('billing_discount')->unsigned()->default(0);
