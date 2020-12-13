@@ -43,7 +43,7 @@ class ImportVietNameZone extends Command
   {
     $this->info('Importing data...');
 
-    Excel::import(new ZoneImport(), storage_path("app/vietnam-zone.xls"));
+    Excel::import(new ZoneImport(), storage_path("vietnam-zone.xls"));
     if (File::isDirectory(storage_path('framework/laravel-excel'))) {
       File::deleteDirectory(storage_path('framework/laravel-excel'));
     }
