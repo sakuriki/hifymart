@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Imports\ZoneImport;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Schema;
 

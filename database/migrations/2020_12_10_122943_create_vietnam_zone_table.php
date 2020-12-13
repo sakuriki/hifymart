@@ -16,16 +16,16 @@ class CreateVietnamZoneTable extends Migration
   {
 
     Schema::create('provinces', function (Blueprint $table) {
-      $table->bigIncrements('id');
+      $table->increments('id');
       $table->string('name');
       $table->string('gso_id');
     });
 
     Schema::create('districts', function (Blueprint $table) {
-      $table->bigIncrements('id');
+      $table->increments('id');
       $table->string('name');
       $table->string('gso_id');
-      $table->unsignedBigInteger('province_id');
+      $table->integer('province_id')->unsigned();
 
       $table->foreign('province_id')
         ->references('id')
@@ -34,10 +34,10 @@ class CreateVietnamZoneTable extends Migration
     });
 
     Schema::create('wards', function (Blueprint $table) {
-      $table->bigIncrements('id');
+      $table->increments('id');
       $table->string('name');
       $table->string('gso_id');
-      $table->unsignedBigInteger('district_id');
+      $table->integer('district_id')->unsigned();
 
       $table->foreign('district_id')
         ->references('id')
