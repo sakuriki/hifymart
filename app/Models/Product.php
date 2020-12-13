@@ -6,11 +6,14 @@ use App\Models\Tag;
 use App\Models\User;
 use App\Models\Brand;
 use App\Models\Order;
+use App\Concern\Helper;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+  use Helper;
+
   protected $fillable = [
     'title',
     'brand_id',

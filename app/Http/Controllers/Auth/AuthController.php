@@ -68,7 +68,7 @@ class AuthController extends Controller
     $messages = [
       'required' => ':attribute không được để trống',
       'string' => ':attribute phải là chuỗi',
-      'email' => ':attribute phải là địa chỉ email hợp lệ'
+      'email' => ':attribute chưa hợp lệ hoặc không có thực'
     ];
     $nicenames = [
       'email' => 'Địa chỉ email',

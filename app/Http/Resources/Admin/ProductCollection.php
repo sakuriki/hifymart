@@ -22,6 +22,7 @@ class ProductCollection extends ResourceCollection
           'slug' => $page->slug,
           'description' => $page->description,
           'price' => $page->price,
+          'quantity' => $page->quantity,
           'featured_image' => $page->featured_image,
           'brand' => $page->brand,
           'category' => $page->category,
