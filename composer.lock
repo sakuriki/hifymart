@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ce18e146d8e5eef90afbd0b90129406",
+    "content-hash": "d8bc85701a285cdc3743fb3577de57c8",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -828,73 +828,6 @@
                 "source": "https://github.com/guzzle/psr7/tree/1.7.0"
             },
             "time": "2020-09-30T07:37:11+00:00"
-        },
-        {
-            "name": "hoangphi/vietnam-maps",
-            "version": "v1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/hoangphidev/vietnam-maps.git",
-                "reference": "031c330c1a402629050ac7b194e06b44120ded0c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/hoangphidev/vietnam-maps/zipball/031c330c1a402629050ac7b194e06b44120ded0c",
-                "reference": "031c330c1a402629050ac7b194e06b44120ded0c",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "^7.0.1",
-                "illuminate/console": "^5.8|^6|^7|^8",
-                "illuminate/database": "^5.8|^6|^7|^8",
-                "illuminate/support": "^5.8|^6|^7|^8",
-                "maatwebsite/excel": "^3.1",
-                "php": "^7.2|^8.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "HoangPhi\\VietnamMap\\VietnamMapServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "HoangPhi\\VietnamMap\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Phi Hoang",
-                    "email": "hoangphi.dev@gmail.com",
-                    "homepage": "https://github.com/hoangphidev/vietnam-maps",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Vietnam's area database.",
-            "homepage": "https://github.com/hoangphidev/vietnam-maps",
-            "keywords": [
-                "hanhchinhvietnam",
-                "hcvn",
-                "hoangphidev",
-                "laravel",
-                "laravel-package",
-                "laravel-package-vietnam",
-                "laravel-vietnam-maps",
-                "vietnam-database",
-                "vietnam-maps",
-                "vietnam-zone"
-            ],
-            "support": {
-                "issues": "https://github.com/hoangphidev/vietnam-maps/issues",
-                "source": "https://github.com/hoangphidev/vietnam-maps/tree/v1.1"
-            },
-            "time": "2020-11-22T13:37:47+00:00"
         },
         {
             "name": "itsgoingd/clockwork",
