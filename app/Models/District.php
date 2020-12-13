@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\District;
+use App\Models\Province;
 use Illuminate\Database\Eloquent\Model;
 
 class District extends Model
 {
-  public function districts()
+  public function province()
   {
-    return $this->hasMany(District::class);
+    return $this->belongsTo(Province::class);
   }
 }
