@@ -15,7 +15,7 @@ class ProductObserver
    */
   public function saving(Product $product): void
   {
-    $slug = Str::slug($product->title, '-');
+    $slug = Str::slug($product->name, '-');
     $count = Product::whereRaw("slug RLIKE '^{$slug}(-[0-9]+)?$'")->count();
     $product->slug = $count ? "{$slug}-{$count}" : $slug;
   }

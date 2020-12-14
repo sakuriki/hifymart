@@ -31,7 +31,7 @@ class RoleController extends Controller
         $roles = $roles->orderBy("id", $sortDesc);
         break;
       case "name":
-        $roles = $roles->orderBy("title", $sortDesc);
+        $roles = $roles->orderBy("name", $sortDesc);
         break;
       default:
         $roles = $roles->orderBy("created_at", $sortDesc);

@@ -21,7 +21,7 @@ class ProductController extends Controller
         'response' => 'You are unauthorized to access this resource'
       ]);
     }
-    $data = Product::search($request->input('q'), "title")
+    $data = Product::search($request->input('q'), "name")
       ->with(["brand:id,name", "category:id,name"])
       ->withCount('orders');
     $sortBy = $request->input("sortBy");
@@ -30,8 +30,8 @@ class ProductController extends Controller
       case "id":
         $data = $data->orderBy("id", $sortDesc);
         break;
-      case "title":
-        $data = $data->orderBy("title", $sortDesc);
+      case "name":
+        $data = $data->orderBy("name", $sortDesc);
         break;
       case "price":
         $data = $data->orderBy("price", $sortDesc);

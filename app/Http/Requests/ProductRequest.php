@@ -24,7 +24,7 @@ class ProductRequest extends FormRequest
   public function rules()
   {
     return [
-      'title' => 'required|string|max:255',
+      'name' => 'required|string|max:255',
       'brand_id' => 'required|numeric|exists:brands,id',
       'category_id' => 'required|numeric|exists:categories,id',
       'description' => 'nullable|string',
@@ -39,7 +39,7 @@ class ProductRequest extends FormRequest
     return [
       'required' => ':attribute không được bỏ trống',
       'string' => ':attribute phải là chuỗi',
-      'title.max' => 'Tên sản phẩm tối đa 255 ký tự',
+      'name.max' => 'Tên sản phẩm tối đa 255 ký tự',
       'featured_image.max' => 'Ảnh dung lượng tối đa 10mb',
       'price.min' => 'Giá sản phẩm không được âm',
       'quantity.min' => 'Số lượng hàng trong kho không được âm',
@@ -52,7 +52,7 @@ class ProductRequest extends FormRequest
   public function attributes()
   {
     return [
-      'title' => 'Tên sản phẩm',
+      'name' => 'Tên sản phẩm',
       'brand_id' => 'Nhãn hiệu',
       'category_id' => 'Danh mục',
       'description' => 'Giới thiệu',

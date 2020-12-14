@@ -17,7 +17,7 @@ class CreateProductsTable extends Migration
       $table->increments('id');
       $table->integer('brand_id')->unsigned()->nullable();
       $table->integer('category_id')->unsigned()->nullable();
-      $table->string('title');
+      $table->string('name');
       $table->string('slug')->unique();
       $table->text('description');
       $table->integer('price')->unsigned();
@@ -25,7 +25,7 @@ class CreateProductsTable extends Migration
       $table->text('featured_image');
       $table->timestamps();
 
-      $table->index('title');
+      $table->index('name');
       $table->foreign('brand_id')->references('id')->on('brands')->onDelete('set null');
       $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
     });

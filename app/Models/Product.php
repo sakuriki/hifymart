@@ -15,7 +15,7 @@ class Product extends Model
   use Helper;
 
   protected $fillable = [
-    'title',
+    'name',
     'brand_id',
     'category_id',
     'description',

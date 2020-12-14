@@ -18,7 +18,7 @@ class ProductCollection extends ResourceCollection
       'products' => $this->collection->transform(function ($page) {
         return [
           'id' => $page->id,
-          'title' => $page->title,
+          'name' => $page->name,
           'slug' => $page->slug,
           'description' => $page->description,
           'price' => $page->price,

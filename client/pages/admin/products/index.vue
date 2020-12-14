@@ -74,7 +74,7 @@ export default {
       selected: [],
       headers: [
         // { text: 'ID', align: 'start', value: 'id' },
-        { text: 'Tên', align: 'start', value: 'title' },
+        { text: 'Tên', align: 'start', value: 'name' },
         { text: 'Giá', value: 'price' },
         { text: 'Số order', value: 'orders_count' },
         { text: 'Actions', value: 'actions', sortable: false }
