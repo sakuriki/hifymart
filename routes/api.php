@@ -30,4 +30,5 @@ Route::group(['middleware' => 'jwtnew'], function () {
 });
 Route::group(['middleware' => 'jwtoptinal'], function () {
   Route::post('/checkout', 'CheckoutController@store');
+  Route::apiResource('products', 'ProductController')->only(["index", "show"]);
 });
