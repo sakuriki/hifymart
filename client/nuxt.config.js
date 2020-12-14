@@ -24,7 +24,7 @@ module.exports = {
           "Mua điện thoại thông minh mới nhất 2020. Giảm giá hấp dẫn. Trả góp 0%. Bảo hành chính hãng."
       }
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/192.png" }]
+    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
   },
   /*
    ** Customize the progress-bar color
