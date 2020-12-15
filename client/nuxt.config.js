@@ -42,7 +42,8 @@ module.exports = {
 
   env: {
     baseUrl: process.env.CLIENT_BASE_URL || "http://localhost:3000",
-    apiUrl: process.env.APP_URL || "http://localhost:8000"
+    apiUrl: process.env.APP_URL || "http://localhost:8000",
+    GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY
   },
   vue: {
     config: {

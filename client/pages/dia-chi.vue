@@ -1,0 +1,76 @@
+<template>
+  <v-layout
+    wrap
+    row
+  >
+    <v-col
+      cols="12"
+      md="8"
+      sm="12"
+    >
+      <v-card>
+        <div
+          id="map"
+          ref="map"
+          style="height:100%;width:100%"
+        />
+      </v-card>
+    </v-col>
+    <v-col
+      cols="12"
+      md="4"
+      sm="12"
+    >
+      <v-card>
+        <v-card-title>Địa chỉ cửa hàng</v-card-title>
+        <v-card-text>
+          <v-card-subtitle>
+            <v-icon>mdi-map-marker</v-icon> Shop.re
+          </v-card-subtitle>
+          <v-list-item three-line>
+            <v-list-item-content>
+              <v-list-item-title>Địa chỉ: Số nhà 001, đường Trần Hưng Đạo, Thành Phố Hà Nội</v-list-item-title>
+              <v-list-item-subtitle>
+                Điện thoại: (028) 1234 4321
+              </v-list-item-subtitle>
+              <v-list-item-subtitle>
+                Email: sales@shop.re
+              </v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-card-text>
+      </v-card>
+    </v-col>
+  </v-layout>
+</template>
+<script>
+export default {
+  data() {
+    return {};
+  },
+  mounted() {
+    var t = this;
+    var el = document.createElement("script");
+    el.onload = function () {
+      t.mapInit();
+    };
+    el.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAPS_API_KEY}`;
+    document.body.appendChild(el);
+  },
+  methods: {
+    mapInit() {
+      const location = { lat: 21.013939, lng: 105.8423706 };
+      // eslint-disable-next-line
+      const map = new google.maps.Map(this.$refs.map, {
+        zoom: 16,
+        center: location,
+      });
+      // eslint-disable-next-line
+      new google.maps.Marker({
+        position: location,
+        map: map,
+      });
+    }
+  },
+};
+</script>

@@ -21,6 +21,7 @@
     <v-btn
       text
       class="hidden-sm-and-down"
+      :to="{ name: 'dia-chi' }"
     >
       <v-icon>mdi-map-marker</v-icon>
       Địa chỉ
