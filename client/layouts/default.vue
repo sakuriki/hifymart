@@ -83,7 +83,7 @@
         class="headline text-uppercase"
       >
         <nuxt-link
-          class="toolbar-title"
+          class="toolbar-title white--text"
           to="/"
         >
           shop.re
@@ -113,66 +113,14 @@
           class="pl-4"
           icon="mdi-cart"
           style="cursor: pointer"
-          @click.native="cart_drawer = !cart_drawer"
+          @click.native="openSideCart"
         >
-          <span>(6) sản phẩm</span>
+          <span>({{ total }}) Sản phẩm</span>
           <span style="font-size:12px">Giỏ hàng</span>
         </ToolbarIcon>
       </div>
     </v-app-bar>
-    <v-navigation-drawer
-      v-model="cart_drawer"
-      app
-      right
-      fixed
-      temporary
-      hide-overlay
-      width="340"
-    >
-      <div class="d-flex align-center justify-space-between py-4 px-4">
-        <span class="text-h6 black--text">
-          Giỏ hàng
-        </span>
-        <v-btn
-          fab
-          small
-          depressed
-          @click="cart_drawer = false"
-        >
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-      </div>
-
-      <v-divider />
-
-      <v-list two-line>
-        <template v-if="items.length>0">
-          <CartItem
-            v-for="item in items"
-            :key="item.title"
-            :title="item.title"
-          />
-        </template>
-        <div
-          v-else
-          class="ma-4"
-        >
-          <v-list-item class="mb-4">
-            <v-list-item-title class="text-center body-2">
-              Giỏ hàng trống
-            </v-list-item-title>
-          </v-list-item>
-          <v-btn
-            block
-            color="accent"
-            @click="cart_drawer = false"
-          >
-            Tiếp tục shopping
-          </v-btn>
-        </div>
-        <v-divider />
-      </v-list>
-    </v-navigation-drawer>
+    <SideCart />
     <v-main>
       <v-container
         fill-height
@@ -185,6 +133,7 @@
 <script>
 import simplebar from "simplebar-vue";
 import "simplebar/dist/simplebar.min.css";
+import { mapGetters } from "vuex";
 export default {
   components: {
     simplebar,
@@ -193,11 +142,6 @@ export default {
     return {
       searchText: "",
       drawer: null,
-      cart_drawer: null,
-      items2: [
-        { title: 'Home', icon: 'mdi-view-dashboard' },
-        { title: 'About', icon: 'mdi-forum' },
-      ],
       items: [
       {
         icon: "mdi-home",
@@ -313,6 +257,9 @@ export default {
 
     }
   },
+  computed: {
+    ...mapGetters('cart', ['total'])
+  },
   beforeMount() {
     this.updateBrowserDimensions()
   },
@@ -327,6 +274,9 @@ export default {
       this.$store.commit('SET_BROWSER_WIDTH', Math.max(document.body.scrollWidth, document.documentElement.scrollWidth, document.body.offsetWidth, document.documentElement.offsetWidth, document.documentElement.clientWidth, 320));
       this.$store.commit('SET_BROWSER_HEIGHT', window.innerHeight);
     },
+    openSideCart() {
+      this.$nuxt.$emit("open-side-cart", "haha")
+    }
   },
 }
 </script>

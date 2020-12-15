@@ -16,88 +16,33 @@
         />
       </v-carousel-item>
     </v-carousel>
-    <v-layout
-      wrap
-      row
-    >
-      <v-col
-        cols="12"
-        md="8"
-        sm="12"
-      >
-        <ProductList
-          title="Đang giảm giá"
-          :to="{ name: 'danh-sach-type', params: { type: 'sale' } }"
-          :products="latestProducts"
-        />
-      </v-col>
-      <v-col
-        cols="12"
-        md="4"
-        sm="12"
-      >
-        <v-img
-          height="100%"
-          src="https://via.placeholder.com/325x400?text=Banner+d%E1%BB%8Dc"
-        />
-      </v-col>
-    </v-layout>
-    <v-layout
-      wrap
-      row
-    >
-      <v-col
-        cols="12"
-        md="4"
-        sm="12"
-      >
-        <v-img
-          height="100%"
-          src="https://via.placeholder.com/325x400?text=Banner+d%E1%BB%8Dc"
-        />
-      </v-col>
-      <v-col
-        cols="12"
-        md="8"
-        sm="12"
-      >
-        <ProductList
-          title="Sản phẩm hot"
-          :to="{ name: 'danh-sach-type', params: { type: 'hot' } }"
-          :products="latestProducts"
-        />
-      </v-col>
-    </v-layout>
-    <v-layout
-      wrap
-      row
-    >
-      <v-col
-        cols="12"
-        md="8"
-        sm="12"
-      >
-        <ProductList
-          title="Sản phẩm mới"
-          :to="{ name: 'danh-sach-type', params: { type: 'moi' } }"
-          :products="latestProducts"
-        />
-      </v-col>
-      <v-col
-        cols="12"
-        md="4"
-        sm="12"
-      >
-        <v-img
-          height="100%"
-          src="https://via.placeholder.com/325x400?text=Banner+d%E1%BB%8Dc"
-        />
-      </v-col>
-    </v-layout>
+    <IndexList
+      title="Đang giảm giá"
+      :to="{ name: 'danh-sach-type', params: { type: 'dang-giam-gia' } }"
+      :products="onsaleProducts"
+    />
+    <IndexList
+      title="Sản phẩm hot"
+      :to="{ name: 'danh-sach-type', params: { type: 'mua-nhieu' } }"
+      :products="hottestProducts"
+      :left="true"
+    />
+    <IndexList
+      title="Sản phẩm mới"
+      :to="{ name: 'danh-sach-type', params: { type: 'hang-moi' } }"
+      :products="latestProducts"
+    />
+    <IndexList
+      title="Có thể bạn quan tâm"
+      :to="{ name: 'danh-sach-type', params: { type: 'kham-pha' } }"
+      :products="randomProducts"
+      :left="true"
+    />
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
@@ -111,9 +56,12 @@ export default {
     }
   },
   computed: {
-    latestProducts() {
-      return this.$store.getters.latestProducts
-    },
+    ...mapGetters([
+      'latestProducts',
+      'randomProducts',
+      'onsaleProducts',
+      'hottestProducts',
+    ]),
     carouselSize() {
       return this.$store.getters.browserWidth < 600 ? "152px" : "765px"
     },

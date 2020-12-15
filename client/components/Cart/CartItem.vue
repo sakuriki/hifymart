@@ -1,10 +1,11 @@
 <template>
   <v-list-item>
     <v-badge
-      content="1"
+      :content="product.count"
       bordered
       offset-x="28"
       offset-y="28"
+      :value="product.count>1"
     >
       <v-list-item-avatar
         rounded
@@ -20,17 +21,25 @@
       style="overflow:hidden"
     >
       <v-list-item-title class="mb-1">
-        <nuxt-link to="#">
-          Titleaaaaaaaaaaaaaaaaaaaaaaaaaâszzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+        <nuxt-link
+          style="text-decoration:none"
+          :to="{ name: 'san-pham-slug', params: { slug: product.slug } }"
+        >
+          {{ product.name }}
         </nuxt-link>
       </v-list-item-title>
       <v-list-item-subtitle
         class="red--text text--darken-4 font-weight-black text-body-2 mb-1"
-        v-text="'1000000đ'"
-      />
+      >
+        {{ product.sale_off_price ? moneyFormat(product.sale_off_price) : moneyFormat(product.price) }}
+        <span
+          v-if="product.sale_off_price"
+          class="pl-1 grey--text text-decoration-line-through"
+        >{{ moneyFormat(product.price) }}</span>
+      </v-list-item-subtitle>
       <v-list-item-subtitle class="grey--text text--darken-1 overline">
         <v-text-field
-          v-model="quantity"
+          :value="product.count"
           type="number"
           solo-inverted
           dense
@@ -39,6 +48,7 @@
           hide-details
           @click:append-outer="increment"
           @click:prepend="decrement"
+          @change="onChange(product.count,$event)"
         />
       </v-list-item-subtitle>
     </div>
@@ -48,6 +58,7 @@
         icon
         small
         aria-label="Remove Item from Cart"
+        @click="removeItem(product)"
       >
         <v-icon small>
           mdi-close-circle
@@ -57,18 +68,30 @@
   </v-list-item>
 </template>
 <script>
+import { mapActions } from "vuex";
 export default {
-  data() {
-    return {
-      quantity: 1
+  props: {
+    product: {
+      type: Object,
+      default: null
     }
   },
   methods: {
+    ...mapActions('cart', ['addItem', 'removeItem']),
     increment() {
-      this.quantity++
+      this.addItem({ product: this.product, count: 1 })
     },
     decrement() {
-      this.quantity--
+      this.addItem({ product: this.product, count: -1 })
+    },
+    moneyFormat(number) {
+      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number)
+    },
+    onChange(number, event) {
+      let target = event < 1 ? 1 : event;
+      let newNumber = Number(target-number);
+      if(newNumber==0) return
+      this.addItem({ product: this.product, count: newNumber })
     }
   },
 }

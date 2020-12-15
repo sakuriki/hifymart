@@ -1,11 +1,17 @@
+import Vue from "vue";
 const calculateAmount = obj =>
-  Object.values(obj)
-    .reduce((acc, { count, price }) => acc + count * price, 0)
-    .toFixed(2);
+  Object.values(obj).reduce((acc, { count, price, sale_off_price }) => {
+    return sale_off_price ? acc + count * sale_off_price : acc + count * price;
+  }, 0);
 
 export const state = () => ({
   total: 0,
   amount: 0,
+  coupon: null,
+  coupon_value: 0,
+  is_percent: false,
+  discount: 0,
+  total_amount: 0,
   actualStep: 0,
   cart: {},
   success: false,
@@ -16,27 +22,59 @@ export const getters = {
   cart: ({ cart }) => cart,
   total: ({ total }) => total,
   amount: ({ amount }) => amount,
+  discount: ({ discount }) => discount,
+  total_amount: ({ total_amount }) => total_amount,
+  coupon: ({ coupon }) => coupon,
   actualStep: ({ actualStep }) => actualStep,
   success: ({ success }) => success,
   shippingInformation: ({ shippingInformation }) => shippingInformation
 };
 
 export const mutations = {
-  ADD_ITEM: (state, item) => {
-    state.total++;
-    if (item.name in state.cart) {
-      state.cart[item.name].count++;
+  ADD_ITEM: (state, { product, count }) => {
+    if (!product) return;
+    state.total += count;
+    if (product.name in state.cart) {
+      state.cart[product.name].count += count;
     } else {
-      let stateItem = { ...item };
-      stateItem.count = 1;
-      state.cart[item.name] = stateItem;
+      let stateItem = { ...product };
+      stateItem.count = count;
+      // state.cart[item.name] = stateItem;
+      Vue.set(state.cart, product.name, stateItem);
     }
     state.amount = calculateAmount(state.cart);
+    state.discount = state.is_percent
+      ? (state.amount * state.coupon_value) / 100
+      : state.coupon_value;
+    let total_amount = state.amount - state.discount;
+    state.total_amount = total_amount > 0 ? total_amount : 0;
   },
   REMOVE_ITEM: (state, item) => {
     state.total = state.total - item.count;
     delete state.cart[item.name];
     state.amount = calculateAmount(state.cart);
+    state.discount = state.is_percent
+      ? (state.amount * state.coupon_value) / 100
+      : state.coupon_value;
+    let total_amount = state.amount - state.discount;
+    state.total_amount = total_amount > 0 ? total_amount : 0;
+  },
+  ADD_COUPON: (state, { coupon, coupon_value, is_percent }) => {
+    state.coupon = coupon;
+    state.coupon_value = coupon_value;
+    state.is_percent = is_percent;
+    state.discount = is_percent
+      ? (state.amount * coupon_value) / 100
+      : coupon_value;
+    let total_amount = state.amount - state.discount;
+    state.total_amount = total_amount > 0 ? total_amount : 0;
+  },
+  REMOVE_COUPON: state => {
+    state.total_amount = state.total_amount + state.discount;
+    state.coupon = null;
+    state.coupon_value = 0;
+    state.discount = 0;
+    state.is_percent = false;
   },
   CLEAR_CONTENTS: state => {
     state.cart = {};
@@ -63,6 +101,10 @@ export const actions = {
   addItem: ({ commit }, item) => commit("ADD_ITEM", item),
 
   removeItem: ({ commit }, item) => commit("REMOVE_ITEM", item),
+
+  addCoupon: ({ commit }, item) => commit("ADD_COUPON", item),
+
+  removeCoupon: ({ commit }, item) => commit("REMOVE_COUPON", item),
 
   clearCount: ({ commit }) => commit("CLEAR_COUNT"),
 

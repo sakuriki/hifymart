@@ -1,6 +1,6 @@
 export const state = () => ({
   latestProducts: [],
-  saleProducts: [],
+  onsaleProducts: [],
   hottestProducts: [],
   randomProducts: [],
   browserWidth: 0,
@@ -22,7 +22,7 @@ export const getters = {
   //   return state.randomProducts;
   // },
   latestProducts: ({ latestProducts }) => latestProducts,
-  saleProducts: ({ saleProducts }) => saleProducts,
+  onsaleProducts: ({ onsaleProducts }) => onsaleProducts,
   hottestProducts: ({ hottestProducts }) => hottestProducts,
   randomProducts: ({ randomProducts }) => randomProducts,
   browserWidth: ({ browserWidth }) => browserWidth,
@@ -45,8 +45,8 @@ export const mutations = {
   SET_LASTEST_PRODUCTS(state, data) {
     state.latestProducts = data;
   },
-  SET_SALE_PRODUCTS(state, data) {
-    state.saleProducts = data;
+  SET_ON_SALE_PRODUCTS(state, data) {
+    state.onsaleProducts = data;
   },
   SET_HOTTEST_PRODUCTS(state, data) {
     state.hottestProducts = data;
@@ -68,15 +68,19 @@ export const actions = {
       var latestProducts = await this.$axios.$get("/products?per_page=8");
       vuexContext.commit("SET_LASTEST_PRODUCTS", latestProducts.products);
 
-      var saleProducts = await this.$axios.$get("/products?per_page=8");
-      vuexContext.commit("SET_SALE_PRODUCTS", saleProducts.products);
+      var onsaleProducts = await this.$axios.$get(
+        "/products?per_page=8&onsale=true"
+      );
+      vuexContext.commit("SET_ON_SALE_PRODUCTS", onsaleProducts.products);
 
       var hottestProducts = await this.$axios.$get(
-        "/products?per_page=8&sortBy=orders_count&sortDesc=true"
+        "/products?per_page=8&sortBy=orders_count"
       );
       vuexContext.commit("SET_HOTTEST_PRODUCTS", hottestProducts.products);
 
-      var randomProducts = await this.$axios.$get("/products?per_page=8");
+      var randomProducts = await this.$axios.$get(
+        "/products?per_page=8&sortBy=random"
+      );
       vuexContext.commit("SET_RANDOM_PRODUCTS", randomProducts.products);
     } catch (e) {
       console.log("store: ", e);
