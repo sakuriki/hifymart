@@ -23,6 +23,9 @@ class ProductCollection extends ResourceCollection
           'description' => $page->description,
           'price' => $page->price,
           'quantity' => $page->quantity,
+          'sale_off_price' => $page->sale_off_price,
+          'sale_off_percent' => $page->sale_off_percent,
+          'sale_off_quantity' => $page->sale_off_quantity,
           'featured_image' => $page->featured_image,
           'brand_id' => $page->brand_id,
           'category_id' => $page->category_id
