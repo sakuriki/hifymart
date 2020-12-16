@@ -55,7 +55,7 @@
         </div>
         <v-divider />
         <v-row
-          v-show="total>0"
+          v-if="total>0"
           align="center"
           class="px-3 pt-2"
         >
