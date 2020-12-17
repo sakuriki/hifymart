@@ -7,8 +7,10 @@ use App\Models\Tag;
 use App\Models\User;
 use App\Models\Brand;
 use App\Models\Order;
+use App\Models\Rating;
 use App\Concern\Helper;
 use App\Models\Category;
+use App\Models\Wishlist;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -57,6 +59,26 @@ class Product extends Model
   public function user()
   {
     return $this->belongsTo(User::class);
+  }
+
+  public function wishlists()
+  {
+    return $this->hasMany(Wishlist::class);
+  }
+
+  public function ratings()
+  {
+    return $this->hasMany(Rating::class);
+  }
+
+  public function averageRating($onlyApproved = false)
+  {
+    return $this->ratings()
+      ->selectRaw('ROUND(AVG(rating), 2) as averageRating')
+      ->when($onlyApproved, function ($query) {
+        $query->where('approved', 1);
+      })
+      ->pluck('averageRating');
   }
 
   public function scopeonSale(Builder $query)

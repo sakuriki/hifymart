@@ -3,9 +3,10 @@
 namespace App\Models;
 
 use App\Concern\Helper;
+use App\Models\Wishlist;
 use App\Concern\HasPermissionsTrait;
-use Tymon\JWTAuth\Contracts\JWTSubject;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -58,5 +59,10 @@ class User extends Authenticatable implements JWTSubject
   public function getJWTCustomClaims()
   {
     return [];
+  }
+
+  public function wishlists()
+  {
+    return $this->hasMany(Wishlist::class);
   }
 }
