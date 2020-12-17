@@ -16,8 +16,8 @@ class RatingSeeder extends Seeder
   public function run()
   {
     $faker = Factory::create();
-    Product::all()->each(function ($product) use ($faker) {
-      $ratings = [];
+    $ratings = [];
+    Product::all()->each(function ($product) use (&$ratings, $faker) {
       User::all()->each(function ($user) use (&$ratings, $faker, $product) {
         $ratings[] = [
           'product_id' => $product->id,
@@ -27,7 +27,10 @@ class RatingSeeder extends Seeder
           'review' => $faker->realText()
         ];
       });
-      Rating::insert($ratings);
     });
+    $ratingChunks = array_chunk($ratings, 5000);
+    foreach ($ratingChunks as $chunk) {
+      Rating::insert($chunk);
+    }
   }
 }
