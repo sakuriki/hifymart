@@ -74,7 +74,7 @@ class Product extends Model
   public function averageRating($onlyApproved = false)
   {
     return $this->ratings()
-      ->selectRaw('ROUND(AVG(rating), 2) as averageRating')
+      ->selectRaw('ROUND(AVG(rating)/0.5, 0)*0.5 as averageRating')
       ->when($onlyApproved, function ($query) {
         $query->where('approved', 1);
       })
