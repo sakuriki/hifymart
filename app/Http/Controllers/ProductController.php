@@ -69,7 +69,10 @@ class ProductController extends Controller
 
   public function show($slug, Request $request)
   {
-    $product = Product::where("slug", $slug)->select(["id", "brand_id", "category_id", "name", "slug", "description", "price", "quantity", "featured_image"])->with(["brand:id,name,slug", "category:id,name,slug", "tags"])->firstOrFail();
+    $product = Product::where("slug", $slug)
+      ->select(["id", "brand_id", "category_id", "name", "slug", "description", "price", "quantity", "featured_image"])
+      ->with(["brand:id,name,slug", "category:id,name,slug", "tags"])
+      ->firstOrFail();
     return response()->json([
       'product' => $product
     ]);
