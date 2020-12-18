@@ -2,26 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Rating;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Resources\ProductCollection;
+use App\Http\Resources\Product as ProductResource;
 
 class ProductController extends Controller
 {
   public function index(Request $request)
   {
-    // return Product::select(['id', 'brand_id', 'category_id', 'name', 'slug', 'description', 'price', 'sale_off_price', 'featured_image'])
-    //   ->selectRaw('FLOOR(100-(products.sale_off_price/products.price*100)) as sale_off_percent')
-    //   // ->orderBy('sale_off_percent', 'desc')
-    //   ->where(function ($query) {
-    //     $query->whereBetween('price', [0, 30000])
-    //       ->orWhereBetween('sale_off_price', [0, 30000]);
-    //   })
-    //   // ->whereBetween('price', [0, 100000])
-    //   ->orderBy('price', 'asc')
-    //   ->paginate(12);
+    // $data = Product::leftJoin('ratings', 'ratings.product_id', '=', 'products.id')
+    //   ->select([
+    //     'products.*',
+    //     DB::raw('ROUND(AVG(rating)/0.5, 0)*0.5 as ratings_average')
+    //   ])
+    //   ->having(DB::raw('ROUND(AVG(rating)/0.5, 0)*0.5'), '>=', 3)
+    //   ->groupBy('id')
+    //   ->get();
+    // return $data;
+    // $a = Product::find(82);
+    // $b = $a->averageRating();
+    // return response()->json(collect($a)->merge(['averageRating' => (float) $b->first()]));
     $data = Product::search($request->input('q'), "name")
-      ->select(['id', 'brand_id', 'category_id', 'name', 'slug', 'description', 'price', 'sale_off_price', 'sale_off_quantity', 'quantity', 'featured_image'])
+      ->leftJoin('ratings', 'ratings.product_id', '=', 'products.id')
+      ->select([
+        'products.id',
+        'products.brand_id',
+        'products.category_id',
+        'products.name',
+        'products.slug',
+        'products.description',
+        'products.price',
+        'products.sale_off_price',
+        'products.sale_off_quantity',
+        'products.quantity',
+        'products.featured_image',
+        DB::raw('ROUND(AVG(rating)/0.5, 0)*0.5 as ratings_average')
+      ])
+      ->groupBy('id')
       ->selectRaw('FLOOR(100-(products.sale_off_price/products.price*100)) as sale_off_percent')
       ->when($request->input("onsale"), function ($query) {
         $query->onSale();
@@ -37,6 +57,9 @@ class ProductController extends Controller
       })
       ->when($request->input('category'), function ($query, $id) {
         $query->where('category_id', $id);
+      })
+      ->when($request->input('rating'), function ($query, $rating) {
+        $query->having(DB::raw('ROUND(AVG(rating)/0.5, 0)*0.5'), '>=', $rating);
       })
       ->withCount("orders");
     $sortBy = $request->input("sortBy");
@@ -57,10 +80,13 @@ class ProductController extends Controller
       case "sale_off_percent":
         $data = $data->orderBy("sale_off_percent", $sortDesc);
         break;
+      case "rating":
+        $data = $data->orderBy("ratings_average", $sortDesc);
+        break;
       case "random":
         $data = $data->inRandomOrder();
       default:
-        $data = $data->latest();
+        $data = $data->orderBy('products.created_at', 'desc');
     }
     return response()->json(
       new ProductCollection($data->paginate($request->input('per_page', 8)))
@@ -70,11 +96,28 @@ class ProductController extends Controller
   public function show($slug, Request $request)
   {
     $product = Product::where("slug", $slug)
-      ->select(["id", "brand_id", "category_id", "name", "slug", "description", "price", "quantity", "featured_image"])
+      ->leftJoin('ratings', 'ratings.product_id', '=', 'products.id')
+      ->select([
+        'products.id',
+        'products.brand_id',
+        'products.category_id',
+        'products.name',
+        'products.slug',
+        'products.description',
+        'products.price',
+        'products.sale_off_price',
+        'products.sale_off_quantity',
+        'products.quantity',
+        'products.featured_image',
+        DB::raw('ROUND(AVG(rating)/0.5, 0)*0.5 as ratings_average')
+      ])
+      ->groupBy('id')
       ->with(["brand:id,name,slug", "category:id,name,slug", "tags"])
       ->firstOrFail();
+    // $rating_averge = $product->av
+    //   return response()->json(collect($product)->merge(['averageRating' => (float) $b->first()]));
     return response()->json([
-      'product' => $product
+      'product' => new ProductResource($product)
     ]);
   }
 }

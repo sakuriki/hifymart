@@ -45,7 +45,7 @@
                 >{{ moneyFormat(product.price) }}</span>
               </span>
               <v-rating
-                :value="4.5"
+                :value="product.ratings_average"
                 color="amber"
                 dense
                 half-increments
