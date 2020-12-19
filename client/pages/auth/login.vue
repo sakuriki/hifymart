@@ -2,6 +2,7 @@
   <v-layout
     align-center
     justify-center
+    fill-height
   >
     <v-flex
       xs12
@@ -9,7 +10,10 @@
       elevation-6
     >
       <v-card>
-        <v-sheet class="pa-5 primary">
+        <v-sheet
+          dark
+          class="pa-5 primary"
+        >
           <span>Đăng nhập</span>
         </v-sheet>
         <v-card-text class="pt-4">
