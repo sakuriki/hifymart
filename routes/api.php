@@ -33,5 +33,6 @@ Route::group(['middleware' => 'jwtoptinal'], function () {
   Route::post('/checkout', 'CheckoutController@store');
   Route::apiResource('products', 'ProductController')->only(["index", "show"]);
 });
+Route::get('/user/{id}', 'UserController@show');
 Route::apiResource('brands', 'BrandController')->only(["index", "show"]);
 Route::apiResource('categories', 'CategoryController')->only(["index", "show"]);
