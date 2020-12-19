@@ -11,6 +11,7 @@ use App\Models\Rating;
 use App\Concern\Helper;
 use App\Models\Category;
 use App\Models\Wishlist;
+use App\Models\ProductImage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -69,6 +70,11 @@ class Product extends Model
   public function ratings()
   {
     return $this->hasMany(Rating::class);
+  }
+
+  public function images()
+  {
+    return $this->hasMany(ProductImage::class);
   }
 
   public function averageRating($onlyApproved = false)
