@@ -1,5 +1,12 @@
 <template>
   <div style="width:100%;min-height:100vh">
+    <v-overlay v-show="loading">
+      <v-progress-circular
+        :size="70"
+        color="primary"
+        indeterminate
+      />
+    </v-overlay>
     <v-breadcrumbs :items="breaditems">
       <template #divider>
         <v-icon>mdi-chevron-right</v-icon>
@@ -48,51 +55,59 @@
                 />
               </v-col>
             </v-row>
-            <v-autocomplete
-              :items="[
-                'Alabama', 'Alaska', 'American Samoa', 'Arizona',
-                'Arkansas', 'California', 'Colorado', 'Connecticut',
-                'Delaware', 'District of Columbia', 'Federated States of Micronesia',
-                'Florida', 'Georgia', 'Guam', 'Hawaii', 'Idaho',
-                'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky',
-                'Louisiana', 'Maine', 'Marshall Islands', 'Maryland',
-                'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi',
-                'Missouri', 'Montana', 'Nebraska', 'Nevada',
-                'New Hampshire', 'New Jersey', 'New Mexico', 'New York',
-                'North Carolina', 'North Dakota', 'Northern Mariana Islands', 'Ohio',
-                'Oklahoma', 'Oregon', 'Palau', 'Pennsylvania', 'Puerto Rico',
-                'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee',
-                'Texas', 'Utah', 'Vermont', 'Virgin Island', 'Virginia',
-                'Washington', 'West Virginia', 'Wisconsin', 'Wyoming',
-              ]"
-              label="Thương hiệu"
-              multiple
-              chips
+            <v-text-field
+              v-model="search"
+              label="Lọc theo thương hiệu"
+              flat
+              solo-inverted
+              hide-details
               clearable
-              deletable-chips
-              hint="Lọc thương hiệu bạn cần tìm"
-              persistent-hint
-              class="mt-4"
+              append-icon="mdi-magnify"
+              clear-icon="mdi-close-circle-outline"
             />
+            <simplebar style="max-height:300px">
+              <v-treeview
+                v-model="data.brands"
+                :search="search"
+                selectable
+                :items="brands"
+              />
+            </simplebar>
+            <span class="subtitle">Đánh giá</span>
+            <div
+              v-for="star in [5,4,3,2,1]"
+              :key="star"
+              class="d-flex flex-wrap align-center"
+            >
+              <div
+                class="d-flex"
+                @click="data.rating = star"
+              >
+                <v-rating
+                  :value="star"
+                  color="amber"
+                  dense
+                  half-increments
+                  readonly
+                  size="30"
+                  style="cursor: pointer"
+                />
+              </div>
+              <div
+                v-if="star<5"
+                class="d-flex"
+              >
+                <span>Trở lên</span>
+                <v-spacer />
+              </div>
+            </div>
             <v-autocomplete
-              :items="[
-                'Alabama', 'Alaska', 'American Samoa', 'Arizona',
-                'Arkansas', 'California', 'Colorado', 'Connecticut',
-                'Delaware', 'District of Columbia', 'Federated States of Micronesia',
-                'Florida', 'Georgia', 'Guam', 'Hawaii', 'Idaho',
-                'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky',
-                'Louisiana', 'Maine', 'Marshall Islands', 'Maryland',
-                'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi',
-                'Missouri', 'Montana', 'Nebraska', 'Nevada',
-                'New Hampshire', 'New Jersey', 'New Mexico', 'New York',
-                'North Carolina', 'North Dakota', 'Northern Mariana Islands', 'Ohio',
-                'Oklahoma', 'Oregon', 'Palau', 'Pennsylvania', 'Puerto Rico',
-                'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee',
-                'Texas', 'Utah', 'Vermont', 'Virgin Island', 'Virginia',
-                'Washington', 'West Virginia', 'Wisconsin', 'Wyoming',
-              ]"
+              v-model="data.category"
+              :items="categories"
               label="Danh mục sản phẩm"
               clearable
+              item-text="name"
+              item-value="id"
               hint="Chọn danh mục sản phẩm bạn muốn"
               persistent-hint
               class="mt-4"
@@ -130,7 +145,12 @@
 </template>
 <script>
 import debounce from "lodash/debounce";
+import simplebar from "simplebar-vue";
+import "simplebar/dist/simplebar.min.css";
 export default {
+  components: {
+    simplebar,
+  },
   validate({ params }) {
     let allow = ["dang-giam-gia", "mua-nhieu", "hang-moi", "kham-pha"];
     return allow.includes(params.type);
@@ -145,16 +165,24 @@ export default {
       string = "random"
     }
     let { products, pagination } = await app.$axios.$get(`/products?per_page=16&orderBy=${string}`);
+    let { brands } = await app.$axios.$get('/brands');
+    let { categories } = await app.$axios.$get('/categories');
     return {
       products: products,
-      pagination : pagination
+      pagination : pagination,
+      brands: brands,
+      categories: categories
     }
   },
   data() {
     return {
+      search: null,
       type: null,
       text: null,
+      loading: false,
       products: [],
+      brands: [],
+      categories: [],
       pagination: {
         current_page: 1,
         per_page: 16,
@@ -163,8 +191,45 @@ export default {
       },
       data: {
         orderBy: null,
-        money_range: [0, 10000000]
-      }
+        money_range: [0, 10000000],
+        rating: null,
+        brands: [],
+        category: null
+      },
+      tree: [
+        {
+          id: 1,
+          name: "mot"
+        },
+        {
+          id: 2,
+          name: "hai"
+        },
+        {
+          id: 3,
+          name: "ba"
+        },
+        {
+          id: 4,
+          name: "ba"
+        },
+        {
+          id: 5,
+          name: "ba"
+        },
+        {
+          id: 6,
+          name: "bon"
+        },
+        {
+          id: 7,
+          name: "bon"
+        },
+        {
+          id: 8,
+          name: "f"
+        },
+      ]
     }
   },
   computed: {
@@ -194,7 +259,10 @@ export default {
     }
   },
   watch: {
-    'money_range': 'reset'
+    'data.money_range': 'reset',
+    'data.rating': 'reset',
+    'data.category': 'reset',
+    'data.brands': 'reset',
   },
   beforeMount() {
     this.prepareData();
@@ -220,12 +288,16 @@ export default {
       }
     },
     fetchData: debounce(function() {
+      this.loading = true;
       let data = {
         params: {
           per_page: this.pagination.per_page,
           page: this.pagination.current_page,
           orderBy: this.data.orderBy,
-          range: this.data.money_range
+          range: this.data.money_range,
+          rating: this.data.rating,
+          brands: this.data.brands,
+          category: this.data.category
         }
       };
       this.$axios.get('/products', data).then(res => {
@@ -234,6 +306,7 @@ export default {
           this.products = data.products;
           this.pagination.total = data.pagination ? data.pagination.total : 0;
           this.pagination.total_pages = data.pagination ? data.pagination.total_pages : 0;
+          this.loading = false;
         }
       })
     }, 500),

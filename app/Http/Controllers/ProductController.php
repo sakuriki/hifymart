@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Rating;
 use App\Models\Product;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\ProductCollection;
@@ -52,8 +53,8 @@ class ProductController extends Controller
             ->orWhereBetween('sale_off_price', $range);
         });
       })
-      ->when($request->input('brand'), function ($query, $id) {
-        $query->where('brand_id', $id);
+      ->when($request->input('brands'), function ($query, $id) {
+        $query->whereIn('brand_id', Arr::wrap($id));
       })
       ->when($request->input('category'), function ($query, $id) {
         $query->where('category_id', $id);

@@ -27,8 +27,11 @@ Route::group(['middleware' => 'jwtnew'], function () {
     Route::apiResource('permissions', 'Admin\PermissionController');
   });
   Route::get('/auth/user', 'Auth\AuthController@user');
+  Route::apiResource('wishlists', 'WishlistController')->only(["index", "show"]);
 });
 Route::group(['middleware' => 'jwtoptinal'], function () {
   Route::post('/checkout', 'CheckoutController@store');
   Route::apiResource('products', 'ProductController')->only(["index", "show"]);
 });
+Route::apiResource('brands', 'BrandController')->only(["index", "show"]);
+Route::apiResource('categories', 'CategoryController')->only(["index", "show"]);
