@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Resources\ProductCollection;
 use App\Http\Resources\Product as ProductResource;
 
@@ -40,10 +41,11 @@ class ProductController extends Controller
         'products.sale_off_quantity',
         'products.quantity',
         'products.featured_image',
-        DB::raw('ROUND(AVG(rating)/0.5, 0)*0.5 as ratings_average')
+        DB::raw('AVG(rating) as ratings_average')
+        // DB::raw('ROUND(AVG(rating)/0.5, 0)*0.5 as ratings_average')
       ])
       ->groupBy('id')
-      ->selectRaw('FLOOR(100-(products.sale_off_price/products.price*100)) as sale_off_percent')
+      // ->selectRaw('FLOOR(100-(products.sale_off_price/products.price*100)) as sale_off_percent')
       ->when($request->input("onsale"), function ($query) {
         $query->onSale();
       })
@@ -60,7 +62,8 @@ class ProductController extends Controller
         $query->where('category_id', $id);
       })
       ->when($request->input('rating'), function ($query, $rating) {
-        $query->having(DB::raw('ROUND(AVG(rating)/0.5, 0)*0.5'), '>=', $rating);
+        $query->having(DB::raw('AVG(rating)'), '>=', $rating);
+        // $query->having(DB::raw('ROUND(AVG(rating)/0.5, 0)*0.5'), '>=', $rating);
       })
       ->withCount("orders");
     $sortBy = $request->input("sortBy");
@@ -96,29 +99,43 @@ class ProductController extends Controller
 
   public function show($slug, Request $request)
   {
-    $product = Product::where("slug", $slug)
-      ->leftJoin('ratings', 'ratings.product_id', '=', 'products.id')
-      ->select([
-        'products.id',
-        'products.brand_id',
-        'products.category_id',
-        'products.name',
-        'products.slug',
-        'products.description',
-        'products.price',
-        'products.sale_off_price',
-        'products.sale_off_quantity',
-        'products.quantity',
-        'products.featured_image',
-        DB::raw('ROUND(AVG(rating)/0.5, 0)*0.5 as ratings_average')
-      ])
-      ->groupBy('id')
-      ->with(["brand:id,name,slug", "category:id,name,slug", "tags"])
-      ->firstOrFail();
-    // $rating_averge = $product->av
-    //   return response()->json(collect($product)->merge(['averageRating' => (float) $b->first()]));
+    $data = Cache::remember('cache_product_' . $slug, 60 * 60 * 24, function () use ($slug, $request) {
+      $product = Product::where("slug", $slug)
+        // ->leftJoin('ratings', 'ratings.product_id', '=', 'products.id')
+        ->leftJoin('ratings', function ($query) {
+          $query->on('ratings.product_id', '=', 'products.id')
+            ->where('ratings.approved', 1);
+        })
+        ->select([
+          'products.id',
+          'products.brand_id',
+          'products.category_id',
+          'products.name',
+          'products.slug',
+          'products.description',
+          'products.price',
+          'products.sale_off_price',
+          'products.sale_off_quantity',
+          'products.quantity',
+          'products.featured_image',
+          // DB::raw('ROUND(AVG(rating)/0.5, 0)*0.5 as ratings_average')
+          DB::raw('AVG(rating) as ratings_average')
+        ])
+        ->groupBy('id')
+        ->with(["brand:id,name,slug", "images:url,product_id", "category:id,name,slug", "tags", "ratingsWithUser" => function ($query) {
+          $query->where("approved", 1);
+        }])
+        ->withCount(["ratings" => function ($query) {
+          $query->where("approved", 1);
+        }])
+        ->firstOrFail();
+      $product->images->makeHidden(['product_id']);
+      $product->ratingsWithUser->makeHidden(['product_id', 'user_id', 'approved', 'created_at', 'updated_at']);
+      $product->ratings_average = (float) $product->ratings_average;
+      return $product;
+    });
     return response()->json([
-      'product' => new ProductResource($product)
+      'product' => $data
     ]);
   }
 }
