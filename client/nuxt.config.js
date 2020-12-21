@@ -38,7 +38,11 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ["~/plugins/axios", "~/plugins/vue-lazyload"],
+  plugins: [
+    "~/plugins/axios",
+    "~/plugins/vue-lazyload",
+    "~/plugins/notifier.js"
+  ],
 
   env: {
     baseUrl: process.env.CLIENT_BASE_URL || "http://localhost:3000",
