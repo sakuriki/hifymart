@@ -8,13 +8,16 @@ use Illuminate\Support\Str;
 class CategoryObserver
 {
   /**
-   * Listen to the Video saving event.
+   * Listen to the Video creating event.
    *
    * @param  \App\Models\Category  $category
    * @return void
    */
-  public function saving(Category $category): void
+  public function creating(Category $category): void
   {
+    if ($category->slug) {
+      return;
+    }
     $slug = Str::slug($category->name, '-');
     $count = Category::whereRaw("slug RLIKE '^{$slug}(-[0-9]+)?$'")->count();
     $category->slug = $count ? "{$slug}-{$count}" : $slug;
