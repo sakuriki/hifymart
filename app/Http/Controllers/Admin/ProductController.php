@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Product;
+use Illuminate\Support\Str;
+use App\Models\ProductImage;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
@@ -61,6 +64,8 @@ class ProductController extends Controller
     }
     try {
       DB::beginTransaction();
+      // return $request->featured_image;
+      // return $request->hasFile("featured_image") ? "haa" : "ho";
       if (!$request->hasFile("featured_image")) {
         return response()->json([
           "success" => false,
@@ -69,20 +74,25 @@ class ProductController extends Controller
           ]
         ], 422);
       }
-      $filename = pathinfo($request->file('featured_image')->getClientOriginalName(), PATHINFO_FILENAME);
-      $extension = $request->file("featured_image")->extension();
-      $final_name = $filename . "_" . date('mdYHis') . "_" . uniqid() . "." . $extension;
-      $filePath = $request->file("featured_image")->storeAs(
-        '/public/featured_image',
-        $final_name
-      );
-      $url = Storage::url($filePath);
+      $featured_image = $this->uploadOne($request->featured_image, '/public/products/featured_image');
+      $url = Storage::url($featured_image);
       $product = Product::create(
         array_merge(
           $request->validated(),
           ["featured_image" => $url]
         )
       );
+      if ($request->hasFile('images')) {
+        $images = [];
+        foreach ($request->file('images') as $image) {
+          $imagePath = $this->uploadOne($image, '/public/products/product_images/' . $product->id);
+          $url = Storage::url($imagePath);
+          $images[] = new ProductImage([
+            'url' => $url,
+          ]);
+        }
+        $product->images()->saveMany($images);
+      }
       DB::commit();
       return response()->json([
         "product" => $product
@@ -109,21 +119,30 @@ class ProductController extends Controller
     try {
       DB::beginTransaction();
       $data = $request->validated();
+      $product = Product::findOrFail($id);
       if ($request->file('featured_image')) {
-        $filename = pathinfo($request->file('featured_image')->getClientOriginalName(), PATHINFO_FILENAME);
-        $extension = $request->file("featured_image")->extension();
-        $final_name = $filename . "_" . date('mdYHis') . "_" . uniqid() . "." . $extension;
-        $filePath = $request->file("featured_image")->storeAs(
-          '/public/featured_image',
-          $final_name
-        );
-        $url = Storage::url($filePath);
+        if ($product->featured_image) {
+          Storage::delete(Str::replaceFirst("storage", "public", $product->featured_image));
+        }
+        $featured_image = $this->uploadOne($request->featured_image, '/public/products/featured_image');
+        $url = Storage::url($featured_image);
         $data = array_merge(
           $request->validated(),
           ["featured_image" => $url]
         );
       }
-      $product = Product::findOrFail($id)->update($data);
+      $product->update($data);
+      if ($request->hasFile('images')) {
+        $images = [];
+        foreach ($request->file('images') as $image) {
+          $imagePath = $this->uploadOne($image, '/public/products/product_images/' . $product->id);
+          $url = Storage::url($imagePath);
+          $images[] = new ProductImage([
+            'url' => $url,
+          ]);
+        }
+        $product->images()->saveMany($images);
+      }
       DB::commit();
       return response()->json([
         "product" => $product
@@ -162,5 +181,26 @@ class ProductController extends Controller
     }
     $product->delete();
     return response()->noContent();
+  }
+
+  private function uploadOne(UploadedFile $file, $folder = null, $filename = null)
+  {
+    $name = !is_null($filename)
+      ? $filename
+      : pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+
+    return $file->storeAs(
+      $folder,
+      $name . "_" . date('mdYHis') . "_" . uniqid() . "." . $file->getClientOriginalExtension()
+    );
+  }
+
+  /**
+   * @param null $path
+   * @param string $disk
+   */
+  private function deleteOne($path = null, $disk = 'public')
+  {
+    Storage::disk($disk)->delete($path);
   }
 }
