@@ -8,11 +8,11 @@
       sm="4"
     >
       <v-badge
-        :content="`-${product.sale_off_percent}%`"
+        :content="`-${calSaleOff(product.price, product.sale_off_price)}%`"
         color="red"
         offset-x="20%"
         offset-y="10%"
-        :value="product.sale_off_percent"
+        :value="product.sale_off_price"
         tile
         left
         style="width:100%;height:100%"
@@ -45,7 +45,7 @@
                 >{{ moneyFormat(product.price) }}</span>
               </span>
               <v-rating
-                :value="product.ratings_average"
+                :value="roundRating(product.ratings_average)"
                 color="amber"
                 dense
                 half-increments
@@ -115,6 +115,13 @@ export default {
   methods: {
     moneyFormat(number) {
       return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number)
+    },
+    calSaleOff(price, sale_off_price) {
+      if(!sale_off_price) return;
+      return Math.round(100 - (sale_off_price/price*100));
+    },
+    roundRating(rating) {
+      return Math.round(rating * 10) / 10;
     },
     ...mapActions('cart', ['addItem']),
     // addItem(item) {
