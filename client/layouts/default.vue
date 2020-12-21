@@ -82,12 +82,12 @@
       <v-toolbar-title
         class="headline text-uppercase"
       >
-        <nuxt-link
-          class="toolbar-title white--text"
+        <NuxtLink
+          class="toolbar-title white--text text-decoration-none"
           to="/"
         >
           shop.re
-        </nuxt-link>
+        </NuxtLink>
       </v-toolbar-title>
       <v-spacer class="hidden-sm-and-down" />
       <v-text-field
@@ -125,6 +125,8 @@
       <v-container fill-height>
         <nuxt />
       </v-container>
+      <BackToTop />
+      <GlobalSnackBar />
     </v-main>
   </v-app>
 </template>
@@ -134,7 +136,7 @@ import "simplebar/dist/simplebar.min.css";
 import { mapGetters } from "vuex";
 export default {
   components: {
-    simplebar,
+    simplebar
   },
   data() {
     return {
@@ -274,17 +276,15 @@ export default {
     },
     openSideCart() {
       this.$nuxt.$emit("open-side-cart", "haha")
-    }
+    },
   },
 }
 </script>
 <style scoped>
 a {
   color: #fff;
-  text-decoration: none;
 }
 a:hover {
   color: inherit;
-  text-decoration: none;
 }
 </style>

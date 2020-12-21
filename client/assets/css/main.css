@@ -1,0 +1,10 @@
+a {
+  text-decoration: none;
+}
+.img-highlight {
+  border: solid green;
+}
+button.multi-line > span.v-btn__content {
+  flex-wrap: wrap !important;
+  flex-direction: column !important;
+}

@@ -21,12 +21,12 @@
       style="overflow:hidden"
     >
       <v-list-item-title class="mb-1">
-        <nuxt-link
-          style="text-decoration:none"
+        <NuxtLink
+          class="text-decoration-none"
           :to="{ name: 'san-pham-slug', params: { slug: product.slug } }"
         >
           {{ product.name }}
-        </nuxt-link>
+        </NuxtLink>
       </v-list-item-title>
       <v-list-item-subtitle
         class="red--text text--darken-4 font-weight-black text-body-2 mb-1"

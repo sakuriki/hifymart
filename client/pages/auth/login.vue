@@ -58,7 +58,10 @@
                 >
                   Đăng nhập
                 </v-btn>
-                <NuxtLink :to="{name: 'auth-register'}">
+                <NuxtLink
+                  class="text-decoration-none"
+                  :to="{name: 'auth-register'}"
+                >
                   Chưa có tài khoản? Đăng ký
                 </NuxtLink>
               </v-layout>
