@@ -26,9 +26,12 @@
       }"
     >
       <template #[`item.name`]="{ item }">
-        <nuxt-link :to="{ name: 'san-pham-slug', params: { slug: item.slug } }">
+        <NuxtLink
+          class="text-decoration-none"
+          :to="{ name: 'san-pham-slug', params: { slug: item.slug } }"
+        >
           {{ item.name }}
-        </nuxt-link>
+        </NuxtLink>
       </template>
       <template #[`item.image`]="{ item }">
         <v-img

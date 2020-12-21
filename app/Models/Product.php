@@ -72,6 +72,11 @@ class Product extends Model
     return $this->hasMany(Rating::class);
   }
 
+  public function ratingsWithUser()
+  {
+    return $this->hasMany(Rating::class)->with('user:id,name');
+  }
+
   public function images()
   {
     return $this->hasMany(ProductImage::class);

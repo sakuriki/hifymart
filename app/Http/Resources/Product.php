@@ -22,7 +22,6 @@ class Product extends JsonResource
       'price' => $this->price,
       'quantity' => $this->quantity,
       'sale_off_price' => $this->sale_off_price,
-      'sale_off_percent' => $this->sale_off_percent,
       'sale_off_quantity' => $this->sale_off_quantity,
       'ratings_average' => (float) $this->ratings_average,
       'featured_image' => $this->featured_image,
