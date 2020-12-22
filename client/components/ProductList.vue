@@ -64,7 +64,7 @@
                       class="mx-2"
                       v-bind="attrs"
                       v-on="on"
-                      @click.prevent="addItem({product, count: 1})"
+                      @click.prevent="addItem({product, add: 1})"
                     >
                       mdi-cart-plus
                     </v-icon>
