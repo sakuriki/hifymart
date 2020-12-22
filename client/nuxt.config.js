@@ -41,7 +41,8 @@ module.exports = {
   plugins: [
     "~/plugins/axios",
     "~/plugins/vue-lazyload",
-    "~/plugins/notifier.js"
+    "~/plugins/notifier.js",
+    { src: "~/plugins/vuex-persist", ssr: false }
   ],
 
   env: {
