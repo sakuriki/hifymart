@@ -79,19 +79,20 @@ export default {
   methods: {
     ...mapActions('cart', ['addItem', 'removeItem']),
     increment() {
-      this.addItem({ product: this.product, count: 1 })
+      return this.product.quantity > this.product.count && this.addItem({ product: this.product, add: 1 })
     },
     decrement() {
-      this.addItem({ product: this.product, count: -1 })
+      return this.product.count > 1 && this.addItem({ product: this.product, add: -1 })
     },
     moneyFormat(number) {
       return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number)
     },
     onChange(number, event) {
-      let target = event < 1 ? 1 : event;
-      let newNumber = Number(target-number);
-      if(newNumber==0) return
-      this.addItem({ product: this.product, count: newNumber })
+      // console.log(number, event);
+      // let target = event < 1 ? 1 : event;
+      let newNumber = Number(event-number);
+      // if(newNumber==0) return
+      this.addItem({ product: this.product, add: newNumber })
     }
   },
 }

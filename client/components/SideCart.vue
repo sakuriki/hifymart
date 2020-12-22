@@ -122,7 +122,7 @@
                 class="pa-0"
               />
               <span class="body-2 font-weight-light grey--text">
-                Được giảm:
+                Được giảm{{ is_percent && `(${coupon_value}%)` }}:
               </span>
               <v-responsive
                 min-width="100"
@@ -180,7 +180,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('cart', ['cart', 'total', 'amount', 'discount', 'total_amount'])
+    ...mapGetters('cart', ['cart', 'total', 'amount', 'discount', 'total_amount', 'is_percent', 'coupon_value'])
   },
   mounted: function() {
     this.$nuxt.$on("open-side-cart", this.show)
