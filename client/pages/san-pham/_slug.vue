@@ -156,7 +156,7 @@
         </v-row>
       </v-card>
       <v-card class="mt-2">
-        <v-card-title>Thông tin sản phẩm:</v-card-title>
+        <v-card-title>Nhận xét của khách hàng:</v-card-title>
         <v-card-text>{{ product.description }}</v-card-text>
       </v-card>
     </v-col>
@@ -220,6 +220,10 @@ export default {
       selected_image: null
     }
   },
+  mounted() {
+    console.log(this.$store.getters.cart)
+    console.log(this.$store.getters['cart/discount2'])
+  },
   computed: {
     appUrl() {
       return process.env.apiUrl
@@ -240,6 +244,9 @@ export default {
     },
     onImageHover(img) {
       this.selected_image = img;
+    },
+    a() {
+      return
     }
   },
 }
