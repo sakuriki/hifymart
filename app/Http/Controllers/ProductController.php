@@ -99,7 +99,7 @@ class ProductController extends Controller
 
   public function show($slug, Request $request)
   {
-    $data = Cache::remember('cache_product_' . $slug, 60 * 60 * 24, function () use ($slug, $request) {
+    $data = Cache::remember('cache_product_' . $slug, 0, function () use ($slug, $request) {
       $product = Product::where("slug", $slug)
         // ->leftJoin('ratings', 'ratings.product_id', '=', 'products.id')
         ->leftJoin('ratings', function ($query) {
@@ -122,15 +122,25 @@ class ProductController extends Controller
           DB::raw('AVG(rating) as ratings_average')
         ])
         ->groupBy('id')
-        ->with(["brand:id,name,slug", "images:url,product_id", "category:id,name,slug", "tags", "ratingsWithUser" => function ($query) {
-          $query->where("approved", 1);
-        }])
+        ->with([
+          "brand:id,name,slug",
+          "images:url,product_id",
+          "category:id,name,slug",
+          "tags",
+          "ratings" => function ($query) {
+            $query->select('rating', 'product_id', DB::raw('count(*) as total'))
+              ->where("approved", 1)
+              ->groupBy('rating');
+          }
+        ])
         ->withCount(["ratings" => function ($query) {
           $query->where("approved", 1);
         }])
         ->firstOrFail();
+      // return $product;
       $product->images->makeHidden(['product_id']);
-      $product->ratingsWithUser->makeHidden(['product_id', 'user_id', 'approved', 'created_at', 'updated_at']);
+      // $product->ratingsWithUser->makeHidden(['product_id', 'user_id', 'approved', 'created_at', 'updated_at']);
+      $product->ratings->makeHidden(['product_id']);
       $product->ratings_average = (float) $product->ratings_average;
       return $product;
     });
