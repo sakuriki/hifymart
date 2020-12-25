@@ -157,7 +157,112 @@
       </v-card>
       <v-card class="mt-2">
         <v-card-title>Nhận xét của khách hàng:</v-card-title>
-        <v-card-text>{{ product.description }}</v-card-text>
+        <v-card-text>
+          <v-row>
+            <v-col
+              class="d-flex flex-column align-center justify-center"
+              cols="12"
+              md="4"
+            >
+              <template v-if="product.ratings_count>=0">
+                <span>Đánh giá trung bình</span>
+                <span class="text-h5 red--text">{{ roundRating + "/5" }}</span>
+                <span>({{ product.ratings_count }} đánh giá)</span>
+              </template>
+              <span v-else>Chưa có đánh giá, hãy là người đầu tiên</span>
+            </v-col>
+            <v-col
+              cols="12"
+              md="4"
+            >
+              <div
+                v-for="star in [5,4,3,2,1]"
+                :key="star"
+                class="d-flex flex-wrap align-center"
+              >
+                <div
+                  class="d-flex"
+                >
+                  <span>{{ star }}</span>
+                  <v-icon
+                    small
+                    color="amber"
+                  >
+                    mdi-star
+                  </v-icon>
+                </div>
+                <v-flex>
+                  <v-progress-linear
+                    :value="ratingWithPercentage[star].percentage"
+                    height="10"
+                    rounded
+                    class="my-1"
+                  />
+                </v-flex>
+                <div
+                  class="d-flex col-1 pa-0 ml-1"
+                >
+                  <span>{{ (ratingWithPercentage[star].percentage||0)+"%" }}</span>
+                </div>
+              </div>
+            </v-col>
+            <v-col
+              class="d-flex flex-column align-center justify-center"
+              cols="12"
+              md="4"
+            >
+              <v-btn
+                color="red"
+                dark
+              >
+                Viết đánh giá của bạn
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+      <v-card
+        id="user_review"
+        class="mt-2"
+      >
+        <v-card-text v-if="product.ratings_count<=0">
+          Chưa có đánh giá
+        </v-card-text>
+        <template v-else>
+          <div
+            v-for="rating in ratings"
+            :key="rating.id"
+          >
+            <v-card-title>
+              <v-avatar
+                size="36"
+                color="indigo"
+              >
+                <span class="white--text">{{ rating.user.name.slice(0,1) }}</span>
+              </v-avatar>
+              <span class="ml-2">{{ rating.user.name }}</span>
+              <span class="ml-2">
+                <v-rating
+                  v-model="rating.rating"
+                  color="amber"
+                  class="user-rating"
+                  readonly
+                  small
+                />
+              </span>
+            </v-card-title>
+            <v-card-text>
+              <span>{{ rating.review }}</span>
+            </v-card-text>
+            <v-divider />
+          </div>
+          <v-pagination
+            v-model="pagination.current_page"
+            :length="pagination.total_pages"
+            :total-visible="7"
+            :disabled="loading"
+          />
+        </template>
       </v-card>
     </v-col>
     <v-col
@@ -190,8 +295,11 @@
 export default {
   async asyncData({ app, params }) {
     let { product } = await app.$axios.$get("/products/" + params.slug);
+    let { ratings, pagination } = await app.$axios.$get("/ratings/" + product.id);
     return {
       product: product,
+      pagination: pagination,
+      ratings: ratings,
       selected_image: product.featured_image
     }
   },
@@ -217,12 +325,9 @@ export default {
       data: {
         count: 0
       },
-      selected_image: null
+      selected_image: null,
+      loading: false,
     }
-  },
-  mounted() {
-    console.log(this.$store.getters.cart)
-    console.log(this.$store.getters['cart/discount2'])
   },
   computed: {
     appUrl() {
@@ -231,6 +336,18 @@ export default {
     roundRating() {
       return Math.round(this.product.ratings_average * 10) / 10;
     },
+    ratingWithPercentage() {
+      let t = this;
+      return Object.values(this.product.ratings).reduce((acc, item) => Object.assign(acc, {
+        [item.rating]: {
+          percentage: Math.round(item.total / t.product.ratings_count * 100),
+          total: item.total
+        }
+      }), {});
+    }
+  },
+  watch: {
+    'pagination.current_page': 'fetchReview'
   },
   methods: {
     moneyFormat(number) {
@@ -244,6 +361,19 @@ export default {
     },
     onImageHover(img) {
       this.selected_image = img;
+    },
+    async fetchReview() {
+      this.loading = true;
+      let config = {
+        params: {
+          page: this.pagination.current_page
+        }
+      }
+      let { ratings, pagination } = await this.$axios.$get("/ratings/" + this.product.id, config);
+      this.pagination = pagination;
+      this.ratings = ratings;
+      this.loading = false;
+      this.$vuetify.goTo('#user_review')
     },
     a() {
       return
