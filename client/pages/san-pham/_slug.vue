@@ -164,7 +164,7 @@
               cols="12"
               md="4"
             >
-              <template v-if="product.ratings_count>=0">
+              <template v-if="product.ratings_count>0">
                 <span>Đánh giá trung bình</span>
                 <span class="text-h5 red--text">{{ roundRating + "/5" }}</span>
                 <span>({{ product.ratings_count }} đánh giá)</span>
@@ -220,11 +220,7 @@
             </v-col>
           </v-row>
         </v-card-text>
-      </v-card>
-      <v-card
-        id="user_review"
-        class="mt-2"
-      >
+        <v-divider />
         <v-card-text v-if="product.ratings_count<=0">
           Chưa có đánh giá
         </v-card-text>
@@ -338,12 +334,34 @@ export default {
     },
     ratingWithPercentage() {
       let t = this;
+      let base = {
+        1: {
+          percentage: 0,
+          total: 0
+        },
+        2: {
+          percentage: 0,
+          total: 0
+        },
+        3: {
+          percentage: 0,
+          total: 0
+        },
+        4: {
+          percentage: 0,
+          total: 0
+        },
+        5: {
+          percentage: 0,
+          total: 0
+        }
+      };
       return Object.values(this.product.ratings).reduce((acc, item) => Object.assign(acc, {
         [item.rating]: {
           percentage: Math.round(item.total / t.product.ratings_count * 100),
           total: item.total
         }
-      }), {});
+      }), base);
     }
   },
   watch: {
