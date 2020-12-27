@@ -9,6 +9,7 @@ use App\Models\Brand;
 use App\Models\Order;
 use App\Models\Rating;
 use App\Concern\Helper;
+use App\Models\Comment;
 use App\Models\Category;
 use App\Models\Wishlist;
 use App\Models\ProductImage;
@@ -80,6 +81,11 @@ class Product extends Model
   public function images()
   {
     return $this->hasMany(ProductImage::class);
+  }
+
+  public function comments()
+  {
+    return $this->morphMany(Comment::class, 'commentable')->whereNull('parent_id');
   }
 
   public function averageRating($onlyApproved = false)

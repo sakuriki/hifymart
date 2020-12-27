@@ -99,7 +99,7 @@ class ProductController extends Controller
 
   public function show($slug, Request $request)
   {
-    $data = Cache::remember('cache_product_' . $slug, 0, function () use ($slug, $request) {
+    $data = Cache::remember('cache_product_' . $slug, 60 * 60 * 24, function () use ($slug, $request) {
       $product = Product::where("slug", $slug)
         // ->leftJoin('ratings', 'ratings.product_id', '=', 'products.id')
         ->leftJoin('ratings', function ($query) {

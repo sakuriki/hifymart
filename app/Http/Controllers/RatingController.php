@@ -42,7 +42,7 @@ class RatingController extends Controller
       ->where('approved', 1)
       ->with('user:id,name')
       ->select(['id', 'rating', 'review', 'user_id', 'product_id'])
-      ->paginate(10);
+      ->paginate($request->input('per_page', 5));
     return response()->json(new RatingCollection($ratings));
   }
 
