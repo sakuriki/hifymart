@@ -1,21 +1,23 @@
 <template>
   <div>
-    <v-carousel
-      :height="carouselSize"
-      :hide-delimiters="hideDelimiters"
-    >
-      <v-carousel-item
-        v-for="(slide, i) in slides"
-        :key="i"
+    <ClientOnly placeholder="Đang tải...">
+      <v-carousel
+        :height="carouselSize"
+        :hide-delimiters="hideDelimiters"
       >
-        <v-img
-          src="https://via.placeholder.com/690x300"
-          :height="carouselSize"
-          contain
-          aspect-ratio="2.3"
-        />
-      </v-carousel-item>
-    </v-carousel>
+        <v-carousel-item
+          v-for="(slide, i) in slides"
+          :key="i"
+        >
+          <v-img
+            src="http://banhang.test/storage/banners/690x300.png"
+            :height="carouselSize"
+            contain
+            aspect-ratio="2.3"
+          />
+        </v-carousel-item>
+      </v-carousel>
+    </ClientOnly>
     <IndexList
       title="Đang giảm giá"
       :to="{ name: 'danh-sach-type', params: { type: 'dang-giam-gia' } }"

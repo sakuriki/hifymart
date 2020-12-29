@@ -28,136 +28,136 @@
       <v-divider />
 
       <v-list two-line>
-        <template v-if="Object.keys(cart).length">
+        <ClientOnly placeholder="Đang tải...">
           <CartItem
             v-for="item in cart"
             :key="item.slug"
             :title="item.title"
             :product="item"
           />
-        </template>
-        <div
-          v-else
-          class="ma-4"
-        >
-          <v-list-item class="mb-4">
-            <v-list-item-title class="text-center body-2">
-              Giỏ hàng trống
-            </v-list-item-title>
-          </v-list-item>
-          <v-btn
-            block
-            color="accent"
-            @click="cart_drawer = false"
+          <div
+            v-if="total<=0"
+            class="ma-4"
           >
-            Tiếp tục shopping
-          </v-btn>
-        </div>
-        <v-divider />
-        <v-row
-          v-if="total>0"
-          align="center"
-          class="px-3 pt-2"
-        >
-          <v-col
-            cols="12"
-            class="pb-0 text-right"
-          >
-            <v-responsive
-              class="ml-auto overflow-visible"
-              max-width="230"
+            <v-list-item class="mb-4">
+              <v-list-item-title class="text-center body-2">
+                Giỏ hàng trống
+              </v-list-item-title>
+            </v-list-item>
+            <v-btn
+              block
+              color="accent"
+              @click="cart_drawer = false"
             >
-              <v-text-field
-                v-model="coupon"
-                :disabled="is_loading"
-                :readonly="is_valid"
-                label="Coupon giảm giá"
-                dense
-                solo
-                flat
-                background-color="grey lighten-3"
-                @input="onCoupon"
-              >
-                <template #append>
-                  <v-btn
-                    v-if="is_visible && !is_valid"
-                    depressed
-                    small
-                    color="primary"
-                    class="mr-n4"
-                    @click="verifyCoupon"
-                  >
-                    Thêm
-                  </v-btn>
-                  <v-btn
-                    v-if="is_valid"
-                    icon
-                    small
-                    @click="removeCoupon"
-                  >
-                    <v-icon small>
-                      mdi-close
-                    </v-icon>
-                  </v-btn>
-                </template>
-              </v-text-field>
-            </v-responsive>
-          </v-col>
-          <v-expand-transition>
+              Tiếp tục shopping
+            </v-btn>
+          </div>
+          <v-divider />
+          <v-row
+            v-if="total>0"
+            align="center"
+            class="px-3 pt-2"
+          >
             <v-col
-              v-if="is_valid"
               cols="12"
-              class="text-right py-0 d-flex align-center justify-end flex-wrap"
+              class="pb-0 text-right"
+            >
+              <v-responsive
+                class="ml-auto overflow-visible"
+                max-width="230"
+              >
+                <v-text-field
+                  v-model="coupon"
+                  :disabled="is_loading"
+                  :readonly="is_valid"
+                  label="Coupon giảm giá"
+                  dense
+                  solo
+                  flat
+                  background-color="grey lighten-3"
+                  @input="onCoupon"
+                >
+                  <template #append>
+                    <v-btn
+                      v-if="is_visible && !is_valid"
+                      depressed
+                      small
+                      color="primary"
+                      class="mr-n4"
+                      @click="verifyCoupon"
+                    >
+                      Thêm
+                    </v-btn>
+                    <v-btn
+                      v-if="is_valid"
+                      icon
+                      small
+                      @click="removeCoupon"
+                    >
+                      <v-icon small>
+                        mdi-close
+                      </v-icon>
+                    </v-btn>
+                  </template>
+                </v-text-field>
+              </v-responsive>
+            </v-col>
+            <v-expand-transition>
+              <v-col
+                v-if="is_valid"
+                cols="12"
+                class="text-right py-0 d-flex align-center justify-end flex-wrap"
+              >
+                <span class="body-2 font-weight-light grey--text">
+                  Tổng sản phẩm:
+                </span>
+                <v-responsive
+                  min-width="100"
+                  class="grey--text text--darken-1 font-weight-medium shrink d-inline-flex justify-end"
+                  v-text="moneyFormat(amount)"
+                />
+                <v-col
+                  cols="12"
+                  class="pa-0"
+                />
+                <span class="body-2 font-weight-light grey--text">
+                  Được giảm{{ is_percent && `(${coupon_value}%)` }}:
+                </span>
+                <v-responsive
+                  min-width="100"
+                  class="grey--text text--darken-1 font-weight-medium shrink d-inline-flex justify-end"
+                  v-text="'-'+moneyFormat(discount)"
+                />
+              </v-col>
+            </v-expand-transition>
+            <v-col
+              cols="12"
+              class="text-right pt-0 d-flex align-center justify-end"
             >
               <span class="body-2 font-weight-light grey--text">
-                Tổng sản phẩm:
+                Tạm tính({{ total }} sản phẩm):
               </span>
               <v-responsive
                 min-width="100"
-                class="grey--text text--darken-1 font-weight-medium shrink d-inline-flex justify-end"
-                v-text="moneyFormat(amount)"
-              />
-              <v-col
-                cols="12"
-                class="pa-0"
-              />
-              <span class="body-2 font-weight-light grey--text">
-                Được giảm{{ is_percent && `(${coupon_value}%)` }}:
-              </span>
-              <v-responsive
-                min-width="100"
-                class="grey--text text--darken-1 font-weight-medium shrink d-inline-flex justify-end"
-                v-text="'-'+moneyFormat(discount)"
+                class="red--text title text--darken-4 font-weight-medium shrink d-inline-flex justify-end"
+                v-text="moneyFormat(total_amount)"
               />
             </v-col>
-          </v-expand-transition>
-          <v-col
-            cols="12"
-            class="text-right pt-0 d-flex align-center justify-end"
-          >
-            <span class="body-2 font-weight-light grey--text">
-              Tạm tính({{ total }} sản phẩm):
-            </span>
-            <v-responsive
-              min-width="100"
-              class="red--text title text--darken-4 font-weight-medium shrink d-inline-flex justify-end"
-              v-text="moneyFormat(total_amount)"
-            />
-          </v-col>
-          <v-col
-            cols="12"
-          >
-            <v-btn
-              :disabled="is_loading"
-              :loading="is_loading"
-              block
-              color="primary"
-              large
+            <v-col
+              cols="12"
             >
-              Thanh toán
-            </v-btn>
-          </v-col>
-        </v-row>
+              <v-btn
+                :disabled="is_loading"
+                :loading="is_loading"
+                block
+                color="primary"
+                large
+              >
+                Thanh toán
+              </v-btn>
+            </v-col>
+          </v-row>
+        </ClientOnly>
       </v-list>
     </simplebar>
   </v-navigation-drawer>
