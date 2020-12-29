@@ -20,7 +20,7 @@ class ProductSale extends Seeder
         return;
       }
       $product->update([
-        "sale_off_price" => $product->price * $faker->numberBetween(1, 90) / 100,
+        "sale_off_price" => $product->price * $faker->numberBetween(10, 90) / 100,
         "sale_off_start" => Carbon::now(),
         "sale_off_end" => Carbon::now()->addDays($faker->numberBetween(1, 90)),
         "sale_off_quantity" => $faker->boolean(30) ? $faker->numberBetween(1, 90) : null

@@ -17,13 +17,16 @@ class RatingSeeder extends Seeder
   {
     $faker = Factory::create();
     $ratings = [];
-    Product::all()->each(function ($product) use (&$ratings, $faker) {
-      User::all()->each(function ($user) use (&$ratings, $faker, $product) {
+    $positiveRating = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 2, 2, 1, 1, 1, 1, 1];
+    $negativeRating = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 5, 5, 5, 5, 5];
+    Product::all()->each(function ($product) use (&$ratings, $faker, $positiveRating, $negativeRating) {
+      $randomRating = $faker->boolean(80) ? $positiveRating : $negativeRating;
+      User::all()->each(function ($user) use (&$ratings, $faker, $randomRating, $product) {
         $ratings[] = [
           'product_id' => $product->id,
           'approved' => $faker->boolean(80),
           'user_id' => $user->id,
-          'rating' => $faker->numberBetween(1, 5),
+          'rating' => $randomRating[array_rand($randomRating)],
           'review' => $faker->realText()
         ];
       });
