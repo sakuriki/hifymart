@@ -26,7 +26,7 @@
             :to="{ name: 'san-pham-slug', params:{ slug: product.slug } }"
           >
             <v-img
-              src="https://via.placeholder.com/450x450"
+              :src="apiUrl+product.featured_image"
               :aspect-ratio="1/1"
             />
 
@@ -110,6 +110,11 @@ export default {
     products: {
       type: Array,
       default: null
+    }
+  },
+  computed: {
+    apiUrl() {
+      return process.env.apiUrl
     }
   },
   methods: {

@@ -73,7 +73,7 @@ export default {
     },
     banner: {
       type: String,
-      default: "https://via.placeholder.com/325x400?text=Banner+d%E1%BB%8Dc"
+      default: "http://banhang.test/storage/banners/325x400.png"
     }
   }
 }

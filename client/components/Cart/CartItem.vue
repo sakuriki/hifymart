@@ -9,11 +9,9 @@
     >
       <v-list-item-avatar
         rounded
-        ma-0
-        mr-2
         size="60"
       >
-        <v-img src="https://cdn.shopify.com/s/files/1/2695/0984/products/screen1_c85e2d5f-c56e-42a2-8361-47d8cc853fce.png?v=1605990715" />
+        <v-img :src="apiUrl+product.featured_image" />
       </v-list-item-avatar>
     </v-badge>
     <div
@@ -70,10 +68,16 @@
 <script>
 import { mapActions } from "vuex";
 export default {
+  name: "CartItem",
   props: {
     product: {
       type: Object,
       default: null
+    }
+  },
+  computed: {
+    apiUrl() {
+      return process.env.apiUrl
     }
   },
   methods: {
