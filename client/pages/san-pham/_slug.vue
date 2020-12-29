@@ -102,7 +102,7 @@
               <span>Số lượng:</span>
               <v-text-field
                 v-model="data.count"
-                class="shrink"
+                class="shrink text-field-center"
                 style="max-width:150px"
                 type="number"
                 solo-inverted
@@ -319,7 +319,7 @@ export default {
         },
       ],
       data: {
-        count: 0
+        count: 1
       },
       selected_image: null,
       loading: false,
@@ -399,3 +399,12 @@ export default {
   },
 }
 </script>
+<style scoped>
+.text-field-center >>> input {
+  text-align: center;
+}
+.text-field-center >>> input[type='number']::-webkit-inner-spin-button, input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+</style>
