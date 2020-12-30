@@ -152,16 +152,16 @@ export default {
     simplebar,
   },
   validate({ params }) {
-    let allow = ["dang-giam-gia", "mua-nhieu", "hang-moi", "kham-pha"];
+    let allow = ["sale-off", "best-selling", "new", "explore"];
     return allow.includes(params.type);
   },
   async asyncData({app, params}) {
     let string;
-    if (params.type == "dang-giam-gia") {
+    if (params.type == "sale-off") {
       string = "&onsale=true"
-    } else if (params.type == "mua-nhieu") {
+    } else if (params.type == "best-selling") {
       string = "orders_count"
-    } else if (params.type == "kham-pha") {
+    } else if (params.type == "explore") {
       string = "random"
     }
     let { products, pagination } = await app.$axios.$get(`/products?per_page=16&orderBy=${string}`);
@@ -274,13 +274,13 @@ export default {
     },
     prepareData() {
       this.type = this.$route.params.type;
-      if (this.type == "dang-giam-gia") {
+      if (this.type == "sale-off") {
         this.data.orderBy = "&onsale=true";
         this.text = "Đang giảm giá";
-      } else if (this.type == "mua-nhieu") {
+      } else if (this.type == "best-selling") {
         this.data.orderBy = "orders_count";
         this.text = "Mua nhiều";
-      } else if (this.type == "kham-pha") {
+      } else if (this.type == "explore") {
         this.data.orderBy = "random";
         this.text = "Khám phá"
       } else {

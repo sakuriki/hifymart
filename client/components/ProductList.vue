@@ -23,7 +23,7 @@
             height="100%"
             width="100%"
             nuxt
-            :to="{ name: 'san-pham-slug', params:{ slug: product.slug } }"
+            :to="{ name: 'product-slug', params:{ slug: product.slug } }"
           >
             <v-img
               :src="apiUrl+product.featured_image"

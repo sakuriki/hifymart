@@ -21,7 +21,7 @@
       <v-list-item-title class="mb-1">
         <NuxtLink
           class="text-decoration-none"
-          :to="{ name: 'san-pham-slug', params: { slug: product.slug } }"
+          :to="{ name: 'product-slug', params: { slug: product.slug } }"
         >
           {{ product.name }}
         </NuxtLink>
@@ -44,6 +44,7 @@
           append-outer-icon="mdi-plus"
           prepend-icon="mdi-minus"
           hide-details
+          style="max-width:200px"
           @click:append-outer="increment"
           @click:prepend="decrement"
           @change="onChange(product.count,$event)"
@@ -55,7 +56,7 @@
       <v-btn
         icon
         small
-        aria-label="Remove Item from Cart"
+        aria-label="Bỏ sản phẩm khỏi giỏ hàng"
         @click="removeItem(product)"
       >
         <v-icon small>

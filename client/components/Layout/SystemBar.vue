@@ -60,14 +60,14 @@
         <v-list-item
           nuxt
           exact
-          :to="{ name: 'tai-khoan' }"
+          :to="{ name: 'account' }"
         >
           <v-list-item-title>Tài khoản</v-list-item-title>
         </v-list-item>
         <v-list-item
           nuxt
           exact
-          :to="{ name: 'tai-khoan-wishlist' }"
+          :to="{ name: 'account-wishlist' }"
         >
           <v-list-item-title>Wishlist</v-list-item-title>
         </v-list-item>
@@ -82,7 +82,7 @@
       text
       class="hidden-sm-and-down"
       nuxt
-      :to="{ name: 'danh-sach-type', params: { type: 'dang-giam-gia' } }"
+      :to="{ name: 'browser-type', params: { type: 'sale-off' } }"
     >
       <v-icon>mdi-star</v-icon>
       Khuyến mãi
@@ -90,7 +90,7 @@
     <v-btn
       text
       class="hidden-sm-and-down"
-      :to="{ name: 'dia-chi' }"
+      :to="{ name: 'address' }"
     >
       <v-icon>mdi-map-marker</v-icon>
       Địa chỉ

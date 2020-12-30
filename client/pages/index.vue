@@ -20,23 +20,23 @@
     </ClientOnly>
     <IndexList
       title="Đang giảm giá"
-      :to="{ name: 'danh-sach-type', params: { type: 'dang-giam-gia' } }"
+      :to="{ name: 'browser-type', params: { type: 'sale-off' } }"
       :products="onsaleProducts"
     />
     <IndexList
       title="Sản phẩm hot"
-      :to="{ name: 'danh-sach-type', params: { type: 'mua-nhieu' } }"
+      :to="{ name: 'browser-type', params: { type: 'best-selling' } }"
       :products="hottestProducts"
       :left="true"
     />
     <IndexList
       title="Sản phẩm mới"
-      :to="{ name: 'danh-sach-type', params: { type: 'hang-moi' } }"
+      :to="{ name: 'browser-type', params: { type: 'new' } }"
       :products="latestProducts"
     />
     <IndexList
       title="Có thể bạn quan tâm"
-      :to="{ name: 'danh-sach-type', params: { type: 'kham-pha' } }"
+      :to="{ name: 'browser-type', params: { type: 'explore' } }"
       :products="randomProducts"
       :left="true"
     />

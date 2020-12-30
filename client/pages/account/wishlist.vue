@@ -28,7 +28,7 @@
       <template #[`item.name`]="{ item }">
         <NuxtLink
           class="text-decoration-none"
-          :to="{ name: 'san-pham-slug', params: { slug: item.slug } }"
+          :to="{ name: 'product-slug', params: { slug: item.slug } }"
         >
           {{ item.name }}
         </NuxtLink>
