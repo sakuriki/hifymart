@@ -36,7 +36,15 @@
                   <v-flex class="d-flex flex-wrap">
                     <span class="text-h5">Thông tin nhận hàng</span>
                     <v-spacer />
-                    <span>Đã có tài khoản? <NuxtLink :to="{ name: 'auth-login', query: { redirect: $route.fullPath } }" class="pl-1">Đăng nhập</NuxtLink></span>
+                    <div>
+                      <span>Đã có tài khoản?</span>
+                      <NuxtLink
+                        :to="{ name: 'auth-login', query: { redirect: $route.fullPath } }"
+                        class="pl-1"
+                      >
+                        Đăng nhập
+                      </NuxtLink>
+                    </div>
                   </v-flex>
                   <v-form
                     v-model="formValid"
