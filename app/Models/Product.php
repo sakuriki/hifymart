@@ -108,4 +108,17 @@ class Product extends Model
           ->orWhereNull('sale_off_quantity');
       });
   }
+
+  public function getSalePrice()
+  {
+    $now = Carbon::now()->toDateTimeString();
+    if (
+      ($this->sale_off_quantity && $this->sale_off_quantity <= 0)
+      || $now < $this->sale_off_start
+      || $now > $this->sale_off_end
+    ) {
+      return $this->price;
+    }
+    return $this->sale_off_price;
+  }
 }

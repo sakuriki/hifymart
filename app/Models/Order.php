@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
   protected $fillable = [
-    'status', 'user_id', 'province_id', 'district_id', 'billing_email', 'billing_name', 'billing_address', 'billing_note', 'billing_phone', 'billing_subtotal', 'billing_tax', 'billing_total', 'shipped', 'error'
+    'status', 'user_id', 'province_id', 'district_id', 'billing_email', 'billing_name', 'billing_address', 'billing_note', 'billing_phone', 'billing_subtotal', 'billing_tax', 'billing_total', 'payment_type', 'is_paid', 'shipped', 'error'
   ];
 
   protected $casts = [
