@@ -51,7 +51,7 @@
   </v-card>
 </template>
 <script>
-import debounce from "lodash/debounce";
+// import debounce from "lodash/debounce";
 export default {
   layout: "admin",
   middleware: "auth",
@@ -102,10 +102,11 @@ export default {
     },
   },
   mounted () {
+    this.fetchData = this.$debounce(this.fetchData, 500);
     this.fetchData()
   },
   methods: {
-    fetchData: debounce(function() {
+    fetchData() {
       this.loading = true;
       let config = {
         params: {
@@ -126,7 +127,7 @@ export default {
           console.log("không đủ quyền")
         }
       });
-    }, 500),
+    },
     beforeDelete: function(item) {
       console.log("xác nhận xoá", item)
     }

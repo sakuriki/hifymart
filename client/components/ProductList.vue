@@ -38,11 +38,11 @@
               <span
                 class="red--text"
               >
-                {{ product.sale_off_price ? moneyFormat(product.sale_off_price) : moneyFormat(product.price) }}
+                {{ product.sale_off_price ? $moneyFormat(product.sale_off_price) : $moneyFormat(product.price) }}
                 <span
                   v-if="product.sale_off_price"
                   class="pl-1 grey--text text-decoration-line-through"
-                >{{ moneyFormat(product.price) }}</span>
+                >{{ $moneyFormat(product.price) }}</span>
               </span>
               <v-rating
                 :value="roundRating(product.ratings_average)"
@@ -118,9 +118,6 @@ export default {
     }
   },
   methods: {
-    moneyFormat(number) {
-      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number)
-    },
     calSaleOff(price, sale_off_price) {
       if(!sale_off_price) return;
       return Math.round(100 - (sale_off_price/price*100));

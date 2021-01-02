@@ -114,7 +114,7 @@
                 <v-responsive
                   min-width="100"
                   class="grey--text text--darken-1 font-weight-medium shrink d-inline-flex justify-end"
-                  v-text="moneyFormat(amount)"
+                  v-text="$moneyFormat(amount)"
                 />
                 <v-col
                   cols="12"
@@ -126,7 +126,7 @@
                 <v-responsive
                   min-width="100"
                   class="grey--text text--darken-1 font-weight-medium shrink d-inline-flex justify-end"
-                  v-text="'-'+moneyFormat(discount)"
+                  v-text="'-'+$moneyFormat(discount)"
                 />
               </v-col>
             </v-expand-transition>
@@ -140,7 +140,7 @@
               <v-responsive
                 min-width="100"
                 class="red--text title text--darken-4 font-weight-medium shrink d-inline-flex justify-end"
-                v-text="moneyFormat(total_amount)"
+                v-text="$moneyFormat(total_amount)"
               />
             </v-col>
             <v-col
@@ -194,9 +194,6 @@ export default {
     },
     show() {
       this.cart_drawer = !this.cart_drawer
-    },
-    moneyFormat(number) {
-      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number)
     },
     async verifyCoupon() {
       this.is_loading = true;

@@ -92,11 +92,11 @@
             <span
               class="red--text text-h4"
             >
-              {{ product.sale_off_price ? moneyFormat(product.sale_off_price) : moneyFormat(product.price) }}
+              {{ product.sale_off_price ? $moneyFormat(product.sale_off_price) : $moneyFormat(product.price) }}
               <span
                 v-if="product.sale_off_price"
                 class="pl-1 grey--text text-decoration-line-through"
-              >{{ moneyFormat(product.price) }}</span>
+              >{{ $moneyFormat(product.price) }}</span>
             </span>
             <div>
               <span>Số lượng:</span>
@@ -368,9 +368,6 @@ export default {
     'pagination.current_page': 'fetchReview'
   },
   methods: {
-    moneyFormat(number) {
-      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number)
-    },
     onCountChange() {
       console.log(this.data.count)
     },

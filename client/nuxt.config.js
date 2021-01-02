@@ -42,6 +42,7 @@ module.exports = {
     "~/plugins/axios",
     "~/plugins/vue-lazyload",
     "~/plugins/notifier.js",
+    "~/plugins/global-method.js",
     { src: "~/plugins/vuex-persist", ssr: false }
   ],
 
@@ -110,7 +111,7 @@ module.exports = {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: process.env.CLIENT_API_URL || "http://localhost:8000/api/",
+    baseURL: (process.env.APP_URL || "http://localhost:8000") + "/api/",
     https: process.env.CLIENT_HTTPS || true
   },
 

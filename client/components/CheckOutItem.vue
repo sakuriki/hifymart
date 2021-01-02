@@ -28,7 +28,7 @@
     <v-list-item-action-text
       class="d-inline-flex red--text text--darken-4 font-weight-black text-body-2 mb-1"
     >
-      {{ product.sale_off_price ? moneyFormat(product.sale_off_price*product.count) : moneyFormat(product.price*product.count) }}
+      {{ product.sale_off_price ? $moneyFormat(product.sale_off_price*product.count) : $moneyFormat(product.price*product.count) }}
     </v-list-item-action-text>
   </v-list-item>
 </template>
@@ -54,9 +54,9 @@ export default {
     decrement() {
       return this.product.count > 1 && this.addItem({ product: this.product, add: -1 })
     },
-    moneyFormat(number) {
-      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number)
-    },
+    // moneyFormat(number) {
+    //   return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number)
+    // },
     onChange(number, event) {
       // console.log(number, event);
       // let target = event < 1 ? 1 : event;

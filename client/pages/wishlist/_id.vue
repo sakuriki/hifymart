@@ -44,11 +44,11 @@
         <span
           class="red--text"
         >
-          {{ item.sale_off_price ? moneyFormat(item.sale_off_price) : moneyFormat(item.price) }}
+          {{ item.sale_off_price ? $moneyFormat(item.sale_off_price) : $moneyFormat(item.price) }}
           <span
             v-if="item.sale_off_price"
             class="pl-1 grey--text text-decoration-line-through"
-          >{{ moneyFormat(item.price) }}</span>
+          >{{ $moneyFormat(item.price) }}</span>
         </span>
       </template>
       <template #[`item.actions`]="{ item }">
@@ -64,9 +64,9 @@
   </v-card>
 </template>
 <script>
-import debounce from "lodash/debounce";
+// import debounce from "lodash/debounce";
 export default {
-  middleware: "auth",
+  // middleware: "auth",
   // meta: {
   //   auth: {
   //     permission: "brand.read"
@@ -121,10 +121,11 @@ export default {
     },
   },
   mounted () {
+    this.fetchData = this.$debounce(this.fetchData, 500);
     this.fetchData()
   },
   methods: {
-    fetchData: debounce(function() {
+    fetchData() {
       this.loading = true;
       let config = {
         params: {
@@ -143,12 +144,9 @@ export default {
           this.loading = false;
         }
       });
-    }, 500),
+    },
     addGift: function(item) {
       console.log("mua tặng", item)
-    },
-    moneyFormat(number) {
-      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number)
     },
   },
 }

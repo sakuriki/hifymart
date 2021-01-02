@@ -144,7 +144,7 @@
   </div>
 </template>
 <script>
-import debounce from "lodash/debounce";
+// import debounce from "lodash/debounce";
 import simplebar from "simplebar-vue";
 import "simplebar/dist/simplebar.min.css";
 export default {
@@ -252,10 +252,10 @@ export default {
       ];
     },
     money_range_start() {
-      return this.moneyFormat(this.data.money_range[0]);
+      return this.$moneyFormat(this.data.money_range[0]);
     },
     money_range_end() {
-      return this.moneyFormat(this.data.money_range[1]);
+      return this.$moneyFormat(this.data.money_range[1]);
     }
   },
   watch: {
@@ -265,6 +265,7 @@ export default {
     'data.brands': 'reset',
   },
   beforeMount() {
+    this.fetchData = this.$debounce(this.fetchData, 500);
     this.prepareData();
   },
   methods: {
@@ -287,7 +288,7 @@ export default {
         this.text = "Sản phẩm mới";
       }
     },
-    fetchData: debounce(function() {
+    fetchData() {
       this.loading = true;
       let data = {
         params: {
@@ -309,7 +310,7 @@ export default {
           this.loading = false;
         }
       })
-    }, 500),
+    },
     onPageChange: function() {
       this.fetchData();
       this.$vuetify.goTo(0, {
@@ -317,9 +318,6 @@ export default {
         offset: 0,
         easing: "easeInOutCubic"
       })
-    },
-    moneyFormat(number) {
-      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number)
     },
   }
 }

@@ -29,11 +29,11 @@
       <v-list-item-subtitle
         class="red--text text--darken-4 font-weight-black text-body-2 mb-1"
       >
-        {{ product.sale_off_price ? moneyFormat(product.sale_off_price) : moneyFormat(product.price) }}
+        {{ product.sale_off_price ? $moneyFormat(product.sale_off_price) : $moneyFormat(product.price) }}
         <span
           v-if="product.sale_off_price"
           class="pl-1 grey--text text-decoration-line-through"
-        >{{ moneyFormat(product.price) }}</span>
+        >{{ $moneyFormat(product.price) }}</span>
       </v-list-item-subtitle>
       <v-list-item-subtitle class="grey--text text--darken-1 overline">
         <v-text-field
@@ -88,9 +88,6 @@ export default {
     },
     decrement() {
       return this.product.count > 1 && this.addItem({ product: this.product, add: -1 })
-    },
-    moneyFormat(number) {
-      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number)
     },
     onChange(number, event) {
       // console.log(number, event);
