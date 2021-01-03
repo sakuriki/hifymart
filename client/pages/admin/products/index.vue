@@ -1,54 +1,59 @@
 <template>
-  <v-card>
-    <v-card-title>
-      Danh sách sản phẩm
-      <v-spacer />
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Tìm kiếm"
-        single-line
-        hide-details
-      />
-    </v-card-title>
-    <v-data-table
-      v-model="selected"
-      :headers="headers"
-      :items="data"
-      :options.sync="options"
-      :server-items-length="pagination.total"
-      :loading="loading"
-      show-select
-      class="elevation-1"
-      :footer-props="{
-        itemsPerPageText: 'Số hàng mỗi trang',
-        itemsPerPageOptions: [10, 20, 30, 40],
-      }"
-    >
-      <template #[`item.price`]="{ item }">
-        <span>{{ new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price) }}</span>
-      </template>
-      <template #[`item.orders_count`]="{ item }">
-        <span><v-chip>{{ item.orders_count }}</v-chip></span>
-      </template>
-      <template #[`item.actions`]="{ item }">
-        <v-btn
-          color="success"
-          icon
-          :to="{ name: 'admin-products-id',params: { id: item.id }}"
-        >
-          <v-icon>mdi-pencil-outline</v-icon>
-        </v-btn>
-        <v-btn
-          color="error"
-          icon
-          @click="beforeDelete"
-        >
-          <v-icon>mdi-delete-outline</v-icon>
-        </v-btn>
-      </template>
-    </v-data-table>
-  </v-card>
+  <v-container
+    fluid
+    fill-height
+  >
+    <v-card>
+      <v-card-title>
+        Danh sách sản phẩm
+        <v-spacer />
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Tìm kiếm"
+          single-line
+          hide-details
+        />
+      </v-card-title>
+      <v-data-table
+        v-model="selected"
+        :headers="headers"
+        :items="data"
+        :options.sync="options"
+        :server-items-length="pagination.total"
+        :loading="loading"
+        show-select
+        class="elevation-1"
+        :footer-props="{
+          itemsPerPageText: 'Số hàng mỗi trang',
+          itemsPerPageOptions: [10, 20, 30, 40],
+        }"
+      >
+        <template #[`item.price`]="{ item }">
+          <span>{{ new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price) }}</span>
+        </template>
+        <template #[`item.orders_count`]="{ item }">
+          <span><v-chip>{{ item.orders_count }}</v-chip></span>
+        </template>
+        <template #[`item.actions`]="{ item }">
+          <v-btn
+            color="success"
+            icon
+            :to="{ name: 'admin-products-id',params: { id: item.id }}"
+          >
+            <v-icon>mdi-pencil-outline</v-icon>
+          </v-btn>
+          <v-btn
+            color="error"
+            icon
+            @click="beforeDelete"
+          >
+            <v-icon>mdi-delete-outline</v-icon>
+          </v-btn>
+        </template>
+      </v-data-table>
+    </v-card>
+  </v-container>
 </template>
 <script>
 // import debounce from "lodash/debounce";

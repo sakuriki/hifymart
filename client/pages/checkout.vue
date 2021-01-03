@@ -172,14 +172,12 @@
                 </h3>
                 <v-divider />
                 <v-list>
-                  <ClientOnly placeholder="Đang tải...">
-                    <CheckOutItem
-                      v-for="item in cart"
-                      :key="item.slug"
-                      :title="item.title"
-                      :product="item"
-                    />
-                  </ClientOnly>
+                  <CheckOutItem
+                    v-for="item in cart"
+                    :key="item.slug"
+                    :title="item.title"
+                    :product="item"
+                  />
                   <v-divider />
                   <v-row
                     v-if="total>0"
@@ -238,8 +236,9 @@
                       <v-responsive
                         min-width="100"
                         class="grey--text text--darken-1 font-weight-medium shrink d-inline-flex justify-end"
-                        v-text="$moneyFormat(amount)"
-                      />
+                      >
+                        {{ $moneyFormat(amount) }}
+                      </v-responsive>
                     </v-col>
                     <v-expand-transition>
                       <v-col
@@ -254,8 +253,9 @@
                         <v-responsive
                           min-width="100"
                           class="grey--text text--darken-1 font-weight-medium shrink d-inline-flex justify-end"
-                          v-text="'-'+$moneyFormat(discount)"
-                        />
+                        >
+                          {{ '-'+$moneyFormat(discount) }}
+                        </v-responsive>
                       </v-col>
                     </v-expand-transition>
                     <v-col
@@ -269,8 +269,9 @@
                       <v-responsive
                         min-width="100"
                         class="grey--text text--darken-1 font-weight-medium shrink d-inline-flex justify-end"
-                        v-text="shippingFee"
-                      />
+                      >
+                        {{ shippingFee }}
+                      </v-responsive>
                     </v-col>
                     <v-col
                       cols="12"
@@ -283,8 +284,9 @@
                       <v-responsive
                         min-width="100"
                         class="red--text title text--darken-4 font-weight-medium shrink d-inline-flex justify-end"
-                        v-text="$moneyFormat(total_amount)"
-                      />
+                      >
+                        {{ $moneyFormat(total_amount) }}
+                      </v-responsive>
                     </v-col>
                   </v-row>
                 </v-list>

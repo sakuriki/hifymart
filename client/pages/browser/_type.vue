@@ -1,5 +1,5 @@
 <template>
-  <div style="width:100%;min-height:100vh">
+  <v-container fill-height>
     <v-overlay v-show="loading">
       <v-progress-circular
         :size="70"
@@ -141,7 +141,7 @@
         </v-alert>
       </v-col>
     </v-row>
-  </div>
+  </v-container>
 </template>
 <script>
 // import debounce from "lodash/debounce";

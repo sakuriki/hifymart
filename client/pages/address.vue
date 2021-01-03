@@ -1,47 +1,49 @@
 <template>
-  <v-layout
-    wrap
-    row
-  >
-    <v-col
-      cols="12"
-      md="8"
-      sm="12"
+  <v-container>
+    <v-layout
+      wrap
+      row
     >
-      <v-card>
-        <div
-          id="map"
-          ref="map"
-          style="height:100%;width:100%"
-        />
-      </v-card>
-    </v-col>
-    <v-col
-      cols="12"
-      md="4"
-      sm="12"
-    >
-      <v-card>
-        <v-card-title>Địa chỉ cửa hàng</v-card-title>
-        <v-card-text>
-          <v-card-subtitle>
-            <v-icon>mdi-map-marker</v-icon> Shop.re
-          </v-card-subtitle>
-          <v-list-item three-line>
-            <v-list-item-content>
-              <v-list-item-title>Địa chỉ: Số nhà 001, đường Trần Hưng Đạo, Thành Phố Hà Nội</v-list-item-title>
-              <v-list-item-subtitle>
-                Điện thoại: (028) 1234 4321
-              </v-list-item-subtitle>
-              <v-list-item-subtitle>
-                Email: sales@shop.re
-              </v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-        </v-card-text>
-      </v-card>
-    </v-col>
-  </v-layout>
+      <v-col
+        cols="12"
+        md="8"
+        sm="12"
+      >
+        <v-card>
+          <div
+            id="map"
+            ref="map"
+            style="height:100%;width:100%"
+          />
+        </v-card>
+      </v-col>
+      <v-col
+        cols="12"
+        md="4"
+        sm="12"
+      >
+        <v-card>
+          <v-card-title>Địa chỉ cửa hàng</v-card-title>
+          <v-card-text>
+            <v-card-subtitle>
+              <v-icon>mdi-map-marker</v-icon> Shop.re
+            </v-card-subtitle>
+            <v-list-item three-line>
+              <v-list-item-content>
+                <v-list-item-title>Địa chỉ: Số nhà 001, đường Trần Hưng Đạo, Thành Phố Hà Nội</v-list-item-title>
+                <v-list-item-subtitle>
+                  Điện thoại: (028) 1234 4321
+                </v-list-item-subtitle>
+                <v-list-item-subtitle>
+                  Email: sales@shop.re
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-layout>
+  </v-container>
 </template>
 <script>
 export default {

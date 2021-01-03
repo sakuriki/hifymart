@@ -1,67 +1,69 @@
 <template>
-  <v-card width="100%">
-    <v-card-title>
-      Danh sách sản phẩm
-      <v-spacer />
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Tìm kiếm"
-        single-line
-        hide-details
-      />
-    </v-card-title>
-    <v-data-table
-      v-model="selected"
-      :headers="headers"
-      :items="data"
-      :options.sync="options"
-      :server-items-length="pagination.total"
-      :loading="loading"
-      show-select
-      class="elevation-1"
-      :footer-props="{
-        itemsPerPageText: 'Số hàng mỗi trang',
-        itemsPerPageOptions: [10, 20, 30, 40],
-      }"
-    >
-      <template #[`item.name`]="{ item }">
-        <NuxtLink
-          class="text-decoration-none"
-          :to="{ name: 'product-slug', params: { slug: item.slug } }"
-        >
-          {{ item.name }}
-        </NuxtLink>
-      </template>
-      <template #[`item.image`]="{ item }">
-        <v-img
-          max-height="200px"
-          aspect-ratio="1"
-          :src="'http://banhang.test/storage/featured_image/' + item.featured_image"
+  <v-container fill-height>
+    <v-card width="100%">
+      <v-card-title>
+        Danh sách sản phẩm
+        <v-spacer />
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Tìm kiếm"
+          single-line
+          hide-details
         />
-      </template>
-      <template #[`item.price`]="{ item }">
-        <span
-          class="red--text"
-        >
-          {{ item.sale_off_price ? $moneyFormat(item.sale_off_price) : $moneyFormat(item.price) }}
+      </v-card-title>
+      <v-data-table
+        v-model="selected"
+        :headers="headers"
+        :items="data"
+        :options.sync="options"
+        :server-items-length="pagination.total"
+        :loading="loading"
+        show-select
+        class="elevation-1"
+        :footer-props="{
+          itemsPerPageText: 'Số hàng mỗi trang',
+          itemsPerPageOptions: [10, 20, 30, 40],
+        }"
+      >
+        <template #[`item.name`]="{ item }">
+          <NuxtLink
+            class="text-decoration-none"
+            :to="{ name: 'product-slug', params: { slug: item.slug } }"
+          >
+            {{ item.name }}
+          </NuxtLink>
+        </template>
+        <template #[`item.image`]="{ item }">
+          <v-img
+            max-height="200px"
+            aspect-ratio="1"
+            :src="'http://banhang.test/storage/featured_image/' + item.featured_image"
+          />
+        </template>
+        <template #[`item.price`]="{ item }">
           <span
-            v-if="item.sale_off_price"
-            class="pl-1 grey--text text-decoration-line-through"
-          >{{ $moneyFormat(item.price) }}</span>
-        </span>
-      </template>
-      <template #[`item.actions`]="{ item }">
-        <v-btn
-          color="primary"
-          icon
-          @click="addGift(item)"
-        >
-          <v-icon>mdi-cart-plus</v-icon>
-        </v-btn>
-      </template>
-    </v-data-table>
-  </v-card>
+            class="red--text"
+          >
+            {{ item.sale_off_price ? $moneyFormat(item.sale_off_price) : $moneyFormat(item.price) }}
+            <span
+              v-if="item.sale_off_price"
+              class="pl-1 grey--text text-decoration-line-through"
+            >{{ $moneyFormat(item.price) }}</span>
+          </span>
+        </template>
+        <template #[`item.actions`]="{ item }">
+          <v-btn
+            color="primary"
+            icon
+            @click="addGift(item)"
+          >
+            <v-icon>mdi-cart-plus</v-icon>
+          </v-btn>
+        </template>
+      </v-data-table>
+    </v-card>
+  </v-container>
 </template>
 <script>
 // import debounce from "lodash/debounce";

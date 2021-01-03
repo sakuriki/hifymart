@@ -1,23 +1,15 @@
 <template>
-  <div>
-    <ClientOnly placeholder="Đang tải...">
-      <v-carousel
-        :height="carouselSize"
-        :hide-delimiters="hideDelimiters"
-      >
-        <v-carousel-item
-          v-for="(slide, i) in slides"
-          :key="i"
-        >
-          <v-img
-            src="http://banhang.test/storage/banners/690x300.png"
-            :height="carouselSize"
-            contain
-            aspect-ratio="2.3"
-          />
-        </v-carousel-item>
-      </v-carousel>
-    </ClientOnly>
+  <v-container fill-height>
+    <v-carousel
+      height="calc(100vw/2.3)"
+      class="main-carousel"
+    >
+      <v-carousel-item
+        v-for="(slide, i) in slides"
+        :key="i"
+        src="http://banhang.test/storage/banners/690x300.png"
+      />
+    </v-carousel>
     <IndexList
       title="Đang giảm giá"
       :to="{ name: 'browser-type', params: { type: 'sale-off' } }"
@@ -40,7 +32,7 @@
       :products="randomProducts"
       :left="true"
     />
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -64,12 +56,23 @@ export default {
       'onsaleProducts',
       'hottestProducts',
     ]),
-    carouselSize() {
-      return this.$store.getters.browserWidth < 600 ? "152px" : "765px"
-    },
-    hideDelimiters() {
-      return this.$store.getters.browserWidth < 600 ? true : false
-    }
+    // carouselSize() {
+    //   return this.$store.getters.browserWidth < 600 ? "152px" : "765px"
+    // },
+    // hideDelimiters() {
+    //   return this.$store.getters.browserWidth < 600 ? true : false
+    // }
   }
 }
 </script>
+<style scoped>
+@media only screen and (max-width: 599px) {
+  .main-carousel >>> .v-carousel__controls {
+    display: none!important;
+  }
+}
+.main-carousel, .main-carousel >>> .v-image, .main-carousel >>> .v-window__container {
+  max-height: 765px;
+  min-height: 152px;
+}
+</style>

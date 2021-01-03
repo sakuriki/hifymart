@@ -43,7 +43,7 @@ module.exports = {
     "~/plugins/vue-lazyload",
     "~/plugins/notifier.js",
     "~/plugins/global-method.js",
-    { src: "~/plugins/vuex-persist", ssr: false }
+    { src: "~/plugins/vuex-persistedstate" }
   ],
 
   env: {

@@ -122,9 +122,7 @@
     </v-app-bar>
     <SideCart />
     <v-main>
-      <v-container fill-height>
-        <nuxt />
-      </v-container>
+      <nuxt />
       <BackToTop />
       <GlobalSnackBar />
     </v-main>

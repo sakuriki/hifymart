@@ -86,15 +86,10 @@
       </simplebar>
     </v-navigation-drawer>
     <v-main>
-      <v-container
-        fluid
-        style="min-height:100vh"
-      >
-        <nuxt />
-        <!-- <BackToTop />
-        <GeneralSnackBar />
-        <GeneralConfirmationDialog /> -->
-      </v-container>
+      <nuxt />
+      <!-- <BackToTop />
+      <GeneralSnackBar />
+      <GeneralConfirmationDialog /> -->
     </v-main>
   </v-app>
 </template>

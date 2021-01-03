@@ -54,9 +54,6 @@ export default {
     decrement() {
       return this.product.count > 1 && this.addItem({ product: this.product, add: -1 })
     },
-    // moneyFormat(number) {
-    //   return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number)
-    // },
     onChange(number, event) {
       // console.log(number, event);
       // let target = event < 1 ? 1 : event;

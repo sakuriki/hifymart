@@ -1,8 +1,5 @@
 <template>
-  <v-layout
-    wrap
-    row
-  >
+  <v-row>
     <v-col
       v-if="left"
       cols="12"
@@ -50,7 +47,7 @@
         :src="banner"
       />
     </v-col>
-  </v-layout>
+  </v-row>
 </template>
 <script>
 export default {
