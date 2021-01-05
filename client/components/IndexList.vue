@@ -1,5 +1,8 @@
 <template>
-  <v-row>
+  <v-layout
+    wrap
+    style="height: unset"
+  >
     <v-col
       v-if="left"
       cols="12"
@@ -24,6 +27,7 @@
             {{ title }}
           </v-flex>
           <v-btn
+            dark
             large
             depressed
             outlined
@@ -47,7 +51,7 @@
         :src="banner"
       />
     </v-col>
-  </v-row>
+  </v-layout>
 </template>
 <script>
 export default {

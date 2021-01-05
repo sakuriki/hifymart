@@ -40,7 +40,6 @@ module.exports = {
    */
   plugins: [
     "~/plugins/axios",
-    "~/plugins/vue-lazyload",
     "~/plugins/notifier.js",
     "~/plugins/global-method.js",
     { src: "~/plugins/vuex-persistedstate" }

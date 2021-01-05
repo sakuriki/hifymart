@@ -152,6 +152,8 @@
               block
               color="primary"
               large
+              nuxt
+              :to="{ name: 'checkout' }"
             >
               Thanh toán
             </v-btn>

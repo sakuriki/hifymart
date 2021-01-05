@@ -1,5 +1,5 @@
 <template>
-  <v-row wrap>
+  <v-row>
     <v-col
       v-for="product in products"
       :key="product.id"
