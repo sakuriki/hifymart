@@ -65,6 +65,20 @@ export const mutations = {
 export const actions = {
   async nuxtServerInit(vuexContext) {
     try {
+      let cart_id = vuexContext.state.cart.cart_id;
+      let cartKeys = Object.keys(cart_id);
+      if (cartKeys.length > 0) {
+        var { product: cartProduct } = await this.$axios.$get("/productlist", {
+          params: {
+            listId: cartKeys
+          }
+        });
+        cartKeys.map(function(key) {
+          cartProduct[key].count = cart_id[key];
+        });
+        vuexContext.commit("cart/SET_CART_ITEM", cartProduct);
+      }
+
       var latestProducts = await this.$axios.$get("/products?per_page=8");
       vuexContext.commit("SET_LASTEST_PRODUCTS", latestProducts.products);
 
@@ -83,7 +97,7 @@ export const actions = {
       );
       vuexContext.commit("SET_RANDOM_PRODUCTS", randomProducts.products);
     } catch (e) {
-      console.log("store: ", e);
+      console.error("store: ", e);
     }
   },
   setErrors({ commit }, errors) {

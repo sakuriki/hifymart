@@ -6,6 +6,7 @@ export const state = () => ({
   is_percent: false,
   actualStep: 0,
   cart: {},
+  cart_id: {},
   success: false,
   shippingInformation: {}
 });
@@ -46,14 +47,13 @@ export const mutations = {
       Vue.delete(state.cart, product.id);
     } else {
       if (product.id in state.cart) {
-        Vue.set(
-          state.cart[product.id],
-          "count",
-          (state.cart[product.id].count += add)
-        );
+        let addValue = state.cart[product.id].count + add;
+        Vue.set(state.cart_id, product.id, addValue);
+        Vue.set(state.cart[product.id], "count", addValue);
       } else {
         let stateItem = { ...product };
         stateItem.count = add;
+        Vue.set(state.cart_id, product.id, add);
         Vue.set(state.cart, product.id, stateItem);
       }
     }
@@ -75,7 +75,7 @@ export const mutations = {
   },
   CLEAR_CART: state => {
     Vue.set(state, "cart", {});
-    state.cart = {};
+    Vue.set(state, "cart_id", {});
   },
   SET_ACTUAL_STEP: (state, step) => {
     state.actualStep = step;
@@ -85,6 +85,9 @@ export const mutations = {
   },
   SET_SHIPPING_INFORMATION: (state, payload) => {
     state.shippingInformation = payload;
+  },
+  SET_CART_ITEM: (state, payload) => {
+    state.cart = payload;
   }
 };
 
