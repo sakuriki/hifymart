@@ -69,7 +69,8 @@ class CheckoutController extends Controller
         // 'billing_discount_code' => $coupon->code,
         'billing_subtotal' => $subTotal,
         'billing_tax' => $tax,
-        'billing_total' => $total
+        'billing_total' => $total,
+        'payment_type' => $request->payment_type
       ]);
       // return $orderProduct;
       $orderProduct = collect($orderProduct)->map(function ($item) use ($order) {
@@ -78,12 +79,12 @@ class CheckoutController extends Controller
       });
       // return $orderProduct;
       OrderProduct::insert($orderProduct->toArray());
-      $vnpay = $this->createVnpayUrl($order->id, $total);
       DB::commit();
-      return response()->json([
-        "order" => $order,
-        "payment_url" => $vnpay
-      ]);
+      $response['id'] = $order->id;
+      if ($request->input('payment_type') === 'vnpay') {
+        $response['payment_url'] = $this->createVnpayUrl($order->id, $total);
+      }
+      return response()->json($response);
     } catch (\Exception $exception) {
       DB::rollBack();
       return response()->json([
@@ -108,8 +109,8 @@ class CheckoutController extends Controller
       "vnp_Locale" => 'vn',
       "vnp_OrderInfo" => "Thanh toán hóa đơn phí dich vụ",
       "vnp_OrderType" => "billpayment",
-      "vnp_ReturnUrl" => route('vnpay.process'),
-      "vnp_IpnUrl" => route('vnpay.ipn'),
+      "vnp_ReturnUrl" => env("CLIENT_URL") . "/order/verify",
+      // "vnp_IpnUrl" => route('vnpay.ipn'),
       "vnp_TxnRef" => $orderId,
     );
     ksort($inputData);
@@ -217,13 +218,15 @@ class CheckoutController extends Controller
           "msg" => "Chữ ký không hợp lệ, vui lòng thử lại"
         ]);
       }
+      $order = Order::findOrFail(request('vnp_TxnRef'));
       // Dùng tạm, docs vnpay thiếu, chưa dùng được IPN trong dev env, không update hoá đơn ở đây trong product env
-      $order = Order::findOrFail(request('vnp_TxnRef'))->update([
-        'is_paid' => true
-      ]);
+      if (!$order->is_paid) {
+        $order->is_paid = true;
+        $order->save();
+      }
       return response()->json([
         "success" => true,
-        "orderId" => request('vnp_TxnRef')
+        "order" => $order
       ]);
     }
   }
