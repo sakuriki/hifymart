@@ -83,13 +83,6 @@
                     outlined
                     dense
                   />
-                  <v-btn
-                    color="primary"
-                    :disabled="!formValid"
-                    @click="cartStep = 2"
-                  >
-                    Tiếp theo
-                  </v-btn>
                 </v-form>
               </v-card-text>
             </v-card>
@@ -290,6 +283,14 @@
                     </v-col>
                   </v-row>
                 </v-list>
+                <v-btn
+                  block
+                  color="primary"
+                  :disabled="!formValid"
+                  @click="saveOrder"
+                >
+                  Đặt hàng
+                </v-btn>
               </v-card-text>
             </v-card>
           </v-col>
@@ -388,7 +389,8 @@ export default {
         if(res.data.payment_url) {
           window.location = res.data.payment_url;
         }
-        this.$sotre.dispatch("cart/clearCart");
+        this.$store.dispatch("cart/clearCart");
+        this.$router.push({ name: 'order-id', params: { id: res.data.id } });
       });
     }
   },
