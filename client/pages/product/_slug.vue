@@ -263,6 +263,99 @@
             />
           </template>
         </v-card>
+        <v-card class="mt-2">
+          <v-card-title>Hỏi và đáp ({{ total_comment }} Bình luận):</v-card-title>
+          <v-card-text>
+            <v-textarea
+              outlined
+              hide-details
+              label="Xin mời để lại câu hỏi"
+            />
+            <div class="d-flex pt-2">
+              <v-spacer />
+              <v-btn color="primary">
+                Đăng bình luận
+              </v-btn>
+            </div>
+          </v-card-text>
+          <v-divider />
+          <v-card-text v-if="total_comment<=0">
+            Để lại câu hỏi đầu tiên
+          </v-card-text>
+          <template v-else>
+            <div
+              v-for="comment in comments"
+              :key="comment.id"
+            >
+              <v-card-title>
+                <v-avatar
+                  size="36"
+                  color="indigo"
+                >
+                  <span class="white--text">{{ comment.user.name.slice(0,1) }}</span>
+                </v-avatar>
+                <span class="ml-2">{{ comment.user.name }}</span>
+              </v-card-title>
+              <v-card-text class="pb-0">
+                <span>{{ comment.comment }}</span>
+              </v-card-text>
+              <v-card-actions>
+                <v-btn
+                  text
+                  small
+                  color="primary"
+                >
+                  <v-icon left>
+                    mdi-reply
+                  </v-icon>
+                  <span>Trả lời</span>
+                </v-btn>
+                <v-divider vertical />
+                <span class="pl-2 text-caption">{{ cal_time_ago(comment.created_at) }}</span>
+              </v-card-actions>
+              <div
+                v-for="child in comment.replies"
+                :key="child.id"
+                class="comment-reply"
+              >
+                <v-divider />
+                <v-card-title>
+                  <v-avatar
+                    size="36"
+                    color="indigo"
+                  >
+                    <span class="white--text">{{ child.user.name.slice(0,1) }}</span>
+                  </v-avatar>
+                  <span class="ml-2">{{ child.user.name }}</span>
+                </v-card-title>
+                <v-card-text class="pb-0">
+                  <span>{{ child.comment }}</span>
+                </v-card-text>
+                <v-card-actions>
+                  <v-btn
+                    text
+                    small
+                    color="primary"
+                  >
+                    <v-icon left>
+                      mdi-reply
+                    </v-icon>
+                    <span>Trả lời</span>
+                  </v-btn>
+                  <v-divider vertical />
+                  <span class="pl-2 text-caption">{{ cal_time_ago(child.created_at) }}</span>
+                </v-card-actions>
+              </div>
+              <v-divider />
+            </div>
+            <!-- <v-pagination
+              v-model="pagination.current_page"
+              :length="pagination.total_pages"
+              :total-visible="7"
+              :disabled="loading"
+            /> -->
+          </template>
+        </v-card>
       </v-col>
       <v-col
         cols="12"
@@ -298,11 +391,14 @@ export default {
   async asyncData({ app, params }) {
     let { product } = await app.$axios.$get("/products/" + params.slug);
     let { ratings, pagination } = await app.$axios.$get("/ratings/" + product.id);
+    let { comments, total } = await await app.$axios.$get("/comments/" + product.id);
     return {
       product: product,
       pagination: pagination,
       ratings: ratings,
-      selected_image: product.featured_image
+      selected_image: product.featured_image,
+      comments: comments,
+      total_comment: total
     }
   },
   data() {
@@ -398,6 +494,29 @@ export default {
     },
     a() {
       return
+    },
+    cal_time_ago: function(time) {
+      var timeDiff = new Date() - new Date(time);
+      if (timeDiff <= 60*1000)
+        return "vài giây trước";
+      if (timeDiff <= 60*60*1000) {
+        var min = parseInt(timeDiff / (60*1000));
+        return min < 2 ? "một phút trước" : "".concat(min, " phút trước")
+      }
+      if (timeDiff <= 60*60*24*1000) {
+        var hour = parseInt(timeDiff / (60*60*1000));
+        return hour < 2 ? "một giờ trước" : "".concat(hour, " giờ trước")
+      }
+      if (timeDiff <= 60*60*24*7*1000) {
+        var day = parseInt(timeDiff / (60*60*24*1000));
+        return day < 2 ? "hôm qua" : "".concat(day, " ngày trước")
+      }
+      if (timeDiff <= 60*60*24*30*1000) {
+        var week = parseInt(timeDiff / (60*60*24*7*1000));
+        return week < 2 ? "tuần trước" : "".concat(week, " tuần trước")
+      }
+      timeDiff = parseInt(timeDiff / (60*60*24*30*1000));
+      return "".concat(timeDiff, " tháng trước")
     }
   },
 }
@@ -409,5 +528,13 @@ export default {
 .text-field-center >>> input[type='number']::-webkit-inner-spin-button, input[type='number']::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+.comment-reply {
+  padding-left: 40px;
+}
+@media (min-width: 600px) {
+  .comment-reply {
+    padding-left: 60px;
+  }
 }
 </style>
