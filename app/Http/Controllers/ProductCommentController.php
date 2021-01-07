@@ -13,8 +13,7 @@ class ProductCommentController extends Controller
   {
     $query_comments = Product::findOrfail($id)
       ->comments()
-      ->with('user:id,name')
-      ->withCount('replies')
+      ->with(['user:id,name', 'replies'])
       ->latest();
     $ref_comments = $query_comments;
     $total_comments = $ref_comments->count();

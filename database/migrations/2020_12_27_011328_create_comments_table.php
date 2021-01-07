@@ -15,13 +15,14 @@ class CreateCommentsTable extends Migration
   {
     Schema::create('comments', function (Blueprint $table) {
       $table->increments('id');
-      $table->integer('user_id')->unsigned()->index();
-      $table->integer('parent_id')->unsigned()->nullable()->index();
+      $table->integer('parent_id')->nullable()->unsigned();
       $table->text('comment');
-      $table->integer('commentable_id')->unsigned()->index();
-      $table->string('commentable_type');
-      $table->boolean('is_pending')->default(false);
+      $table->integer('user_id')->nullable()->unsigned();
+      $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+      $table->integer('product_id')->unsigned();
+      $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
       $table->timestamps();
+      $table->index(['parent_id', 'user_id', 'product_id']);
     });
   }
 

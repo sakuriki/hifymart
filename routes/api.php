@@ -36,6 +36,8 @@ Route::group(['middleware' => 'jwtoptinal'], function () {
   // Route::get('/payment/vnpay/ipn', 'CheckoutController@test2')->name('vnpay.ipn');
   Route::get('productlist', 'ProductController@showById');
   Route::apiResource('products', 'ProductController')->only(["index", "show"]);
+  Route::get('/comments/showreply/{id}', 'ProductCommentController@showreply');
+  Route::apiResource('comments', 'ProductCommentController');
 });
 Route::get('/user/{id}', 'UserController@show');
 Route::get('/provinces', 'ProvinceController@index');
