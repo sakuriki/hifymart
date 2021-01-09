@@ -17,9 +17,7 @@
                   :src="appUrl+selected_image"
                   aspect-ratio="1"
                 />
-                <v-row
-                  class="mx-n1"
-                >
+                <v-row class="mx-n1 my-1">
                   <v-col
                     cols="3"
                     md="2"
@@ -228,39 +226,18 @@
             Chưa có đánh giá
           </v-card-text>
           <template v-else>
-            <div
-              v-for="rating in ratings"
-              :key="rating.id"
+            <Rating :ratings="ratings" />
+            <v-btn
+              color="primary"
+              outlined
+              :to="{ name: 'product-slug-reviews', params: { slug: $route.params.slug } }"
+              class="ma-2"
             >
-              <v-card-title>
-                <v-avatar
-                  size="36"
-                  color="indigo"
-                >
-                  <span class="white--text">{{ rating.user.name.slice(0,1) }}</span>
-                </v-avatar>
-                <span class="ml-2">{{ rating.user.name }}</span>
-                <span class="ml-2">
-                  <v-rating
-                    v-model="rating.rating"
-                    color="amber"
-                    class="user-rating"
-                    readonly
-                    small
-                  />
-                </span>
-              </v-card-title>
-              <v-card-text>
-                <span>{{ rating.review }}</span>
-              </v-card-text>
-              <v-divider />
-            </div>
-            <v-pagination
-              v-model="pagination.current_page"
-              :length="pagination.total_pages"
-              :total-visible="7"
-              :disabled="loading"
-            />
+              Xem tất cả đánh giá
+              <v-icon right>
+                mdi-chevron-right
+              </v-icon>
+            </v-btn>
           </template>
         </v-card>
         <v-card class="mt-2">
