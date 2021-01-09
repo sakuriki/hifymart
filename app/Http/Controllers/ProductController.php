@@ -148,4 +148,17 @@ class ProductController extends Controller
       'product' => $data
     ]);
   }
+
+  public function showById(Request $request)
+  {
+    $listId = Arr::wrap($request->input("listId"));
+    $order = implode(',', $listId);
+    $data = Product::whereIn('id', $listId)
+      ->orderByRaw("FIELD(id, $order)")
+      ->get()
+      ->keyBy('id');
+    return response()->json([
+      'product' => $data
+    ]);
+  }
 }
