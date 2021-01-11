@@ -49,21 +49,27 @@ class ProductCommentController extends Controller
   {
     try {
       $validator = Validator::make($request->all(), [
-        'comment' => 'required|string|min:10|max:2000',
+        'content' => 'required|string|min:10|max:2000',
+        'name' => 'nullable|string|max:255',
+        'phone' => 'nullable|numeric',
+        'email' => 'nullable|string|email|max:255',
         'parent_id' => 'nullable|exists:comments,id|numeric',
         'product_id' => 'required|exists:products,id|numeric'
       ]);
       if ($validator->fails()) throw new \Exception($validator->errors()->all()[0]);
       // $comment = Comment::create($request->validated());
       $comment = new Comment;
-      $comment->comment = $request->get('comment');
+      $comment->content = $request->input('content');
+      $comment->name = $request->input('name');
+      $comment->phone = $request->input('phone');
+      $comment->email = $request->input('email');
       $comment->user()->associate($request->user());
-      if ($request->get('parent_id')) {
-        $parent = Comment::find($request->get('parent_id'));
-        $parent_id = $parent->parent_id ? $parent->parent_id : $request->get('parent_id');
+      if ($request->input('parent_id')) {
+        $parent = Comment::find($request->input('parent_id'));
+        $parent_id = $parent->parent_id ? $parent->parent_id : $request->input('parent_id');
       }
       $comment->parent_id = $parent_id ?? null;
-      $product = Product::find($request->get('product_id'));
+      $product = Product::find($request->input('product_id'));
       $product->comments()->save($comment);
     } catch (\Exception $exception) {
       // dd($exception);
@@ -72,6 +78,9 @@ class ProductCommentController extends Controller
         'msg' => $exception->getMessage()
       ], 422);
     };
+    if (!$request->input('parent_id')) {
+      $comment->replies = [];
+    }
     $comment->replies_count = 0;
     return response()->json([
       'success' => true,
@@ -83,11 +92,11 @@ class ProductCommentController extends Controller
   {
     try {
       $validator = Validator::make($request->all(), [
-        'comment' => 'required|string|min:10|max:2000'
+        'content' => 'required|string|min:10|max:2000'
       ]);
       if ($validator->fails()) throw new \Exception($validator->errors()->all()[0]);
       if ($comment->user_id == $request->user()->id) {
-        $comment->update(['comment' => $request->get('comment')]);
+        $comment->update(['content' => $request->input('content')]);
       } else {
         throw new \Exception("Bạn không có quyền sửa bình luận này!");
       }
