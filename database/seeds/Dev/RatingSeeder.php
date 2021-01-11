@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Faker\Factory;
 use App\Models\User;
 use App\Models\Rating;
@@ -22,12 +23,15 @@ class RatingSeeder extends Seeder
     Product::all()->each(function ($product) use (&$ratings, $faker, $positiveRating, $negativeRating) {
       $randomRating = $faker->boolean(80) ? $positiveRating : $negativeRating;
       User::all()->each(function ($user) use (&$ratings, $faker, $randomRating, $product) {
+        $time = Carbon::now()->subDays(rand(1, 365))->format('Y-m-d H:i:s');
         $ratings[] = [
           'product_id' => $product->id,
           'approved' => $faker->boolean(80),
           'user_id' => $user->id,
           'rating' => $randomRating[array_rand($randomRating)],
-          'review' => $faker->realText()
+          'review' => $faker->realText(),
+          'created_at' => $time,
+          'updated_at' => $time
         ];
       });
     });
