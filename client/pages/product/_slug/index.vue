@@ -242,6 +242,7 @@
         </v-card>
         <v-card class="mt-2">
           <v-card-title>Hỏi và đáp ({{ total_comment }} Bình luận):</v-card-title>
+          <CommentForm />
           <v-card-text>
             <v-textarea
               outlined
@@ -274,7 +275,7 @@
                 <span class="ml-2">{{ comment.user.name }}</span>
               </v-card-title>
               <v-card-text class="pb-0">
-                <span>{{ comment.comment }}</span>
+                <span>{{ comment.content }}</span>
               </v-card-text>
               <v-card-actions>
                 <v-btn
@@ -306,7 +307,7 @@
                   <span class="ml-2">{{ child.user.name }}</span>
                 </v-card-title>
                 <v-card-text class="pb-0">
-                  <span>{{ child.comment }}</span>
+                  <span>{{ child.content }}</span>
                 </v-card-text>
                 <v-card-actions>
                   <v-btn
@@ -368,7 +369,7 @@ export default {
   async asyncData({ app, params }) {
     let { product } = await app.$axios.$get("/products/" + params.slug);
     let { ratings, pagination } = await app.$axios.$get("/ratings/" + product.id);
-    let { comments, total } = await await app.$axios.$get("/comments/" + product.id);
+    let { comments, total } = await app.$axios.$get("/comments/" + product.id);
     return {
       product: product,
       pagination: pagination,
