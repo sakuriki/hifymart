@@ -4,6 +4,8 @@
       app
       dense
       clipped-left
+      color="primary"
+      dark
     >
       <v-app-bar-nav-icon
         class="hidden-md-and-down"
@@ -31,6 +33,8 @@
       app
       clipped
       width="250"
+      color="primary"
+      dark
     >
       <simplebar
         style="height: 100%"
@@ -130,10 +134,10 @@ export default {
       {
         group: "/admin/brands",
         icon: "mdi-alpha-b-box-outline",
-        title: "Hãng",
+        title: "Nhãn hiệu",
         children: [
           {
-            title: "Danh sách hãng",
+            title: "Danh sách nhãn hiệu",
             to: "/admin/brands",
           },
           {
@@ -144,11 +148,11 @@ export default {
       },
       {
         group: "/admin/categories",
-        icon: "mdi-alpha-t-box-outline",
-        title: "Thể loại",
+        icon: "mdi-alpha-d-box-outline",
+        title: "Danh mục",
         children: [
           {
-            title: "Danh sách Thể loại",
+            title: "Danh sách danh mục",
             to: "/admin/categories",
           },
           {
@@ -159,7 +163,7 @@ export default {
       },
       {
         group: "/admin/tags",
-        icon: "mdi-tag-outline",
+        icon: "mdi-tag-multiple-outline",
         title: "Tags",
         children: [
           {
@@ -189,11 +193,11 @@ export default {
       },
       {
         group: "/admin/users",
-        icon: "mdi-account-outline",
-        title: "Users",
+        icon: "mdi-account-multiple-outline",
+        title: "Người dùng",
         children: [
           {
-            title: "Danh sách User",
+            title: "Danh sách người dùng",
             to: "/admin/users",
           },
           {
@@ -204,15 +208,15 @@ export default {
       },
       {
         group: "/admin/roles",
-        icon: "mdi-alpha-r-box-outline",
-        title: "Roles",
+        icon: "mdi-alpha-p-box-outline",
+        title: "Phân quyền",
         children: [
           {
-            title: "Danh sách Role",
+            title: "Danh sách vai trò",
             to: "/admin/roles",
           },
           {
-            title: "Thêm Role",
+            title: "Thêm",
             to: "/admin/roles/add",
           },
         ],
@@ -244,3 +248,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.v-list-group >>> .v-list-item--active {
+  color: #ffeb3b;
+}
+</style>
