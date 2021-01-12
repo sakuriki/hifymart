@@ -70,7 +70,7 @@ class CheckoutController extends Controller
         'billing_subtotal' => $subTotal,
         'billing_tax' => $tax,
         'billing_total' => $total,
-        'payment_type' => $request->payment_type
+        'payment_type' => $request->input('payment_type', 'cod')
       ]);
       // return $orderProduct;
       $orderProduct = collect($orderProduct)->map(function ($item) use ($order) {

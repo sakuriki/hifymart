@@ -83,16 +83,18 @@
           </v-card-text>
           <v-divider />
           <Rating :ratings="ratings" />
-          <v-btn
-            v-if="total > (data.offset + data.page_size)"
-            color="primary"
-            :loading="loading"
-            class="ma-2"
-            outlined
-            @click="fetchReview"
-          >
-            Tải thêm
-          </v-btn>
+          <v-card-text>
+            <v-btn
+              v-if="total > (data.offset + data.page_size)"
+              color="primary"
+              :loading="loading"
+              outlined
+              block
+              @click="fetchReview"
+            >
+              Tải thêm
+            </v-btn>
+          </v-card-text>
         </v-card>
       </v-col>
       <v-col

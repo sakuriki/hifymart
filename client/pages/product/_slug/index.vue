@@ -240,100 +240,7 @@
             </v-btn>
           </template>
         </v-card>
-        <v-card class="mt-2">
-          <v-card-title>Hỏi và đáp ({{ total_comment }} Bình luận):</v-card-title>
-          <CommentForm />
-          <v-card-text>
-            <v-textarea
-              outlined
-              hide-details
-              label="Xin mời để lại câu hỏi"
-            />
-            <div class="d-flex pt-2">
-              <v-spacer />
-              <v-btn color="primary">
-                Đăng bình luận
-              </v-btn>
-            </div>
-          </v-card-text>
-          <v-divider />
-          <v-card-text v-if="total_comment<=0">
-            Để lại câu hỏi đầu tiên
-          </v-card-text>
-          <template v-else>
-            <div
-              v-for="comment in comments"
-              :key="comment.id"
-            >
-              <v-card-title>
-                <v-avatar
-                  size="36"
-                  color="indigo"
-                >
-                  <span class="white--text">{{ comment.user.name.slice(0,1) }}</span>
-                </v-avatar>
-                <span class="ml-2">{{ comment.user.name }}</span>
-              </v-card-title>
-              <v-card-text class="pb-0">
-                <span>{{ comment.content }}</span>
-              </v-card-text>
-              <v-card-actions>
-                <v-btn
-                  text
-                  small
-                  color="primary"
-                >
-                  <v-icon left>
-                    mdi-reply
-                  </v-icon>
-                  <span>Trả lời</span>
-                </v-btn>
-                <v-divider vertical />
-                <span class="pl-2 text-caption">{{ cal_time_ago(comment.created_at) }}</span>
-              </v-card-actions>
-              <div
-                v-for="child in comment.replies"
-                :key="child.id"
-                class="comment-reply"
-              >
-                <v-divider />
-                <v-card-title>
-                  <v-avatar
-                    size="36"
-                    color="indigo"
-                  >
-                    <span class="white--text">{{ child.user.name.slice(0,1) }}</span>
-                  </v-avatar>
-                  <span class="ml-2">{{ child.user.name }}</span>
-                </v-card-title>
-                <v-card-text class="pb-0">
-                  <span>{{ child.content }}</span>
-                </v-card-text>
-                <v-card-actions>
-                  <v-btn
-                    text
-                    small
-                    color="primary"
-                  >
-                    <v-icon left>
-                      mdi-reply
-                    </v-icon>
-                    <span>Trả lời</span>
-                  </v-btn>
-                  <v-divider vertical />
-                  <span class="pl-2 text-caption">{{ cal_time_ago(child.created_at) }}</span>
-                </v-card-actions>
-              </div>
-              <v-divider />
-            </div>
-            <!-- <v-pagination
-              v-model="pagination.current_page"
-              :length="pagination.total_pages"
-              :total-visible="7"
-              :disabled="loading"
-            /> -->
-          </template>
-        </v-card>
+        <Comments :product-id="product.id" />
       </v-col>
       <v-col
         cols="12"
@@ -366,17 +273,17 @@
 </template>
 <script>
 export default {
-  async asyncData({ app, params }) {
+  async asyncData({ app, params, store }) {
     let { product } = await app.$axios.$get("/products/" + params.slug);
     let { ratings, pagination } = await app.$axios.$get("/ratings/" + product.id);
     let { comments, total } = await app.$axios.$get("/comments/" + product.id);
+    store.dispatch('comment/setItem', comments);
+    store.dispatch('comment/setTotal', total);
     return {
       product: product,
       pagination: pagination,
       ratings: ratings,
-      selected_image: product.featured_image,
-      comments: comments,
-      total_comment: total
+      selected_image: product.featured_image
     }
   },
   data() {

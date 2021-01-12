@@ -1,8 +1,5 @@
 <template>
-  <v-container
-    fluid
-    fill-height
-  >
+  <v-container fluid>
     <v-card>
       <v-card-title>
         Danh sách sản phẩm
@@ -26,7 +23,7 @@
         class="elevation-1"
         :footer-props="{
           itemsPerPageText: 'Số hàng mỗi trang',
-          itemsPerPageOptions: [10, 20, 30, 40],
+          itemsPerPageOptions: [10, 20, 30, 50],
         }"
       >
         <template #[`item.price`]="{ item }">
@@ -65,6 +62,13 @@ export default {
   //     permission: "brand.read"
   //   }
   // },
+  async asyncData({ app }) {
+    let { products, pagination } = await app.$axios.$get("/admin/products?per_page=10");
+    return {
+      data: products,
+      pagination: pagination
+    }
+  },
   data () {
     return {
       pagination: {
@@ -74,7 +78,7 @@ export default {
       },
       search: "",
       data: [],
-      loading: true,
+      loading: false,
       options: {},
       selected: [],
       headers: [
@@ -107,11 +111,11 @@ export default {
     },
   },
   mounted () {
+    // this.fetchData();
     this.fetchData = this.$debounce(this.fetchData, 500);
-    this.fetchData()
   },
   methods: {
-    fetchData() {
+    async fetchData() {
       this.loading = true;
       let config = {
         params: {
@@ -122,16 +126,15 @@ export default {
           sortDesc: this.options.sortDesc[0]
         }
       }
-      this.$axios.get("/admin/products", config)
-      .then(res => {
-        if(res.status==200 && res.data.code!=401) {
-          this.data = res.data.products,
-          this.pagination = res.data.pagination
-          this.loading = false;
-        } else {
-          console.log("không đủ quyền")
-        }
-      });
+      try {
+        let { products, pagination } = await this.$axios.$get("/admin/products", config);
+        this.data = products;
+        this.pagination = pagination;
+        this.loading = false;
+        this.$vuetify.goTo(0)
+      } catch(err) {
+        console.error('loi fetch: ', err);
+      }
     },
     beforeDelete: function(item) {
       console.log("xác nhận xoá", item)

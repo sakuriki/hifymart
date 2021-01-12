@@ -44,7 +44,7 @@
         loading: false,
         data: {
           offset: 0,
-          page_size: 1,
+          page_size: 12,
         }
       }
     },
