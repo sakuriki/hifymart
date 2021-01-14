@@ -22,15 +22,15 @@ export default function({ store, redirect, route }) {
       }
     });
   }
-  // const permission = route.meta.map(meta => {
-  //   if (meta.auth && typeof meta.auth.permission !== "undefined")
-  //     return meta.auth.permission;
-  //   return null;
-  // });
-  // if (
-  //   permission != null &&
-  //   store.getters.user.permissions.includes(permission)
-  // ) {
-  //   return redirect("/");
-  // }
+  const permission = route.meta.map(meta => {
+    if (meta.auth && typeof meta.auth.permission !== "undefined")
+      return meta.auth.permission;
+    return null;
+  });
+  if (
+    permission != null &&
+    store.getters.user.permissions.includes(permission)
+  ) {
+    return redirect("/");
+  }
 }

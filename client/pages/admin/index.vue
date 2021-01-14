@@ -142,6 +142,11 @@
 export default {
   layout: "admin",
   middleware: "auth",
+  meta: {
+    auth: {
+      permission: "dashboard"
+    }
+  },
   async asyncData({ app }) {
     let { total_count, last_month, last_year } = await app.$axios.$get('/admin/dashboard');
     return {

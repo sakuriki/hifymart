@@ -42,6 +42,8 @@ class AuthController extends Controller
       'email' => $request->email,
       'password' => bcrypt($request->password)
     ]);
+    $role = Role::where('slug', 'customer')->firstOrFail();
+    $user->roles()->sync([$role->id]);
     // sau khi lưu dữ liệu user mới vào CSDL, tiến hành đăng nhập luôn rồi trả về token đăng nhập
     if (!$token = JWTAuth::attempt($request->only(['email', 'password']))) {
       return abort(422);
@@ -111,9 +113,15 @@ class AuthController extends Controller
   }
   public function user()
   {
+    $user = auth()->user();
+    $permissions = [];
+    $user->rolesWithPer->each(function ($item) use (&$permissions) {
+      $item->permissions->each(function ($item) use (&$permissions) {
+        $permissions[] = $item->slug;
+      });
+    });
     return [
-      'success' => true,
-      'data' => auth()->user()
+      'data' => collect($user)->only(['id', 'name'])->merge(["permissions" => array_values(array_unique($permissions))])
     ];
   }
 }

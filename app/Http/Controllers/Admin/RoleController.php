@@ -23,7 +23,8 @@ class RoleController extends Controller
         'response' => 'You are unauthorized to access this resource'
       ]);
     }
-    $roles = Role::where('name', 'LIKE', "%{$request->input('q')}%");
+    $roles = Role::where('name', 'LIKE', "%{$request->input('q')}%")
+      ->select(['id', 'name', 'description']);
     $sortBy = $request->input("sortBy");
     $sortDesc = $request->input("sortDesc") == "false" ? "asc" : "desc";
     switch ($sortBy) {
@@ -33,8 +34,14 @@ class RoleController extends Controller
       case "name":
         $roles = $roles->orderBy("name", $sortDesc);
         break;
+      case "description":
+        $roles = $roles->orderBy("description", $sortDesc);
+        break;
+      case "permissions_count":
+        $roles = $roles->orderBy("permissions_count", $sortDesc);
+        break;
       default:
-        $roles = $roles->orderBy("created_at", $sortDesc);
+        $roles = $roles->oldest('id');
     }
     // return $posts->paginate($request->input('limit', 20));
     if ($request->input('per_page')) {
@@ -75,7 +82,9 @@ class RoleController extends Controller
       'description'
     ]));
     $role->permissions()->sync($request->input("permissions"));
-    return $role;
+    return response()->json([
+      'role' => $role
+    ]);
   }
   /**
    * Store a newly created resource in storage.
@@ -102,7 +111,9 @@ class RoleController extends Controller
       'slug',
       'description'
     ]));
-    return $role;
+    return response()->json([
+      'role' => $role
+    ]);
   }
   /**
    * Return the specified resource.

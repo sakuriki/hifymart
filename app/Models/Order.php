@@ -16,7 +16,8 @@ class Order extends Model
   ];
 
   protected $casts = [
-    "shipped" => "boolean"
+    "shipped" => "boolean",
+    "is_paid" => "boolean",
   ];
 
   public function user()

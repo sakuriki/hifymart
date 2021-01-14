@@ -11,6 +11,13 @@ class PermissionController extends Controller
 {
   public function index(Request $request)
   {
+    $user = auth()->user();
+    if (!$user || $user->cannot('permission')) {
+      return response()->json([
+        'code'   => 401,
+        'response' => 'You are unauthorized to access this resource'
+      ]);
+    }
     $permissions = Permission::all()->groupBy('group');
     $arr = [];
     foreach ($permissions as $key => $value) {
