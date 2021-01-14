@@ -27,10 +27,13 @@
         }"
       >
         <template #[`item.price`]="{ item }">
-          <span>{{ new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price) }}</span>
+          <span>{{ $moneyFormat(item.price) }}</span>
         </template>
         <template #[`item.orders_count`]="{ item }">
-          <span><v-chip>{{ item.orders_count }}</v-chip></span>
+          <span><v-chip color="primary">{{ item.orders_count }}</v-chip></span>
+        </template>
+        <template #[`item.quantity`]="{ item }">
+          <span><v-chip color="primary">{{ item.quantity }}</v-chip></span>
         </template>
         <template #[`item.actions`]="{ item }">
           <v-btn
@@ -57,18 +60,18 @@
 export default {
   layout: "admin",
   middleware: "auth",
-  // meta: {
-  //   auth: {
-  //     permission: "brand.read"
-  //   }
-  // },
-  async asyncData({ app }) {
-    let { products, pagination } = await app.$axios.$get("/admin/products?per_page=10");
-    return {
-      data: products,
-      pagination: pagination
+  meta: {
+    auth: {
+      permission: "product.access"
     }
   },
+  // async asyncData({ app }) {
+  //   let { products, pagination } = await app.$axios.$get("/admin/products?per_page=10");
+  //   return {
+  //     data: products,
+  //     pagination: pagination
+  //   }
+  // },
   data () {
     return {
       pagination: {
@@ -85,7 +88,10 @@ export default {
         // { text: 'ID', align: 'start', value: 'id' },
         { text: 'Tên', align: 'start', value: 'name' },
         { text: 'Giá', value: 'price' },
+        { text: 'Tồn kho', value: 'quantity' },
         { text: 'Số order', value: 'orders_count' },
+        { text: 'Nhãn hiệu', value: 'brand.name', sortable: false },
+        { text: 'Danh mục', value: 'category.name', sortable: false },
         { text: 'Actions', value: 'actions', sortable: false }
       ],
     }

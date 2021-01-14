@@ -15,20 +15,7 @@ class ProductCollection extends ResourceCollection
   public function toArray($request)
   {
     return [
-      'products' => $this->collection->transform(function ($page) {
-        return [
-          'id' => $page->id,
-          'name' => $page->name,
-          'slug' => $page->slug,
-          'description' => $page->description,
-          'price' => $page->price,
-          'quantity' => $page->quantity,
-          'featured_image' => $page->featured_image,
-          'brand' => $page->brand,
-          'category' => $page->category,
-          'orders_count' => $page->orders_count
-        ];
-      }),
+      'products' => $this->collection,
       'pagination' => [
         'total' => $this->total(),
         'count' => $this->count(),

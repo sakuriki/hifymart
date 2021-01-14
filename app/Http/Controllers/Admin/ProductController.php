@@ -25,6 +25,7 @@ class ProductController extends Controller
       ]);
     }
     $data = Product::search($request->input('q'), "name")
+      ->select(['id', 'name', 'price', 'quantity', 'brand_id', 'category_id'])
       ->with(["brand:id,name", "category:id,name"])
       ->withCount('orders');
     $sortBy = $request->input("sortBy");
@@ -48,8 +49,10 @@ class ProductController extends Controller
       default:
         $data = $data->latest();
     }
+    $data = $data->paginate($request->input('per_page', 12));
+    $data->setCollection($data->getCollection()->makeHidden(['brand_id', 'category_id']));
     return response()->json(
-      new ProductCollection($data->paginate($request->input('per_page', 12)))
+      new ProductCollection($data)
     );
   }
 
