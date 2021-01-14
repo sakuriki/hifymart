@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Order;
 use App\Concern\Helper;
+use App\Models\Product;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Wishlist;
 use App\Concern\HasPermissionsTrait;
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -61,8 +63,26 @@ class User extends Authenticatable implements JWTSubject
     return [];
   }
 
+  public function comments()
+  {
+    return $this->hasMany(Comment::class);
+  }
+
   public function wishlists()
   {
     return $this->hasMany(Wishlist::class);
+  }
+
+  public function orders()
+  {
+    return $this->hasMany(Order::class);
+  }
+
+  public function products()
+  {
+    return Product::join('order_product', 'products.id', '=', 'order_product.product_id')
+      ->join('orders', 'order_product.order_id', '=', 'orders.id')
+      ->join('users', 'orders.user_id', '=', 'users.id')
+      ->where('users.id', $this->id);
   }
 }
