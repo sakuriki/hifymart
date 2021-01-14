@@ -19,7 +19,6 @@ class CreatePermissionsTable extends Migration
       $table->string('slug');
       $table->string('group');
       $table->string('description')->nullable();
-      $table->timestamps();
     });
 
     Schema::create('permission_role', function (Blueprint $table) {
