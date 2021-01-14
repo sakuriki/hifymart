@@ -15,17 +15,7 @@ class BrandCollection extends ResourceCollection
   public function toArray($request)
   {
     return [
-      'brands' => $this->collection->transform(function ($page) {
-        return [
-          'id' => $page->id,
-          'name' => $page->name,
-          'slug' => $page->slug,
-          'description' => $page->description,
-          'products_count' => $page->products_count,
-          'created_at' => $page->created_at,
-          'updated_at' => $page->updated_at
-        ];
-      }),
+      'brands' => $this->collection,
       'pagination' => [
         'total' => $this->total(),
         'count' => $this->count(),
