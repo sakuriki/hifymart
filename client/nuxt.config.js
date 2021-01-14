@@ -42,7 +42,8 @@ module.exports = {
     "~/plugins/axios",
     "~/plugins/notifier.js",
     "~/plugins/global-method.js",
-    { src: "~/plugins/vuex-persistedstate" }
+    { src: "~/plugins/vuex-persistedstate" },
+    { src: "~/plugins/vue-apexcharts", ssr: false }
   ],
 
   env: {

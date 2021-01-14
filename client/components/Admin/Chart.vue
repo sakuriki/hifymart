@@ -10,9 +10,13 @@
 </template>
 <script>
 export default {
-  components: {
-    VueApexCharts: () => import('vue-apexcharts')
-  },
+  // components: {
+  //   VueApexCharts: () => {
+  //     if (process.client) {
+  //       return import('vue-apexcharts')
+  //     }
+  //   }
+  // },
   props: {
     name: {
       type: String,
@@ -58,7 +62,8 @@ export default {
               "shortDays": ["CN", "T2", "T3", "T4", "T5", "T6", "T7"],
               "toolbar": {
                   "exportToSVG": "Tải file SVG",
-                  "exportToPNG": "Tải file ",
+                  "exportToPNG": "Tải file PNG",
+                  "exportToCSV": "Tải file CSV",
                   "menu": "Menu",
                   "selection": "Chọn khoảng",
                   "selectionZoom": "Phóng to khoảng đã chọn",
@@ -84,7 +89,7 @@ export default {
           enabled: true,
           enabledOnSeries: [1],
           formatter: function(value) {
-            return t.$moneyFormat(value);
+            return t.moneyFormat(value);
           },
         },
         labels: this.data.map(a => a.date),
@@ -104,13 +109,22 @@ export default {
             },
             labels: {
               formatter: function (value) {
-                return t.$moneyFormat(value);
+                return t.moneyFormat(value);
               }
             },
           }
         ]
       }
     },
+  },
+  methods: {
+    moneyFormat(number) {
+      return (
+        new Intl.NumberFormat("vi-VN", {
+          maximumFractionDigits: 0
+        }).format(number) + " ₫"
+      );
+    }
   },
 }
 </script>
