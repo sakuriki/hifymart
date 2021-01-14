@@ -12,6 +12,13 @@ class DashboardController extends Controller
 {
   public function __invoke()
   {
+    $user = auth()->user();
+    if (!$user || $user->cannot('dashboard')) {
+      return response()->json([
+        'code'   => 401,
+        'response' => 'You are unauthorized to access this resource'
+      ]);
+    }
     $count = DB::select("SELECT (SELECT COUNT(*) FROM `products`) as `products`, (SELECT COUNT(*) FROM `orders`) as `orders`, (SELECT COUNT(*) FROM `users`) as `users`")[0];
     $lastMonth = Order::select([
       DB::raw('count(id) as `count`'),
