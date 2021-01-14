@@ -49,12 +49,20 @@ class DatabaseSeeder extends Seeder
       array("name" => "order.update", "slug" => "order.update", "group" => "order", "description" => "Cập nhật đơn hàng"),
       array("name" => "order.view", "slug" => "order.view", "group" => "order", "description" => "Xem chi tiết đơn hàng"),
       array("name" => "order.delete", "slug" => "order.delete", "group" => "order", "description" => "Xoá đơn hàng"),
+      // phân quyền
+      array("name" => "permission", "slug" => "permission", "group" => "permission", "description" => "Truy cập danh sách quyền"),
       // quyền vai trò/role
       array("name" => "role.access", "slug" => "role.access", "group" => "role", "description" => "Truy cập danh vai trò"),
       array("name" => "role.create", "slug" => "role.create", "group" => "role", "description" => "Thêm vai trò"),
       array("name" => "role.update", "slug" => "role.update", "group" => "role", "description" => "Cập nhật vai trò"),
       array("name" => "role.view", "slug" => "role.view", "group" => "role", "description" => "Xem chi tiết vai trò"),
       array("name" => "role.delete", "slug" => "role.delete", "group" => "role", "description" => "Xoá vai trò"),
+      // người dùng
+      array("name" => "user.access", "slug" => "user.access", "group" => "user", "description" => "Truy cập danh người dùng"),
+      array("name" => "user.create", "slug" => "user.create", "group" => "user", "description" => "Thêm người dùng"),
+      array("name" => "user.update", "slug" => "user.update", "group" => "user", "description" => "Cập nhật người dùng"),
+      array("name" => "user.view", "slug" => "user.view", "group" => "user", "description" => "Xem chi tiết người dùng"),
+      array("name" => "user.delete", "slug" => "user.delete", "group" => "user", "description" => "Xoá người dùng"),
     );
     Permission::insert($permissions);
     $permissions_ids = array();
