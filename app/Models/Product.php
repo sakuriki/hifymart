@@ -53,6 +53,11 @@ class Product extends Model
     return $this->belongsToMany(Tag::class);
   }
 
+  public function getTagNamesAttribute()
+  {
+    return $this->tags->pluck('name');
+  }
+
   public function orders()
   {
     return $this->belongsToMany(Order::class);
@@ -101,7 +106,8 @@ class Product extends Model
   public function scopeonSale(Builder $query)
   {
     $now = Carbon::now()->toDateTimeString();
-    return $query->where('sale_off_start', '<', $now)
+    return $query->whereNotNull('sale_off_price')
+      ->where('sale_off_start', '<', $now)
       ->where('sale_off_end', '>', $now)
       ->where(function ($query) {
         $query->where('sale_off_quantity', '>', 0)
@@ -116,6 +122,7 @@ class Product extends Model
       ($this->sale_off_quantity && $this->sale_off_quantity <= 0)
       || $now < $this->sale_off_start
       || $now > $this->sale_off_end
+      || !$this->sale_off_price
     ) {
       return $this->price;
     }

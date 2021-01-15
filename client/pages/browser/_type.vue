@@ -40,6 +40,7 @@
                   solo-inverted
                   hide-details
                   dense
+                  flat
                 />
               </v-col>
               <v-col
@@ -52,11 +53,13 @@
                   solo-inverted
                   hide-details
                   dense
+                  flat
                 />
               </v-col>
             </v-row>
             <v-text-field
               v-model="search"
+              class="mt-2"
               label="Lọc theo thương hiệu"
               flat
               solo-inverted
