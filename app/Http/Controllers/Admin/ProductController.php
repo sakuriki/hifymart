@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Tag;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use App\Models\ProductImage;
@@ -67,8 +68,6 @@ class ProductController extends Controller
     }
     try {
       DB::beginTransaction();
-      // return $request->featured_image;
-      // return $request->hasFile("featured_image") ? "haa" : "ho";
       if (!$request->hasFile("featured_image")) {
         return response()->json([
           "success" => false,
@@ -85,6 +84,10 @@ class ProductController extends Controller
           ["featured_image" => $url]
         )
       );
+      $tagsId = collect($request->tags)->map(function ($tag) {
+        return Tag::firstOrCreate(['name' => $tag])->id;
+      });
+      $product->tags()->sync($tagsId);
       if ($request->hasFile('images')) {
         $images = [];
         foreach ($request->file('images') as $image) {
@@ -135,6 +138,10 @@ class ProductController extends Controller
         );
       }
       $product->update($data);
+      $tagsId = collect($request->tags)->map(function ($tag) {
+        return Tag::firstOrCreate(['name' => $tag])->id;
+      });
+      $product->tags()->sync($tagsId);
       if ($request->hasFile('images')) {
         $images = [];
         foreach ($request->file('images') as $image) {
@@ -159,7 +166,7 @@ class ProductController extends Controller
     }
   }
 
-  public function show(Product $product)
+  public function show($id)
   {
     $user = auth()->user();
     if (!$user || !$user->can('product.view')) {
@@ -168,6 +175,12 @@ class ProductController extends Controller
         'response' => 'You are unauthorized to access this resource'
       ]);
     }
+    $product = Product::select(['id', 'brand_id', 'category_id', 'name', 'slug', 'description', 'price', 'quantity', 'sale_off_price', 'sale_off_quantity', 'sale_off_start', 'sale_off_end', 'featured_image'])
+      ->with(['tags:id,name', 'images:id,product_id,url'])
+      ->findOrFail($id);
+    // $product = $product->load(['tags:id,name', 'images:id,product_id,url']);
+    $tagNames = $product->tag_names;
+    $product = $product->unsetRelation('tags')->setRelation('tags', $tagNames);
     return response()->json([
       'product' => $product
     ]);
