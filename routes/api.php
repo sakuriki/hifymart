@@ -45,6 +45,7 @@ Route::group(['middleware' => 'jwtoptinal'], function () {
 });
 Route::get('/user/{id}', 'UserController@show');
 Route::get('/provinces', 'ProvinceController@index');
+Route::get('/tags', 'TagController@index');
 Route::apiResource('brands', 'BrandController')->only(["index", "show"]);
 Route::apiResource('orders', 'OrderController');
 Route::apiResource('categories', 'CategoryController')->only(["index", "show"]);
