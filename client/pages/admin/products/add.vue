@@ -23,7 +23,7 @@
               />
               <v-text-field
                 v-model="data.slug"
-                :label="slugLabel"
+                :label="(!slug||slugFocus)?'URL tuỳ chỉnh':slug"
                 :placeholder="slug"
                 flat
                 dense
@@ -244,63 +244,22 @@
                 hint="Hash tag hỗ trợ SEO"
                 persistent-hint
               />
-              <v-flex class="d-flex">
-                <v-btn
-                  :disbaled="!valid"
-                  color="primary"
-                  @click="save"
-                >
-                  Lưu thay đổi
-                  <v-icon right>
-                    mdi-content-save-edit
-                  </v-icon>
-                </v-btn>
-                <v-spacer />
-                <v-btn
-                  color="error"
-                  @click="dialog = true"
-                >
-                  Xoá sản phẩm
-                  <v-icon right>
-                    mdi-delete-outline
-                  </v-icon>
-                </v-btn>
-              </v-flex>
+              <v-btn
+                :disbaled="!valid"
+                color="primary"
+                block
+                @click="save"
+              >
+                Thêm sản phẩm
+                <v-icon right>
+                  mdi-content-save
+                </v-icon>
+              </v-btn>
             </v-card-text>
           </v-card>
         </v-col>
       </v-row>
     </v-form>
-    <v-dialog
-      v-model="dialog"
-      max-width="290"
-    >
-      <v-card>
-        <v-card-title>
-          Xác nhận xoá
-        </v-card-title>
-        <v-card-text>
-          Bạn có chắc muốn xoá sản phẩm này? Đây là hành động vĩnh viễn và không thể thay đổi!
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="green darken-1"
-            text
-            @click="dialog = false"
-          >
-            Huỷ
-          </v-btn>
-          <v-btn
-            color="red darken-1"
-            text
-            @click="deleteItem"
-          >
-            Xoá
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-container>
 </template>
 <script>
@@ -309,18 +268,16 @@ export default {
   middleware: "auth",
   meta: {
     auth: {
-      permission: "product.update"
+      permission: "product.create"
     }
   },
-  async asyncData({ app, params }) {
-    let { product } = await app.$axios.$get("/admin/products/" + params.id);
+  async asyncData({ app }) {
     let { categories } = await app.$axios.$get("/categories");
     let { brands } = await app.$axios.$get("/brands");
     let { tags } = await app.$axios.$get("/tags");
     return {
       tags: tags,
       brands: brands,
-      data: product,
       categories: categories
     }
   },
@@ -342,12 +299,26 @@ export default {
       },
       preview: null,
       product_image: [],
-      data: {},
+      data: {
+        name: null,
+        slug: null,
+        description: null,
+        brand_id: null,
+        category_id: null,
+        tags: [],
+        price: null,
+        quantity: null,
+        sale_off_price: null,
+        sale_off_quantity: null,
+        sale_off_start: null,
+        sale_off_end: null,
+        featured_image: null,
+        images: [],
+      },
       categories: [],
       search_category: "",
       slug: null,
-      slugFocus: false,
-      dialog: false
+      slugFocus: false
     };
   },
   computed: {
@@ -361,32 +332,16 @@ export default {
       return process.env.apiUrl
     },
     featuredImage() {
-      if (!this.preview) {
-        return this.apiUrl + this.data.featured_image
-      }
-      return URL.createObjectURL(this.preview)
+      return this.preview ? URL.createObjectURL(this.preview) : null
     },
     productImages() {
-      let oldImages = JSON.parse(JSON.stringify(this.data.images)),
-          newImages = [];
-      oldImages.map(image => {
-        image.url = this.apiUrl + image.url;
-        return image;
-      });
-      newImages = this.product_image.map((image, index) => {
+      return this.product_image.map((image, index) => {
         return {
           index: index,
           url: URL.createObjectURL(image)
         }
       });
-      return [...oldImages, ...newImages];
     },
-    slugLabel() {
-      if (!this.data.slug && !this.slugFocus) {
-        return this.slug
-      }
-      return "URL tuỳ chỉnh"
-    }
   },
   watch: {
     'sale_off.start': {
@@ -407,12 +362,6 @@ export default {
   },
   mounted() {
     this.generate_slug = this.$debounce(this.generate_slug, 200);
-    this.sale_off.start = this.data.sale_off_start
-      ? new Date(this.data.sale_off_start).toISOString().slice(0,10)
-      : null;
-    this.sale_off.end = this.data.sale_off_end
-      ? new Date(this.data.sale_off_end).toISOString().slice(0,10)
-      : null;
   },
   methods: {
     save() {
@@ -428,24 +377,16 @@ export default {
         formData.append("tags[]", tag);
       }
       if(this.preview) formData.append("featured_image", this.preview);
-      formData.append("_method", "PATCH");
       for (let file of this.product_image) {
         formData.append("images[]", file);
       }
-      // console.log(formData);
-      this.$axios.post("/admin/products/" + this.$route.params.id, formData)
-      .then(() => {
-        this.$notifier.showMessage({
-          content: 'Lưu thành công!',
-          color: 'success',
-          right: false
-        })
-      })
-      .catch(() => {
-        this.$notifier.showMessage({
-          content: 'Có lỗi, vui lòng thử lại',
-          color: 'error',
-          right: false
+      this.$axios.post("/admin/products", formData)
+      .then(res => {
+        this.$router.push({
+          name: "admin-products-id",
+          params: {
+            id: res.data.product.id
+          }
         })
       })
     },
@@ -479,39 +420,8 @@ export default {
       .replace(/-+$/, '')
     },
     removeProductImage(data) {
-      if (data.id) {
-        this.$axios.delete("/admin/productImage/" + data.id)
-        .then(() => {
-          let index = this.data.images.findIndex(p => p.id == data.id);
-          if (index > -1) {
-            this.data.images.splice(index, 1);
-          }
-        });
-      } else {
-        this.product_image.splice(data.index, 1)
-      }
-    },
-    deleteItem() {
-      this.$axios.delete("/admin/products/" + this.data.id)
-      .then(() => {
-        this.$router.push({
-          name: "admin-products"
-        });
-        this.$notifier.showMessage({
-          content: 'Xoá thành công',
-          color: 'success',
-          right: false
-        })
-      })
-      .catch(() => {
-        this.dialog = false;
-        this.$notifier.showMessage({
-          content: 'Có lỗi khi xoá, vui lòng thử lại',
-          color: 'error',
-          right: false
-        })
-      });
-    },
+      this.product_image.splice(data.index, 1)
+    }
   },
 };
 </script>
