@@ -1,11 +1,13 @@
 export const state = () => ({
   content: "",
-  color: ""
+  color: "",
+  right: false
 });
 
 export const mutations = {
-  showMessage(state, payload) {
-    state.content = payload.content;
-    state.color = payload.color;
+  showMessage(state, { content, color, right }) {
+    state.content = content;
+    state.color = color;
+    state.right = right;
   }
 };

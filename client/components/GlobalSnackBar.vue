@@ -2,7 +2,7 @@
   <v-snackbar
     v-model="show"
     :color="color"
-    right
+    :right="right"
   >
     {{ message }}
     <template #action="{ attrs }">
@@ -23,15 +23,17 @@ export default {
     return {
       show: false,
       message: '',
-      color: ''
+      color: '',
+      right: false
     }
   },
   created () {
     this.$store.subscribe((mutation, state) => {
       if (mutation.type === 'snackbar/showMessage') {
-        this.message = state.snackbar.content
-        this.color = state.snackbar.color
-        this.show = true
+        this.message = state.snackbar.content;
+        this.color = state.snackbar.color;
+        this.right = state.snackbar.right
+        this.show = true;
       }
     })
   }

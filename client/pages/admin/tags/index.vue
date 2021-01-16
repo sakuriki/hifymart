@@ -22,7 +22,6 @@
         show-select
         class="elevation-1"
         :footer-props="{
-          itemsPerPageText: 'Số hàng mỗi trang',
           itemsPerPageOptions: [10, 20, 30, 50],
         }"
       >

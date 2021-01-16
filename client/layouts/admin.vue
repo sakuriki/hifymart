@@ -15,8 +15,13 @@
         class="hidden-lg-and-up"
         @click.stop="drawer = !drawer"
       />
-      <v-toolbar-title class="text-uppercase">
-        <span>Dashboard</span>
+      <v-toolbar-title class="headline text-uppercase">
+        <NuxtLink
+          class="toolbar-title white--text text-decoration-none"
+          to="/"
+        >
+          shop.re
+        </NuxtLink>
       </v-toolbar-title>
       <v-spacer />
       <v-btn
@@ -91,9 +96,7 @@
     </v-navigation-drawer>
     <v-main>
       <nuxt />
-      <!-- <BackToTop />
-      <GeneralSnackBar />
-      <GeneralConfirmationDialog /> -->
+      <GlobalSnackBar />
     </v-main>
   </v-app>
 </template>

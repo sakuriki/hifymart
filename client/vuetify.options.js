@@ -1,4 +1,9 @@
+import vi from "@/vuetify_vi.js";
 export default {
+  lang: {
+    locales: { vi },
+    current: "vi"
+  },
   theme: {
     dark: false,
     themes: {

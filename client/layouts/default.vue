@@ -79,9 +79,7 @@
       style="z-index: 7"
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title
-        class="headline text-uppercase"
-      >
+      <v-toolbar-title class="headline text-uppercase">
         <NuxtLink
           class="toolbar-title white--text text-decoration-none"
           to="/"
