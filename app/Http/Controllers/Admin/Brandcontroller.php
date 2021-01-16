@@ -107,7 +107,7 @@ class Brandcontroller extends Controller
     }
   }
 
-  public function delete(Brand $brand)
+  public function destroy(Brand $brand)
   {
     $user = auth()->user();
     if (!$user || $user->cannot('brand.delete')) {

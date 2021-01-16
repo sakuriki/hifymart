@@ -63,7 +63,7 @@ class OrderController extends Controller
     return response()->json(new OrderCollection($orders));
   }
 
-  public function delete(Product $product)
+  public function destroy(Product $product)
   {
     $user = auth()->user();
     if (!$user || $user->cannot('order.delete')) {

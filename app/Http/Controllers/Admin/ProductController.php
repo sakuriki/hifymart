@@ -186,7 +186,7 @@ class ProductController extends Controller
     ]);
   }
 
-  public function delete(Product $product)
+  public function destroy(Product $product)
   {
     $user = auth()->user();
     if (!$user || !$user->can('product.delete')) {
@@ -195,6 +195,7 @@ class ProductController extends Controller
         'response' => 'You are unauthorized to access this resource'
       ]);
     }
+    Storage::delete(Str::replaceFirst("storage", "public", $product->featured_image));
     $product->delete();
     return response()->noContent();
   }

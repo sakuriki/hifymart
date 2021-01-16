@@ -116,7 +116,7 @@ class UserController extends Controller
     }
   }
 
-  public function delete(User $user)
+  public function destroy(User $user)
   {
     $user = auth()->user();
     if (!$user || $user->cannot('user.delete')) {

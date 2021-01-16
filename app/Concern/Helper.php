@@ -2,6 +2,7 @@
 
 namespace App\Concern;
 
+use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Builder;
 
 trait Helper
@@ -9,7 +10,7 @@ trait Helper
   public function scopeSearch(Builder $query, ?string $search, $from)
   {
     if ($search && $from) {
-      foreach (array_wrap($from) as $key) {
+      foreach (Arr::wrap($from) as $key) {
         $query = $query->where($key, 'LIKE', "%{$search}%");
       }
       return $query;

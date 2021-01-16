@@ -108,7 +108,7 @@ class CategoryController extends Controller
     }
   }
 
-  public function delete(Category $category)
+  public function destroy(Category $category)
   {
     $user = auth()->user();
     if (!$user || $user->cannot('category.delete')) {
