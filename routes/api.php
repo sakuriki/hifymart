@@ -28,6 +28,7 @@ Route::group(['middleware' => 'jwtnew'], function () {
     Route::apiResource('products', 'Admin\ProductController');
     Route::apiResource('categories', 'Admin\CategoryController');
     Route::apiResource('permissions', 'Admin\PermissionController');
+    Route::apiResource('productImage', 'Admin\ProductImageController');
     Route::get('/dashboard', 'Admin\DashboardController');
   });
   Route::get('/auth/user', 'Auth\AuthController@user');
