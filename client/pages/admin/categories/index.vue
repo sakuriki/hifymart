@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-card>
       <v-card-title>
-        Danh sách sản phẩm
+        Danh sách danh mục
         <v-spacer />
         <v-text-field
           v-model="search"
@@ -23,6 +23,7 @@
         class="elevation-1"
         :footer-props="{
           itemsPerPageOptions: [10, 20, 30, 50],
+          showFirstLastPage: true,
         }"
       >
         <template #[`item.products_count`]="{ item }">
@@ -30,13 +31,15 @@
         </template>
         <template #[`item.actions`]="{ item }">
           <v-btn
+            v-if="canUpdate"
             color="success"
             icon
-            :to="{ name: 'admin-products-id',params: { id: item.id }}"
+            :to="{ name: 'admin-categories-id',params: { id: item.id }}"
           >
             <v-icon>mdi-pencil-outline</v-icon>
           </v-btn>
           <v-btn
+            v-if="canDelete"
             color="error"
             icon
             @click="beforeDelete"
@@ -49,7 +52,6 @@
   </v-container>
 </template>
 <script>
-// import debounce from "lodash/debounce";
 export default {
   layout: "admin",
   middleware: "auth",
@@ -58,13 +60,6 @@ export default {
       permission: "category.access"
     }
   },
-  // async asyncData({ app }) {
-  //   let { brands, pagination } = await app.$axios.$get("/admin/brands?per_page=10");
-  //   return {
-  //     data: brands,
-  //     pagination: pagination
-  //   }
-  // },
   data () {
     return {
       pagination: {
@@ -78,7 +73,6 @@ export default {
       options: {},
       selected: [],
       headers: [
-        // { text: 'ID', align: 'start', value: 'id' },
         { text: 'Tên', align: 'start', value: 'name' },
         { text: 'Giới thiệu', value: 'description' },
         { text: 'Số sản phẩm', value: 'products_count' },
@@ -86,14 +80,14 @@ export default {
       ],
     }
   },
-  // computed: {
-  //   canUpdate() {
-  //     return this.$auth.user.permissions.includes("brand.update")
-  //   },
-  //   canDelete() {
-  //     return this.$auth.user.permissions.includes("brand.delete")
-  //   }
-  // },
+  computed: {
+    canUpdate() {
+      return this.$auth.user.permissions.includes("category.update")
+    },
+    canDelete() {
+      return this.$auth.user.permissions.includes("category.delete")
+    }
+  },
   watch: {
     options: {
       handler () {

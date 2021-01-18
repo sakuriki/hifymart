@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\District;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -13,12 +14,17 @@ class CategoryController extends Controller
       ->with('childrenRecursive:id,parent_id,name,slug')
       ->whereNull('parent_id')
       ->get();
+    $categories->map(function ($category) use ($request) {
+      $category->disabled = $request->exclude == $category->id ? true : false;
+      return $category;
+    });
+    // return $categories;
     return response()->json([
-      'categories' => $this->categoryRecusive($categories)
+      'categories' => $this->categoryRecusive($categories, $request->exclude)
     ]);
   }
 
-  public function categoryRecusive($categories, $text = '')
+  public function categoryRecusive($categories, $exclude = null, $text = '')
   {
     $data = [];
     foreach ($categories as $category) {
@@ -26,10 +32,11 @@ class CategoryController extends Controller
         'id' => $category->id,
         'name' => $text . $category->name,
         'parent_id' => $category->parent_id,
-        'slug' => $category->slug
+        'slug' => $category->slug,
+        'disabled' => $exclude == $category->id ? true : false
       ];
       if ($category->childrenRecursive) {
-        $data = array_merge($data, $this->categoryRecusive($category->childrenRecursive, $text . '--'));
+        $data = array_merge($data, $this->categoryRecusive($category->childrenRecursive, $exclude, $text . '--'));
       }
     }
     return $data;

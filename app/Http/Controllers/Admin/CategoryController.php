@@ -12,7 +12,6 @@ class CategoryController extends Controller
 {
   public function index(Request $request)
   {
-    return $categories = Category::with('childrenRecursive')->whereNull('parent_id')->get();
     $user = auth()->user();
     if (!$user || $user->cannot('category.access')) {
       return response()->json([
