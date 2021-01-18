@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-card>
       <v-card-title>
-        Danh sách sản phẩm
+        Danh sách nhãn hiệu
         <v-spacer />
         <v-text-field
           v-model="search"
@@ -23,6 +23,7 @@
         class="elevation-1"
         :footer-props="{
           itemsPerPageOptions: [10, 20, 30, 50],
+          showFirstLastPage: true,
         }"
       >
         <template #[`item.products_count`]="{ item }">
@@ -33,7 +34,7 @@
             v-if="canUpdate"
             color="success"
             icon
-            :to="{ name: 'admin-products-id',params: { id: item.id }}"
+            :to="{ name: 'admin-brands-id',params: { id: item.id }}"
           >
             <v-icon>mdi-pencil-outline</v-icon>
           </v-btn>
@@ -100,7 +101,6 @@ export default {
     },
   },
   mounted () {
-    // this.fetchData();
     this.fetchData = this.$debounce(this.fetchData, 500);
   },
   methods: {
