@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-card>
       <v-card-title>
-        Danh sách sản phẩm
+        Danh sách người dùng
         <v-spacer />
         <v-text-field
           v-model="search"
@@ -23,6 +23,7 @@
         class="elevation-1"
         :footer-props="{
           itemsPerPageOptions: [10, 20, 30, 50],
+          showFirstLastPage: true,
         }"
       >
         <template #[`item.comments_count`]="{ item }">
