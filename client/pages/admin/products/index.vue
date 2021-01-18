@@ -23,6 +23,7 @@
         class="elevation-1"
         :footer-props="{
           itemsPerPageOptions: [10, 20, 30, 50],
+          showFirstLastPage: true,
         }"
       >
         <template #[`item.price`]="{ item }">
