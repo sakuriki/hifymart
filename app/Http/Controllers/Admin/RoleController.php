@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Http\Requests\RoleRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Admin\RoleCollection;
@@ -24,7 +25,7 @@ class RoleController extends Controller
       ]);
     }
     $roles = Role::where('name', 'LIKE', "%{$request->input('q')}%")
-      ->select(['id', 'name', 'description']);
+      ->select(['id', 'name', 'slug', 'description']);
     $sortBy = $request->input("sortBy");
     $sortDesc = $request->input("sortDesc") == "false" ? "asc" : "desc";
     switch ($sortBy) {
@@ -89,7 +90,7 @@ class RoleController extends Controller
   /**
    * Store a newly created resource in storage.
    */
-  public function store(Request $request)
+  public function store(RoleRequest $request)
   {
     $user = auth()->user();
     if (!$user || !$user->can('role.create')) {
@@ -98,22 +99,17 @@ class RoleController extends Controller
         'response' => 'You are unauthorized to access this resource'
       ]);
     }
-    $validator = Validator::make($request->all(), [
-      'name' => 'required|string',
-      'slug' => 'required|string',
-      'description' => 'nullable|string'
-    ]);
-    if ($validator->fails()) {
-      return response()->json(['error' => $validator->errors()], 404);
+    try {
+      $role = Role::create($request->validated());
+      return response()->json([
+        "role" => $role
+      ]);
+    } catch (\Exception $exception) {
+      return response()->json([
+        "success" => false,
+        "errors" => $exception->getMessage()
+      ], 422);
     }
-    $role = Role::create($request->only([
-      'name',
-      'slug',
-      'description'
-    ]));
-    return response()->json([
-      'role' => $role
-    ]);
   }
   /**
    * Return the specified resource.

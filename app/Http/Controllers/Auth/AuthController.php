@@ -117,7 +117,7 @@ class AuthController extends Controller
     $permissions = [];
     $user->rolesWithPer->each(function ($item) use (&$permissions) {
       $item->permissions->each(function ($item) use (&$permissions) {
-        $permissions[] = $item->slug;
+        $permissions[] = $item->name;
       });
     });
     return [
