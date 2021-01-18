@@ -120,6 +120,11 @@ export default {
         to: "/admin",
       },
       {
+        icon: "mdi-cart-outline",
+        title: "Đơn hàng",
+        to: "/admin/orders",
+      },
+      {
         group: "/admin/products",
         icon: "mdi-alpha-s-box-outline",
         title: "Sản phẩm",
@@ -179,21 +184,21 @@ export default {
           },
         ],
       },
-      {
-        group: "/admin/medias",
-        icon: "mdi-image-outline",
-        title: "Bộ sưu tập",
-        children: [
-          {
-            title: "Thư viện",
-            to: "/admin/medias",
-          },
-          {
-            title: "Thêm mới",
-            to: "/admin/medias/add",
-          },
-        ],
-      },
+      // {
+      //   group: "/admin/medias",
+      //   icon: "mdi-image-outline",
+      //   title: "Bộ sưu tập",
+      //   children: [
+      //     {
+      //       title: "Thư viện",
+      //       to: "/admin/medias",
+      //     },
+      //     {
+      //       title: "Thêm mới",
+      //       to: "/admin/medias/add",
+      //     },
+      //   ],
+      // },
       {
         group: "/admin/users",
         icon: "mdi-account-multiple-outline",
@@ -204,7 +209,7 @@ export default {
             to: "/admin/users",
           },
           {
-            title: "Thêm User",
+            title: "Thêm mới",
             to: "/admin/users/add",
           },
         ],
@@ -219,7 +224,7 @@ export default {
             to: "/admin/roles",
           },
           {
-            title: "Thêm",
+            title: "Thêm mới",
             to: "/admin/roles/add",
           },
         ],
