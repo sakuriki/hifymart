@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-card>
       <v-card-title>
-        Danh sách sản phẩm
+        Danh sách đơn hàng
         <v-spacer />
         <v-text-field
           v-model="search"
@@ -23,6 +23,7 @@
         class="elevation-1"
         :footer-props="{
           itemsPerPageOptions: [10, 20, 30, 50],
+          showFirstLastPage: true,
         }"
       >
         <template #[`item.billing_total`]="{ item }">
@@ -65,6 +66,22 @@
             <v-icon>mdi-delete-outline</v-icon>
           </v-btn>
         </template>
+        <template #footer>
+          <div
+            class="pl-2 d-flex align-center"
+            style="margin-bottom: -58px;height: 58px;font-size: 0.75rem"
+          >
+            Đến trang:
+            <v-text-field
+              placeholder="0"
+              type="number"
+              style="max-width: 60px;margin: 13px 0 13px 34px;"
+              dense
+              flat
+              hide-details
+            />
+          </div>
+        </template>
       </v-data-table>
     </v-card>
   </v-container>
@@ -104,8 +121,8 @@ export default {
         { text: 'Hoá đơn', value: 'billing_total' },
         { text: 'Giỏ hàng', value: 'order_product_count' },
         { text: 'Địa chỉ', value: 'billing_address', sortable: false },
-        { text: 'Quận/Huyện', value: 'province.name', sortable: false },
-        { text: 'Tỉnh/Thành', value: 'district.name', sortable: false },
+        { text: 'Quận/Huyện', value: 'district.name', sortable: false },
+        { text: 'Tỉnh/Thành', value: 'province.name', sortable: false },
         { text: 'Thanh toán', value: 'is_paid' },
         { text: 'Vận chuyển', value: 'shipped' },
         { text: 'Tình trạng', value: 'status' },
