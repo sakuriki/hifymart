@@ -170,6 +170,21 @@ export default {
         ],
       },
       {
+        group: "/admin/coupons",
+        icon: "mdi-ticket-percent-outline",
+        title: "Mã giảm giá",
+        children: [
+          {
+            title: "Danh sách mã giảm giá",
+            to: "/admin/coupons",
+          },
+          {
+            title: "Thêm mới",
+            to: "/admin/coupons/add",
+          },
+        ],
+      },
+      {
         group: "/admin/tags",
         icon: "mdi-tag-multiple-outline",
         title: "Tags",
