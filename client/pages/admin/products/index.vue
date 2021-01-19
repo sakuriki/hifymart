@@ -97,13 +97,6 @@ export default {
       permission: "product.access"
     }
   },
-  // async asyncData({ app }) {
-  //   let { products, pagination } = await app.$axios.$get("/admin/products?per_page=10");
-  //   return {
-  //     data: products,
-  //     pagination: pagination
-  //   }
-  // },
   data () {
     return {
       pagination: {
@@ -117,7 +110,6 @@ export default {
       options: {},
       selected: [],
       headers: [
-        // { text: 'ID', align: 'start', value: 'id' },
         { text: 'Tên', align: 'start', value: 'name' },
         { text: 'Giá', value: 'price' },
         { text: 'Tồn kho', value: 'quantity' },
@@ -151,7 +143,6 @@ export default {
     },
   },
   mounted () {
-    // this.fetchData();
     this.fetchData = this.$debounce(this.fetchData, 500);
   },
   methods: {
@@ -173,7 +164,11 @@ export default {
         this.loading = false;
         this.$vuetify.goTo(0)
       } catch(err) {
-        console.error('loi fetch: ', err);
+        this.$notifier.showMessage({
+          content: 'Có lỗi, vui lòng thử lại',
+          color: 'error',
+          right: false
+        })
       }
     },
     beforeDelete(item) {

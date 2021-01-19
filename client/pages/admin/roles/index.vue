@@ -123,7 +123,11 @@ export default {
         this.loading = false;
         this.$vuetify.goTo(0)
       } catch(err) {
-        console.error('loi fetch: ', err);
+        this.$notifier.showMessage({
+          content: 'Có lỗi, vui lòng thử lại',
+          color: 'error',
+          right: false
+        })
       }
     },
     beforeDelete: function(item) {

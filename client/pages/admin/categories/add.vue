@@ -104,9 +104,9 @@ export default {
         required: v => !!v || 'Không được bỏ trống',
       },
       data: {
-        name: "",
-        slug: "",
-        description: "",
+        name: null,
+        slug: null,
+        description: null,
       },
       slug: null,
       slugFocus: false
@@ -139,6 +139,13 @@ export default {
           params: {
             id: res.data.category.id
           }
+        })
+      })
+      .catch(() => {
+        this.$notifier.showMessage({
+          content: 'Có lỗi, vui lòng thử lại',
+          color: 'error',
+          right: false
         })
       })
     },

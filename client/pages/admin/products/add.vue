@@ -389,6 +389,13 @@ export default {
           }
         })
       })
+      .catch(() => {
+        this.$notifier.showMessage({
+          content: 'Có lỗi, vui lòng thử lại',
+          color: 'error',
+          right: false
+        })
+      })
     },
     generate_slug() {
       this.slug = this.$slugify(this.data.name);

@@ -100,12 +100,12 @@ export default {
       valid: false,
       permissions: [],
       selected_permissions: [],
-      data: [],
-      // data: {
-      //   name: null,
-      //   slug: null,
-      //   description: null
-      // },
+      // data: [],
+      data: {
+        name: null,
+        slug: null,
+        description: null
+      },
       slug: null,
       slugFocus: false
     }

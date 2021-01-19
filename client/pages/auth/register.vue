@@ -124,7 +124,11 @@ export default {
       try {
         await this.$axios.post("/auth/register", this.data);
       } catch (e) {
-        return;
+        this.$notifier.showMessage({
+          content: 'Có lỗi, vui lòng thử lại',
+          color: 'error',
+          right: false
+        })
       }
       this.$auth.login({ data: this.data });
       this.$router.push({ name: "index" });

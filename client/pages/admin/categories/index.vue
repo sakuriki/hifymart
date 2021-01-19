@@ -101,7 +101,6 @@ export default {
     },
   },
   mounted () {
-    // this.fetchData();
     this.fetchData = this.$debounce(this.fetchData, 500);
   },
   methods: {
@@ -123,7 +122,11 @@ export default {
         this.loading = false;
         this.$vuetify.goTo(0)
       } catch(err) {
-        console.error('loi fetch: ', err);
+        this.$notifier.showMessage({
+          content: 'Có lỗi, vui lòng thử lại',
+          color: 'error',
+          right: false
+        })
       }
     },
     beforeDelete: function(item) {

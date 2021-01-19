@@ -102,7 +102,11 @@ export default {
       try {
         await this.$auth.login({ data: this.data });
       } catch (e) {
-        return;
+        this.$notifier.showMessage({
+          content: 'Có lỗi, vui lòng thử lại',
+          color: 'error',
+          right: false
+        })
       }
       this.$router.push(
         this.$route.query.redirect ? this.$route.query.redirect : "/"

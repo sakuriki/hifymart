@@ -87,7 +87,6 @@
   </v-container>
 </template>
 <script>
-// import debounce from "lodash/debounce";
 export default {
   layout: "admin",
   middleware: "auth",
@@ -96,13 +95,6 @@ export default {
       permission: "order.access"
     }
   },
-  // async asyncData({ app }) {
-  //   let { orders, pagination } = await app.$axios.$get("/admin/orders?per_page=10");
-  //   return {
-  //     data: orders,
-  //     pagination: pagination
-  //   }
-  // },
   data () {
     return {
       pagination: {
@@ -116,7 +108,6 @@ export default {
       options: {},
       selected: [],
       headers: [
-        // { text: 'ID', align: 'start', value: 'id' },
         { text: 'Khách hàng', align: 'start', value: 'billing_name' },
         { text: 'Hoá đơn', value: 'billing_total' },
         { text: 'Giỏ hàng', value: 'order_product_count' },
@@ -151,7 +142,6 @@ export default {
     },
   },
   mounted () {
-    // this.fetchData();
     this.fetchData = this.$debounce(this.fetchData, 500);
   },
   methods: {
@@ -173,7 +163,11 @@ export default {
         this.loading = false;
         this.$vuetify.goTo(0)
       } catch(err) {
-        console.error('loi fetch: ', err);
+        this.$notifier.showMessage({
+          content: 'Có lỗi, vui lòng thử lại',
+          color: 'error',
+          right: false
+        })
       }
     },
     beforeDelete: function(item) {

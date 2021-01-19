@@ -93,6 +93,11 @@ export default {
       rules: {
         required: v => !!v || 'Không được bỏ trống',
       },
+      data: {
+        name: null,
+        slug: null,
+        description: null,
+      },
       slug: null,
       slugFocus: false
     };
