@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\OrderProduct;
 use Illuminate\Http\Request;
@@ -12,11 +13,8 @@ class CheckoutController extends Controller
 {
   public function store(Request $request)
   {
-    // dd($request->all());
     try {
       DB::beginTransaction();
-      $coupon = null;
-      // $coupon = Coupon::findOrFail($request->coupon);
       $products = Product::whereIn("id", collect($request->input("product"))->keys())->get();
       $subTotal = 0;
       $orderProduct = [];
@@ -40,20 +38,19 @@ class CheckoutController extends Controller
         // $product->save();
       }
       $discount = 0;
-      if ($coupon && (!$coupon->min || $subTotal > $coupon->min)) {
-        $discount = $coupon->is_percent
-          ? $subTotal * $coupon->value / 100
-          : $coupon->value;
-        if ($coupon->max) {
+      $coupon = $request->coupon ? Coupon::where('code', $request->coupon)->first() : null;
+      if ($coupon && (!$coupon->min || $subTotal >= $coupon->min) && $coupon->isRedeemable()) {
+        $discount = $coupon->value;
+        if ($coupon->is_percent) {
+          $discount = $subTotal * $coupon->value / 100;
           $discount = $discount < $coupon->max
             ? $discount
             : $coupon->max;
         }
-        // $subTotal = $subTotal - $discount;
-        // if ($subTotal < 0) {
-        //   $subTotal = 0;
-        // }
+        $coupon->number = --$coupon->number;
+        $coupon->save();
       }
+      // return $coupon ? $coupon->code : null;
       $tax = $subTotal * 0.1;
       $totalAfterDiscount = $subTotal - $discount;
       $total = $totalAfterDiscount > 0 ? $totalAfterDiscount + $tax : 0;
@@ -66,7 +63,7 @@ class CheckoutController extends Controller
         'billing_address' => $request->address,
         'billing_phone' => $request->phone,
         'billing_discount' => $discount,
-        // 'billing_discount_code' => $coupon->code,
+        'billing_discount_code' => $coupon ? $coupon->code : null,
         'billing_subtotal' => $subTotal,
         'billing_tax' => $tax,
         'billing_total' => $total,
