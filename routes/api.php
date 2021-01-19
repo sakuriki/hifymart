@@ -25,6 +25,7 @@ Route::group(['middleware' => 'jwtnew'], function () {
     Route::apiResource('users', 'Admin\UserController');
     Route::apiResource('brands', 'Admin\BrandController');
     Route::apiResource('orders', 'Admin\OrderController');
+    Route::apiResource('coupons', 'Admin\CouponController');
     Route::apiResource('products', 'Admin\ProductController');
     Route::apiResource('categories', 'Admin\CategoryController');
     Route::apiResource('permissions', 'Admin\PermissionController');
@@ -47,6 +48,7 @@ Route::group(['middleware' => 'jwtoptinal'], function () {
 Route::get('/user/{id}', 'UserController@show');
 Route::get('/provinces', 'ProvinceController@index');
 Route::get('/tags', 'TagController@index');
+Route::get('/coupons/{code}', 'CouponController');
 Route::apiResource('brands', 'BrandController')->only(["index", "show"]);
 Route::apiResource('orders', 'OrderController');
 Route::apiResource('categories', 'CategoryController')->only(["index", "show"]);

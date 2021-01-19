@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Models;
+
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
+
+class Coupon extends Model
+{
+  protected $fillable = [
+    'code',
+    'value',
+    'number',
+    'min',
+    'max',
+    'is_percent',
+    'starts_at',
+    'expires_at',
+  ];
+
+  protected $casts = [
+    'value' => 'integer',
+    'number' => 'integer',
+    'min' => 'integer',
+    'max' => 'integer',
+    'is_percent' => 'boolean'
+  ];
+
+  public function generate($length = 12)
+  {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+      $randomString .= $characters[mt_rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+  }
+
+  public function isExpired()
+  {
+    return $this->expires_at ? Carbon::now()->gte($this->expires_at) : false;
+  }
+
+  public function isStarted()
+  {
+    return $this->starts_at ? Carbon::now()->gte($this->starts_at) : true;
+  }
+
+  public function isRedeemable()
+  {
+    if ($this->number > 0 && !$this->isExpired() && $this->isStarted()) {
+      return true;
+    }
+    return false;
+  }
+}
