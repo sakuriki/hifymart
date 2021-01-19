@@ -59,10 +59,25 @@
         >
           <v-col
             cols="12"
-            class="pb-0 text-right"
+            class="pb-0"
           >
+            <div class="mb-2">
+              <v-slide-x-transition
+                v-for="(error, type) in $store.getters.errors"
+                :key="error[0]"
+              >
+                <v-alert
+                  v-if="type=='coupon'"
+                  dense
+                  dismissible
+                  type="error"
+                >
+                  {{ error[0] }}
+                </v-alert>
+              </v-slide-x-transition>
+            </div>
             <v-responsive
-              class="ml-auto overflow-visible"
+              class="ml-auto overflow-visible text-right"
               max-width="230"
             >
               <v-text-field
@@ -198,15 +213,23 @@ export default {
     },
     async verifyCoupon() {
       this.is_loading = true;
-      // let { coupon } = await this.$axios.$post("/checkcoupon", this.counpon);
-      let coupon = {
-        coupon: "SOMETHING",
-        coupon_value: 20,
-        is_percent: true
-      };
-      this.$store.dispatch("cart/addCoupon", coupon);
-      this.is_valid = true;
+      try {
+        let { coupon } = await this.$axios.$get("/coupons/" + this.coupon);
+        this.$store.dispatch("cart/addCoupon", coupon);
+        this.is_valid = true;
+      } catch(error) {
+        this.$notifier.showMessage({
+          content: 'Có lỗi, vui lòng thử lại',
+          color: 'error',
+          right: false
+        })
+      }
       this.is_loading = false;
+      // let coupon = {
+      //   coupon: "SOMETHING",
+      //   coupon_value: 20,
+      //   is_percent: true
+      // };
     },
     removeCoupon() {
       this.is_valid = false;
