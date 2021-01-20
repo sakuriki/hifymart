@@ -7,6 +7,7 @@ use App\Concern\Helper;
 use App\Models\Product;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Wishlist;
+use App\Models\AddressBook;
 use App\Concern\HasPermissionsTrait;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
@@ -76,6 +77,11 @@ class User extends Authenticatable implements JWTSubject
   public function orders()
   {
     return $this->hasMany(Order::class);
+  }
+
+  public function addressBooks()
+  {
+    return $this->hasMany(AddressBook::class);
   }
 
   public function products()
