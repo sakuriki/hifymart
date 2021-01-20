@@ -475,7 +475,7 @@ export default {
     },
     removeProductImage(data) {
       if (data.id) {
-        this.$axios.delete("/admin/productImage/" + data.id)
+        this.$axios.delete("/admin/productImages/" + data.id)
         .then(() => {
           let index = this.data.images.findIndex(p => p.id == data.id);
           if (index > -1) {
