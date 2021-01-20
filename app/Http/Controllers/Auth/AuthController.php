@@ -121,7 +121,7 @@ class AuthController extends Controller
       });
     });
     return [
-      'data' => collect($user)->only(['id', 'name'])->merge(["permissions" => array_values(array_unique($permissions))])
+      'data' => collect($user)->only(['id', 'name', 'email'])->merge(["permissions" => array_values(array_unique($permissions))])
     ];
   }
 }
