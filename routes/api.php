@@ -29,11 +29,12 @@ Route::group(['middleware' => 'jwtnew'], function () {
     Route::apiResource('products', 'Admin\ProductController');
     Route::apiResource('categories', 'Admin\CategoryController');
     Route::apiResource('permissions', 'Admin\PermissionController');
-    Route::apiResource('productImage', 'Admin\ProductImageController');
+    Route::apiResource('productImages', 'Admin\ProductImageController');
     Route::get('/dashboard', 'Admin\DashboardController');
   });
   Route::get('/auth/user', 'Auth\AuthController@user');
   Route::apiResource('wishlists', 'WishlistController')->only(["index", "show"]);
+  Route::apiResource('addressBooks', 'AddressBookController');
 });
 Route::group(['middleware' => 'jwtoptinal'], function () {
   Route::post('/checkout', 'CheckoutController@store');
