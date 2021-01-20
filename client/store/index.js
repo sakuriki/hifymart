@@ -65,6 +65,17 @@ export const mutations = {
 export const actions = {
   async nuxtServerInit(vuexContext) {
     try {
+      if (vuexContext.state.auth.loggedIn) {
+        let { addresses } = await this.$axios.$get("/addressBooks");
+        // addresses = addresses.reduce((obj, item) => {
+        //   return {
+        //     ...obj,
+        //     [item.id]: item
+        //   };
+        // }, {});
+        vuexContext.commit("address-book/SET_ADDRESSES", addresses);
+      }
+
       let cart_id = vuexContext.state.cart.cart_id;
       let cartKeys = Object.keys(cart_id);
       if (cartKeys.length > 0) {

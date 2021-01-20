@@ -13,7 +13,10 @@
               <v-flex class="d-flex flex-wrap align-center">
                 <v-card-title>Thông tin nhận hàng</v-card-title>
                 <v-spacer />
-                <div class="pa-4">
+                <div
+                  v-if="!$auth.loggedIn"
+                  class="pa-4"
+                >
                   <span>Đã có tài khoản?</span>
                   <NuxtLink
                     :to="{ name: 'auth-login', query: { redirect: $route.fullPath } }"
@@ -22,17 +25,39 @@
                     Đăng nhập
                   </NuxtLink>
                 </div>
+                <div
+                  v-else
+                  class="pa-4"
+                >
+                  <span>Hi! {{ $auth.user.name }}</span>
+                </div>
               </v-flex>
               <v-card-text>
                 <v-form
                   v-model="formValid"
                   class="pt-1"
                 >
+                  <v-select
+                    v-model="addressBook"
+                    :items="addresses"
+                    item-value="id"
+                    label="Sổ địa chỉ"
+                    outlined
+                    dense
+                  >
+                    <template #selection="{ item }">
+                      <span>{{ fullAddress(item) }}</span>
+                    </template>
+                    <template #item="{ item }">
+                      <span>{{ fullAddress(item) }}</span>
+                    </template>
+                  </v-select>
                   <v-text-field
                     v-model="data.email"
                     label="Email liên hệ"
                     outlined
                     dense
+                    :disabled="$auth.loggedIn"
                     :rules="[rules.required, rules.email]"
                   />
                   <v-text-field
@@ -179,11 +204,24 @@
                   >
                     <v-col
                       cols="12"
-                      class="pb-0 text-right"
+                      class="pb-0"
                     >
-                      <v-responsive
-                        class="ml-auto overflow-visible"
-                      >
+                      <div class="mb-2">
+                        <v-slide-x-transition
+                          v-for="(error, type) in $store.getters.errors"
+                          :key="error[0]"
+                        >
+                          <v-alert
+                            v-if="type=='coupon'"
+                            dense
+                            dismissible
+                            type="error"
+                          >
+                            {{ error[0] }}
+                          </v-alert>
+                        </v-slide-x-transition>
+                      </div>
+                      <v-responsive class="ml-auto overflow-visible text-right">
                         <v-text-field
                           v-model="data.coupon"
                           :disabled="is_loading"
@@ -240,7 +278,7 @@
                         class="text-right py-0 d-flex align-center"
                       >
                         <span class="body-2 font-weight-light grey--text">
-                          Được giảm{{ is_percent ? `(${coupon_value}%)` : '' }}:
+                          Được giảm{{ coupon.is_percent ? `(${coupon.value}%)` : '' }}:
                         </span>
                         <v-spacer />
                         <v-responsive
@@ -311,7 +349,6 @@ export default {
   },
   data () {
     return {
-      cartStep: 1,
       is_visible: false,
       is_loading: false,
       is_valid: false,
@@ -328,6 +365,7 @@ export default {
         payment_type: null,
         coupon: "",
       },
+      addressBook: null,
       rules: {
         required: v => !!v || 'Không được bỏ trống',
         email: v => {
@@ -339,7 +377,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('cart', ['cart', 'total', 'amount', 'discount', 'total_amount', 'is_percent', 'coupon_value']),
+    ...mapGetters('cart', ['cart', 'total', 'amount', 'discount', 'total_amount', 'coupon']),
+    ...mapGetters('address-book', ['addresses']),
     shippingFee() {
       return this.is_fee ? this.$moneyFormat(10000) : "Miễn phí"
     },
@@ -347,30 +386,48 @@ export default {
       let t = this;
       let index = this.provinces.findIndex(p => p.id == t.data.province_id);
       return this.provinces[index].districts;
+    },
+  },
+  watch: {
+    addressBook: {
+      handler() {
+        this.updateAddress()
+      }
+    }
+  },
+  mounted() {
+    if (this.$auth.loggedIn) {
+      this.data.email = this.$auth.user.email;
+    }
+    if (this.discount) {
+      this.is_valid = true;
+      this.data.coupon = this.coupon.code;
     }
   },
   methods: {
     onCoupon() {
       this.is_visible = this.data.coupon.length > 0 ? true : false
     },
-    show() {
-      this.cart_drawer = !this.cart_drawer
-    },
     async verifyCoupon() {
       this.is_loading = true;
-      // let { coupon } = await this.$axios.$post("/checkcoupon", this.data.counpon);
-      let couponA = {
-        coupon: "SOMETHING",
-        coupon_value: 20,
-        is_percent: true
-      };
-      let couponB = {
-        coupon: "SOMETHING",
-        coupon_value: 200000,
-        is_percent: false
-      };
-      this.$store.dispatch("cart/addCoupon", this.data.coupon == "a" ? couponA : couponB);
-      this.is_valid = true;
+      try {
+        let { coupon } = await this.$axios.$get("/coupons/" + this.data.coupon);
+        if (coupon.min && this.amount < coupon.min) {
+          throw this.$store.dispatch("setErrors", {
+            coupon: [
+              'Coupon này chỉ có tác dụng với đơn hàng từ '+ this.$moneyFormat(coupon.min) +' trở lên!'
+            ]
+          });
+        }
+        this.$store.dispatch("cart/addCoupon", coupon);
+        this.is_valid = true;
+      } catch(error) {
+        this.$notifier.showMessage({
+          content: 'Có lỗi, vui lòng thử lại',
+          color: 'error',
+          right: false
+        })
+      }
       this.is_loading = false;
     },
     removeCoupon() {
@@ -392,6 +449,19 @@ export default {
         this.$store.dispatch("cart/clearCart");
         this.$router.push({ name: 'order-id', params: { id: res.data.id } });
       });
+    },
+    fullAddress(item) {
+      return `${item.address}, ${item.district.name}, ${item.province.name}`
+    },
+    updateAddress() {
+      if (this.$auth.loggedIn && this.addresses.length > 0) {
+        let index = this.addresses.findIndex(p => p.id == this.addressBook);
+        this.data.name = this.addresses[index].name;
+        this.data.phone = this.addresses[index].phone;
+        this.data.address = this.addresses[index].address;
+        this.data.province_id = this.addresses[index].province_id;
+        this.data.district_id = this.addresses[index].district_id;
+      }
     }
   },
 }
