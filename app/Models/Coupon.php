@@ -47,11 +47,27 @@ class Coupon extends Model
     return $this->starts_at ? Carbon::now()->gte($this->starts_at) : true;
   }
 
+  public function isOutOfUse()
+  {
+    return $this->number <= 0;
+  }
+
   public function isRedeemable()
   {
-    if ($this->number > 0 && !$this->isExpired() && $this->isStarted()) {
+    if (!$this->isOutOfUse() && !$this->isExpired() && $this->isStarted()) {
       return true;
     }
     return false;
+  }
+
+  public function scopeRedeemable(Builder $query)
+  {
+    $now = Carbon::now()->toDateTimeString();
+    return $query->where('starts_at', '<=', $now)
+      ->where('expires_at', '>', $now)
+      ->where(function ($query) {
+        $query->where('number', '>', 0)
+          ->orWhereNull('number');
+      });
   }
 }

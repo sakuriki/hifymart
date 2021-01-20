@@ -215,6 +215,13 @@ export default {
       this.is_loading = true;
       try {
         let { coupon } = await this.$axios.$get("/coupons/" + this.coupon);
+        if (coupon.min && this.amount < coupon.min) {
+          throw this.$store.dispatch("setErrors", {
+            coupon: [
+              'Coupon này chỉ có tác dụng với đơn hàng từ '+ this.$moneyFormat(coupon.min) +' trở lên!'
+            ]
+          });
+        }
         this.$store.dispatch("cart/addCoupon", coupon);
         this.is_valid = true;
       } catch(error) {
@@ -225,11 +232,6 @@ export default {
         })
       }
       this.is_loading = false;
-      // let coupon = {
-      //   coupon: "SOMETHING",
-      //   coupon_value: 20,
-      //   is_percent: true
-      // };
     },
     removeCoupon() {
       this.is_valid = false;

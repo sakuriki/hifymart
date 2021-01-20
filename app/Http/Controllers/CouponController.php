@@ -10,18 +10,32 @@ class CouponController extends Controller
 {
   public function __invoke($code, Request $request)
   {
-    $coupon = Coupon::select(['id', 'code', 'value', 'is_percent', 'min', 'max', 'starts_at', 'expires_at'])
+    $coupon = Coupon::select(['code', 'value', 'number', 'is_percent', 'min', 'max', 'starts_at', 'expires_at'])
       ->where('code', $code)
       ->first();
-    if (!$coupon) {
+    if (!$coupon || !$coupon->isStarted()) {
       return response()->json([
         'errors' => [
           'coupon' => ['Coupon không có thực']
         ]
       ], 404);
     }
+    if ($coupon->isExpired()) {
+      return response()->json([
+        'errors' => [
+          'coupon' => ['Coupon đã hết hạn']
+        ]
+      ], 404);
+    }
+    if ($coupon->isOutOfUse()) {
+      return response()->json([
+        'errors' => [
+          'coupon' => ['Coupon đã hết số lần sử dụng']
+        ]
+      ], 404);
+    }
     return response()->json([
-      'coupon' => $coupon
+      'coupon' => $coupon->makeHidden(['number', 'starts_at', 'expires_at'])
     ]);
   }
 }

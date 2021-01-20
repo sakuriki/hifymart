@@ -1,14 +1,9 @@
 import Vue from "vue";
 
 export const state = () => ({
-  coupon: null,
-  coupon_value: 0,
-  is_percent: false,
-  actualStep: 0,
+  coupon: {},
   cart: {},
-  cart_id: {},
-  success: false,
-  shippingInformation: {}
+  cart_id: {}
 });
 
 export const getters = {
@@ -24,20 +19,21 @@ export const getters = {
     );
   },
   discount: (state, getters) => {
-    return state.is_percent
-      ? (getters.amount * state.coupon_value) / 100
-      : state.coupon_value;
+    if (
+      !state.coupon.value ||
+      (state.coupon.min && getters.amount < state.coupon.min)
+    )
+      return 0;
+    if (!state.coupon.is_percent) return state.coupon.value;
+    let discount = (getters.amount * state.coupon.value) / 100;
+    let max = state.coupon.max;
+    return !max || discount < max ? discount : max;
   },
   total_amount: (state, getters) => {
     let total_amount = getters.amount - getters.discount;
     return total_amount > 0 ? total_amount : 0;
   },
-  coupon: ({ coupon }) => coupon,
-  coupon_value: ({ coupon_value }) => coupon_value,
-  is_percent: ({ is_percent }) => is_percent,
-  actualStep: ({ actualStep }) => actualStep,
-  success: ({ success }) => success,
-  shippingInformation: ({ shippingInformation }) => shippingInformation
+  coupon: ({ coupon }) => coupon
 };
 
 export const mutations = {
@@ -63,31 +59,18 @@ export const mutations = {
       Vue.delete(state.cart, item.id);
     }
   },
-  ADD_COUPON: (state, { coupon, coupon_value, is_percent }) => {
-    state.coupon = coupon;
-    state.coupon_value = coupon_value;
-    state.is_percent = is_percent;
+  ADD_COUPON: (state, coupon) => {
+    Vue.set(state, "coupon", coupon);
   },
   REMOVE_COUPON: state => {
-    state.coupon = null;
-    state.coupon_value = 0;
-    state.is_percent = false;
+    Vue.set(state, "coupon", {});
   },
   CLEAR_CART: state => {
     Vue.set(state, "cart", {});
     Vue.set(state, "cart_id", {});
   },
-  SET_ACTUAL_STEP: (state, step) => {
-    state.actualStep = step;
-  },
-  SET_SUCCESS: (state, value) => {
-    state.success = value;
-  },
-  SET_SHIPPING_INFORMATION: (state, payload) => {
-    state.shippingInformation = payload;
-  },
-  SET_CART_ITEM: (state, payload) => {
-    state.cart = payload;
+  SET_CART_ITEM: (state, cart) => {
+    Vue.set(state, "cart", cart);
   }
 };
 
@@ -100,12 +83,5 @@ export const actions = {
 
   removeCoupon: ({ commit }, item) => commit("REMOVE_COUPON", item),
 
-  clearCart: ({ commit }) => commit("CLEAR_CART"),
-
-  setSuccess: ({ commit }, value) => commit("SET_SUCCESS", value),
-
-  setActualStep: ({ commit }, value) => commit("SET_ACTUAL_STEP", value),
-
-  setShippingInformation: ({ commit }, payload) =>
-    commit("SET_SHIPPING_INFORMATION", payload)
+  clearCart: ({ commit }) => commit("CLEAR_CART")
 };
