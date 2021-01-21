@@ -180,6 +180,8 @@ return [
     App\Providers\ObserverServiceProvider::class,
     App\Providers\PermissionsServiceProvider::class,
 
+    App\Providers\SettingsServiceProvider::class,
+
   ],
 
   /*
