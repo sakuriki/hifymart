@@ -176,6 +176,16 @@
                 </v-sheet>
               </v-radio-group>
             </div>
+            <div class="pt-4">
+              <v-card>
+                <v-card-title>Vận chuyển</v-card-title>
+                <v-card-text>
+                  <p>Phí vận chuyển: {{ $moneyFormat(19000).replace('&nbsp;', '') }}</p>
+                  <p>Miễn phí với đơn hàng từ {{ $moneyFormat(200000).replace('&nbsp;', '') }} trở lên</p>
+                  <p>Chỉ hỗ trợ vận chuyển đối với đơn hàng từ {{ $moneyFormat(100000).replace('&nbsp;', '') }}. Với đơn hàng có giá trị thấp hơn, quý khách vui lòng mua tại showroom</p>
+                </v-card-text>
+              </v-card>
+            </div>
           </v-col>
           <v-col
             md="4"
@@ -294,6 +304,21 @@
                       class="text-right py-0 d-flex align-center"
                     >
                       <span class="body-2 font-weight-light grey--text">
+                        Thuế(VAT):
+                      </span>
+                      <v-spacer />
+                      <v-responsive
+                        min-width="100"
+                        class="grey--text text--darken-1 font-weight-medium shrink d-inline-flex justify-end"
+                      >
+                        {{ $moneyFormat(tax) }}
+                      </v-responsive>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      class="text-right py-0 d-flex align-center"
+                    >
+                      <span class="body-2 font-weight-light grey--text">
                         Phí ship:
                       </span>
                       <v-spacer />
@@ -301,7 +326,7 @@
                         min-width="100"
                         class="grey--text text--darken-1 font-weight-medium shrink d-inline-flex justify-end"
                       >
-                        {{ shippingFee }}
+                        {{ shipping_fee > 0 ? $moneyFormat(shipping_fee) : 'Miễn phí' }}
                       </v-responsive>
                     </v-col>
                     <v-col
@@ -377,11 +402,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('cart', ['cart', 'total', 'amount', 'discount', 'total_amount', 'coupon']),
+    ...mapGetters('cart', ['cart', 'total', 'amount', 'discount', 'tax', 'shipping_fee', 'total_amount', 'coupon']),
     ...mapGetters('address-book', ['addresses']),
-    shippingFee() {
-      return this.is_fee ? this.$moneyFormat(10000) : "Miễn phí"
-    },
+    // shippingFee() {
+    //   return this.is_fee ? this.$moneyFormat(19000) : "Miễn phí"
+    // },
     districtList() {
       let t = this;
       let index = this.provinces.findIndex(p => p.id == t.data.province_id);
