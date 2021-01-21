@@ -20,10 +20,12 @@ class CheckoutController extends Controller
       $orderProduct = [];
       foreach ($products as $product) {
         $quantity = $request->input("product")[$product->id];
-        $subTotal += $product->getSalePrice() * $quantity;
+        $price = $product->getSalePrice();
+        $subTotal += $price * $quantity;
         $orderProduct[] = [
           "product_id" => $product->id,
-          "quantity" => $quantity
+          "quantity" => $quantity,
+          "price" => $price
         ];
         // $newQuantity = $product->quantity - $quantity;
         // if ($newQuantity < 0) {
@@ -50,7 +52,6 @@ class CheckoutController extends Controller
         $coupon->number = --$coupon->number;
         $coupon->save();
       }
-      // return $coupon ? $coupon->code : null;
       $tax = $subTotal * 0.1;
       $totalAfterDiscount = $subTotal - $discount;
       $total = $totalAfterDiscount > 0 ? $totalAfterDiscount + $tax : 0;

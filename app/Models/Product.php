@@ -34,9 +34,9 @@ class Product extends Model
     'featured_image'
   ];
 
-  protected $hidden = [
-    'pivot'
-  ];
+  // protected $hidden = [
+  //   'pivot'
+  // ];
 
   public function brand()
   {
