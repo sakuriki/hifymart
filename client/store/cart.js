@@ -18,6 +18,12 @@ export const getters = {
       0
     );
   },
+  tax: (state, getters) => {
+    return getters.total_after_discount * 0.1;
+  },
+  shipping_fee: (state, getters) => {
+    return getters.amount >= 200000 ? 0 : 19000;
+  },
   discount: (state, getters) => {
     if (
       !state.coupon.value ||
@@ -29,9 +35,14 @@ export const getters = {
     let max = state.coupon.max;
     return !max || discount < max ? discount : max;
   },
+  total_after_discount: (state, getters) => {
+    return getters.amount - getters.discount;
+  },
   total_amount: (state, getters) => {
-    let total_amount = getters.amount - getters.discount;
-    return total_amount > 0 ? total_amount : 0;
+    let total_amount = getters.total_after_discount;
+    return total_amount > 0
+      ? total_amount + getters.tax + getters.shipping_fee
+      : getters.shipping_fee;
   },
   coupon: ({ coupon }) => coupon
 };
