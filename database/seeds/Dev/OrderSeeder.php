@@ -41,8 +41,9 @@ class OrderSeeder extends Seeder
       }
       $discount = 0;
       $tax = $subTotal * 0.1;
+      $shipping_fee = $subTotal >= 200000 ? 0 : 19000;
       $totalAfterDiscount = $subTotal - $discount;
-      $total = $totalAfterDiscount > 0 ? $totalAfterDiscount + $tax : 0;
+      $total = $totalAfterDiscount > 0 ? $totalAfterDiscount + $tax + $shipping_fee : $shipping_fee;
       $randDistrict = array_rand($districtIds, 1);
       $order = Order::create([
         'user_id' => $user ? $user->id : null,
@@ -55,6 +56,7 @@ class OrderSeeder extends Seeder
         'billing_discount' => 0,
         'billing_subtotal' => $subTotal,
         'billing_tax' => $tax,
+        'billing_shipping_fee' => $shipping_fee,
         'billing_total' => $total,
         'payment_type' => 'cod',
         'created_at' => $time,

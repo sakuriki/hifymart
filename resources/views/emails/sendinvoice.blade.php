@@ -109,8 +109,12 @@
             </tr>
             @endif
             <tr style="background-color:#f3f3f3">
-              <td style="text-align:right" colspan="3"><b>Phí vận chuyển</b></td>
+              <td style="text-align:right" colspan="3"><b>Thuế(VAT)</b></td>
               <td style="text-align:right">{{ number_format($order->billing_tax).' ₫' }}</td>
+            </tr>
+            <tr style="background-color:#f3f3f3">
+              <td style="text-align:right" colspan="3"><b>Phí vận chuyển</b></td>
+              <td style="text-align:right">{{ number_format($order->billing_shipping_fee).' ₫' }}</td>
             </tr>
             <tr style="background-color:#f3f3f3">
               <td style="text-align:right" colspan="3"><b>Tổng cộng</b></td>

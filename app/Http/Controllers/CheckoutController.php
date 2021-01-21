@@ -53,8 +53,9 @@ class CheckoutController extends Controller
         $coupon->save();
       }
       $tax = $subTotal * 0.1;
+      $shipping_fee = $subTotal >= 200000 ? 0 : 19000;
       $totalAfterDiscount = $subTotal - $discount;
-      $total = $totalAfterDiscount > 0 ? $totalAfterDiscount + $tax : 0;
+      $total = $totalAfterDiscount > 0 ? $totalAfterDiscount + $tax + $shipping_fee : $shipping_fee;
       $order = Order::create([
         'user_id' => auth()->user() ? auth()->user()->id : null,
         'district_id' => $request->district_id,
@@ -67,6 +68,7 @@ class CheckoutController extends Controller
         'billing_discount_code' => $coupon ? $coupon->code : null,
         'billing_subtotal' => $subTotal,
         'billing_tax' => $tax,
+        'billing_shipping_fee' => $shipping_fee,
         'billing_total' => $total,
         'payment_type' => $request->input('payment_type', 'cod')
       ]);
