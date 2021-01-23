@@ -91,7 +91,7 @@
 // import debounce from "lodash/debounce";
 export default {
   layout: "admin",
-  middleware: "auth",
+  middleware: "authorized",
   meta: {
     auth: {
       permission: "product.access"

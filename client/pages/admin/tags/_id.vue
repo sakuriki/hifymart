@@ -75,7 +75,7 @@
 <script>
 export default {
   layout: "admin",
-  middleware: "auth",
+  middleware: "authorized",
   meta: {
     auth: {
       permission: "tag.update"
