@@ -67,7 +67,7 @@
 <script>
 // import debounce from "lodash/debounce";
 export default {
-  // middleware: "auth",
+  // middleware: "authorized",
   // meta: {
   //   auth: {
   //     permission: "brand.read"

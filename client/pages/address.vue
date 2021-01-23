@@ -1,15 +1,15 @@
 <template>
-  <v-container>
+  <v-container fill-height>
     <v-layout
-      wrap
       row
+      wrap
     >
       <v-col
         cols="12"
         md="8"
         sm="12"
       >
-        <v-card>
+        <v-card height="100%">
           <div
             id="map"
             ref="map"
@@ -47,8 +47,53 @@
 </template>
 <script>
 export default {
-  data() {
-    return {};
+  head() {
+    return {
+      title: 'Hệ thống',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Hệ thống địa chỉ cửa hàng'
+        },
+        {
+          property: 'og:site_name',
+          content: process.env.appName
+        },
+        {
+          property: 'og:title',
+          content: 'Hệ thống'
+        },
+        {
+          property: 'og:description',
+          content: 'Hệ thống địa chỉ cửa hàng'
+        },
+        {
+          property: 'og:image',
+          content: ''
+        },
+        {
+          property: 'twitter:site',
+          content: process.env.appName
+        },
+        {
+          property: 'twitter:card',
+          content: 'summary_large_image'
+        },
+        {
+          property: 'twitter:title',
+          content: 'Hệ thống'
+        },
+        {
+          property: 'twitter:description',
+          content: 'Hệ thống địa chỉ cửa hàng'
+        },
+        {
+          property: 'twitter:image',
+          content: ''
+        },
+      ]
+    }
   },
   mounted() {
     var t = this;

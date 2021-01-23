@@ -49,6 +49,54 @@ export default {
       ],
     }
   },
+  head() {
+    return {
+      title: "Trang chủ",
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Trang chủ'
+        },
+        {
+          property: 'og:site_name',
+          content: process.env.appName
+        },
+        {
+          property: 'og:title',
+          content: 'Trang chủ'
+        },
+        {
+          property: 'og:description',
+          content: 'Trang chủ'
+        },
+        // {
+        //   property: 'og:image',
+        //   content: ''
+        // },
+        {
+          property: 'twitter:site',
+          content: process.env.appName
+        },
+        {
+          property: 'twitter:card',
+          content: 'summary_large_image'
+        },
+        {
+          property: 'twitter:title',
+          content: 'Trang chủ'
+        },
+        {
+          property: 'twitter:description',
+          content: 'Trang chủ'
+        },
+        // {
+        //   property: 'twitter:image',
+        //   content: ''
+        // },
+      ]
+    }
+  },
   computed: {
     ...mapGetters([
       'latestProducts',

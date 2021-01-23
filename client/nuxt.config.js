@@ -10,18 +10,26 @@ module.exports = {
    ** Headers of the page
    */
   head: {
-    title: "Shoppo",
+    titleTemplate: titleChunk =>
+      titleChunk
+        ? `${titleChunk} - ${process.env.APP_NAME}`
+        : process.env.APP_NAME,
     meta: [
       { charset: "utf-8" },
-      {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1, shrink-to-fit=no"
-      },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
       {
         hid: "description",
         name: "description",
         content:
           "Mua điện thoại thông minh mới nhất 2020. Giảm giá hấp dẫn. Trả góp 0%. Bảo hành chính hãng."
+      },
+      {
+        property: "og:type",
+        content: "website"
+      },
+      {
+        property: "og:locale",
+        content: "vi_vn"
       }
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
@@ -49,7 +57,8 @@ module.exports = {
   env: {
     baseUrl: process.env.CLIENT_BASE_URL || "http://localhost:3000",
     apiUrl: process.env.APP_URL || "http://localhost:8000",
-    GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY
+    GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
+    appName: process.env.APP_NAME || "VietShop"
   },
   vue: {
     config: {
@@ -91,6 +100,8 @@ module.exports = {
     "@nuxtjs/axios",
     // Doc: https://auth.nuxtjs.org/
     "@nuxtjs/auth",
+    // Doc: https://github.com/nuxt-community/robots-module
+    "@nuxtjs/robots",
     "cookie-universal-nuxt"
     // [
     //   "@nuxtjs/recaptcha",
@@ -105,6 +116,10 @@ module.exports = {
   buildModules: ["@nuxtjs/vuetify"],
   vuetify: {
     optionsPath: "./vuetify.options.js"
+  },
+  robots: {
+    UserAgent: "*",
+    Disallow: "/admin"
   },
   /*
    ** Axios module configuration

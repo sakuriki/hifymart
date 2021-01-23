@@ -27,10 +27,8 @@ export default function({ store, redirect, route }) {
       return meta.auth.permission;
     return null;
   });
-  if (
-    permission != null &&
-    store.getters.user.permissions.includes(permission)
-  ) {
+  const checker = (arr, target) => target.every(v => arr.includes(v));
+  if (permission && !checker(store.getters.user.permissions, permission)) {
     return redirect("/");
   }
 }

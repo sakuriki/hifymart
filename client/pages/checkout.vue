@@ -401,6 +401,11 @@ export default {
       },
     }
   },
+  head() {
+    return {
+      title: 'Thanh toán đơn hàng'
+    }
+  },
   computed: {
     ...mapGetters('cart', ['cart', 'total', 'amount', 'discount', 'tax', 'shipping_fee', 'total_amount', 'coupon']),
     ...mapGetters('address-book', ['addresses']),

@@ -312,6 +312,54 @@ export default {
       loading: false,
     }
   },
+  head() {
+    return {
+      title: this.product.name,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.product.description
+        },
+        {
+          property: 'og:site_name',
+          content: process.env.appName
+        },
+        {
+          property: 'og:title',
+          content: this.product.name
+        },
+        {
+          property: 'og:description',
+          content: this.product.description
+        },
+        {
+          property: 'og:image',
+          content: this.appUrl + this.product.featured_image
+        },
+        {
+          property: 'twitter:site',
+          content: process.env.appName
+        },
+        {
+          property: 'twitter:card',
+          content: 'summary_large_image'
+        },
+        {
+          property: 'twitter:title',
+          content: this.product.name
+        },
+        {
+          property: 'twitter:description',
+          content: this.product.description
+        },
+        {
+          property: 'twitter:image',
+          content: this.appUrl + this.product.featured_image
+        },
+      ]
+    }
+  },
   computed: {
     appUrl() {
       return process.env.apiUrl
@@ -376,9 +424,6 @@ export default {
       this.ratings = ratings;
       this.loading = false;
       this.$vuetify.goTo('#user_review')
-    },
-    a() {
-      return
     },
     cal_time_ago: function(time) {
       var timeDiff = new Date() - new Date(time);
