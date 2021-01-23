@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Rating;
+use RedisManager;
+use Carbon\Carbon;
 use App\Models\Product;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Resources\ProductCollection;
-use App\Http\Resources\Product as ProductResource;
 
 class ProductController extends Controller
 {
@@ -99,7 +100,7 @@ class ProductController extends Controller
 
   public function show($slug, Request $request)
   {
-    $data = Cache::remember('cache_product_' . $slug, 60 * 60 * 24, function () use ($slug, $request) {
+    $product = Cache::remember('cache_product_' . $slug, 60 * 60 * 24, function () use ($slug, $request) {
       $product = Product::where("slug", $slug)
         // ->leftJoin('ratings', 'ratings.product_id', '=', 'products.id')
         ->leftJoin('ratings', function ($query) {
@@ -137,15 +138,36 @@ class ProductController extends Controller
           $query->where("approved", 1);
         }])
         ->firstOrFail();
-      // return $product;
       $product->images->makeHidden(['product_id']);
       // $product->ratingsWithUser->makeHidden(['product_id', 'user_id', 'approved', 'created_at', 'updated_at']);
       $product->ratings->makeHidden(['product_id']);
       $product->ratings_average = (float) $product->ratings_average;
       return $product;
     });
+    $periods = ["day", "week", "month", "year"];
+    $client_ip = $request->ip();
+    $redis_prefix = "products_visits";
+    if (RedisManager::ttl($redis_prefix . "_recorded_ips:$product->id:$client_ip") < 0 || !RedisManager::exists($redis_prefix . "_recorded_ips:$product->id:$client_ip")) {
+      foreach ($periods as $period) {
+        if (RedisManager::ttl($redis_prefix . "_" . $period) < 0 || !RedisManager::exists($redis_prefix . "_" . $period)) {
+          $periodCarbon = Carbon::now()->{'endOf' . Str::studly($period)}();
+          $expireInSeconds = $periodCarbon->diffInSeconds() + 1;
+          RedisManager::incrBy($redis_prefix . "_" . $period . "_total", 0);
+          RedisManager::zIncrBy($redis_prefix . "_" . $period, 0, 0);
+          RedisManager::expire($redis_prefix . "_" . $period . "_total", $expireInSeconds);
+          RedisManager::expire($redis_prefix . "_" . $period, $expireInSeconds);
+        }
+        RedisManager::incr($redis_prefix . "_" . $period . "_total");
+        RedisManager::zIncrBy($redis_prefix . "_" . $period, 1, $product->id);
+      }
+      RedisManager::incr($redis_prefix . "_total");
+      RedisManager::zIncrBy($redis_prefix, 1, $product->id);
+      RedisManager::set($redis_prefix . "_recorded_ips:$product->id:$client_ip", true);
+      RedisManager::expire($redis_prefix . "_recorded_ips:$product->id:$client_ip", 15 * 60);
+    }
+    $product->view_count = RedisManager::zScore($redis_prefix, $product->id) ?: 0;
     return response()->json([
-      'product' => $data
+      'product' => $product
     ]);
   }
 
