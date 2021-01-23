@@ -9,6 +9,7 @@
         "@nuxtjs/auth": "^4.9.1",
         "@nuxtjs/axios": "^5.12.2",
         "@nuxtjs/recaptcha": "^0.6.2",
+        "@nuxtjs/robots": "^2.4.2",
         "apexcharts": "^3.23.1",
         "cookie": "^0.4.1",
         "cookie-universal-nuxt": "^2.1.4",

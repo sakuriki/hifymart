@@ -1250,6 +1250,11 @@
   resolved "https://registry.yarnpkg.com/@nuxtjs/recaptcha/-/recaptcha-0.6.2.tgz#c004ab919dfcf321dc52f6b92315aabe0f4108f8"
   integrity sha512-XtezYXzOeR3lWtKMs19btT+ib4DjwpBJgx3nvi8PNoArLVOU0+q5xU7L//KcddbTpi2mjcYKYcLouNBn25/L1Q==
 
+"@nuxtjs/robots@^2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/robots/-/robots-2.4.2.tgz#9a96c91abb70e39b414eec502ef1cf7d5ef0235e"
+  integrity sha512-BW3qhvxlPBKlMkZHtARFPeliFraiZHS28G3j4qgRbSfOBtHC0yDX3Dnq1LkQMzAbPfbw6A1L3sdjgBVZZnfFAw==
+
 "@nuxtjs/vuetify@^1.11.2":
   version "1.11.2"
   resolved "https://registry.yarnpkg.com/@nuxtjs/vuetify/-/vuetify-1.11.2.tgz#fefa861d98c021e10dd579a5b91b34b3fb49dc99"
