@@ -19,7 +19,7 @@ class DashboardController extends Controller
         'response' => 'You are unauthorized to access this resource'
       ]);
     }
-    $count = DB::select("SELECT (SELECT COUNT(*) FROM `products`) as `products`, (SELECT COUNT(*) FROM `orders`) as `orders`, (SELECT COUNT(*) FROM `users`) as `users`")[0];
+    $count = DB::select("SELECT (SELECT COUNT(*) FROM `products`) as `products`, (SELECT COUNT(*) FROM `users`) as `users`")[0];
     $lastMonth = Order::select([
       DB::raw('count(id) as `count`'),
       DB::raw('SUM(billing_total) as `amount`'),

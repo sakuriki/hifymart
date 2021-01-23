@@ -3,7 +3,85 @@
     <v-row>
       <v-col
         cols="12"
-        md="4"
+        md="3"
+      >
+        <v-card>
+          <div class="d-flex flex-no-wrap justify-space-between">
+            <div clas="d-flex align-center">
+              <v-card-text>
+                <p>Lợi nhuận hôm nay</p>
+                <p class="text-h6 font-weight-bold">
+                  {{ $moneyFormat(todayData.amount) }}
+                </p>
+                <NuxtLink
+                  :to="{ name: 'admin-orders' }"
+                  class="primary--text"
+                >
+                  <span>Xem thêm</span>
+                  <v-icon
+                    color="primary"
+                    small
+                  >
+                    mdi-chevron-right-circle-outline
+                  </v-icon>
+                </NuxtLink>
+              </v-card-text>
+            </div>
+            <v-avatar
+              class="ma-3"
+              size="94"
+              tile
+              color="accent"
+            >
+              <v-icon dark>
+                mdi-cash
+              </v-icon>
+            </v-avatar>
+          </div>
+        </v-card>
+      </v-col>
+      <v-col
+        cols="12"
+        md="3"
+      >
+        <v-card>
+          <div class="d-flex flex-no-wrap justify-space-between">
+            <div clas="d-flex align-center">
+              <v-card-text>
+                <p>Đơn hàng hôm nay</p>
+                <p class="text-h6 font-weight-bold">
+                  {{ todayData.count }}
+                </p>
+                <NuxtLink
+                  :to="{ name: 'admin-orders' }"
+                  class="primary--text"
+                >
+                  <span>Xem thêm</span>
+                  <v-icon
+                    color="primary"
+                    small
+                  >
+                    mdi-chevron-right-circle-outline
+                  </v-icon>
+                </NuxtLink>
+              </v-card-text>
+            </div>
+            <v-avatar
+              class="ma-3"
+              size="94"
+              tile
+              color="success"
+            >
+              <v-icon dark>
+                mdi-cart
+              </v-icon>
+            </v-avatar>
+          </div>
+        </v-card>
+      </v-col>
+      <v-col
+        cols="12"
+        md="3"
       >
         <v-card>
           <div class="d-flex flex-no-wrap justify-space-between">
@@ -42,46 +120,7 @@
       </v-col>
       <v-col
         cols="12"
-        md="4"
-      >
-        <v-card>
-          <div class="d-flex flex-no-wrap justify-space-between">
-            <div clas="d-flex align-center">
-              <v-card-text>
-                <p>Tổng số đơn hàng</p>
-                <p class="text-h6 font-weight-bold">
-                  {{ total_count.orders }}
-                </p>
-                <NuxtLink
-                  :to="{ name: 'admin-orders' }"
-                  class="primary--text"
-                >
-                  <span>Xem thêm</span>
-                  <v-icon
-                    color="primary"
-                    small
-                  >
-                    mdi-chevron-right-circle-outline
-                  </v-icon>
-                </NuxtLink>
-              </v-card-text>
-            </div>
-            <v-avatar
-              class="ma-3"
-              size="94"
-              tile
-              color="success"
-            >
-              <v-icon dark>
-                mdi-cart
-              </v-icon>
-            </v-avatar>
-          </div>
-        </v-card>
-      </v-col>
-      <v-col
-        cols="12"
-        md="4"
+        md="3"
       >
         <v-card>
           <div class="d-flex flex-no-wrap justify-space-between">
@@ -141,7 +180,7 @@
 <script>
 export default {
   layout: "admin",
-  middleware: "auth",
+  middleware: "authorized",
   meta: {
     auth: {
       permission: "dashboard"
@@ -154,6 +193,38 @@ export default {
       last_month: last_month,
       last_year: last_year
     }
+  },
+  head() {
+    return {
+      title: "Dashboard",
+    }
+  },
+  computed: {
+    today() {
+      let time = new Date(),
+        day = ("0" + time.getDate()).slice(-2),
+        month = ("0" + time.getMonth()+1).slice(-2),
+        year = time.getFullYear();
+      return `${year}-${month}-${day}`
+    },
+    todayData() {
+      let time = new Date(),
+        day = ("0" + time.getDate()).slice(-2),
+        month = ("0" + time.getMonth()+1).slice(-2),
+        year = time.getFullYear();
+      let today = `${year}-${month}-${day}`;
+      let index = this.last_month.findIndex(p => p.date == today);
+      if (index > -1) {
+        return this.last_month[index]
+      }
+      return {
+        count: 0,
+        amoun: 0
+      }
+    }
+  },
+  mounted() {
+    console.log(this.$route)
   },
 }
 </script>
