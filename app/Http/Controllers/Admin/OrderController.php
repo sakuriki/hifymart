@@ -22,8 +22,8 @@ class OrderController extends Controller
       $query->where('id', 'LIKE', "%{$request->input('q')}%")
         ->orWhere('billing_name', 'LIKE', "%{$request->input('q')}%");
     })
-      ->select(['id', 'user_id', 'district_id', 'province_id', 'billing_email', 'billing_name', 'billing_address', 'billing_phone', 'billing_total', 'is_paid', 'status', 'shipped'])
-      ->with(["province", "district", "user:id,name,email,phone"])
+      ->select(['id', 'user_id', 'billing_name', 'billing_total', 'billing_shipping_fee', 'billing_tax', 'payment_type', 'is_paid', 'status', 'shipped'])
+      ->with(["user:id,name"])
       ->withCount('order_product');
     $sortBy = $request->input("sortBy");
     $sortDesc = $request->input("sortDesc") == "false" ? "asc" : "desc";
@@ -31,17 +31,17 @@ class OrderController extends Controller
       case "id":
         $orders = $orders->orderBy("id", $sortDesc);
         break;
-      case "billing_email":
-        $orders = $orders->orderBy("billing_email", $sortDesc);
-        break;
       case "billing_name":
         $orders = $orders->orderBy("billing_name", $sortDesc);
         break;
-      case "billing_phone":
-        $orders = $orders->orderBy("billing_phone", $sortDesc);
-        break;
       case "billing_total":
         $orders = $orders->orderBy("billing_total", $sortDesc);
+        break;
+      case "billing_shipping_fee":
+        $orders = $orders->orderBy("billing_shipping_fee", $sortDesc);
+        break;
+      case "billing_tax":
+        $orders = $orders->orderBy("billing_tax", $sortDesc);
         break;
       case "is_paid":
         $orders = $orders->orderBy("is_paid", $sortDesc);
@@ -59,8 +59,17 @@ class OrderController extends Controller
         $orders = $orders->latest();
     }
     $orders = $orders->paginate($request->input("per_page", 12));
-    $orders->setCollection($orders->getCollection()->makeHidden(['user_id', 'district_id', 'province_id']));
+    $orders->setCollection($orders->getCollection()->makeHidden(['user_id']));
     return response()->json(new OrderCollection($orders));
+  }
+
+  public function show($id)
+  {
+    $order = Order::with(["products", "province:id,name", "district:id,name", "user"])
+      ->findOrFail($id);
+    return response()->json([
+      'order' => $order
+    ]);
   }
 
   public function destroy(Product $product)

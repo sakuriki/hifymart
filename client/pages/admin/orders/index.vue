@@ -29,6 +29,12 @@
         <template #[`item.billing_total`]="{ item }">
           <span class="red--text">{{ $moneyFormat(item.billing_total) }}</span>
         </template>
+        <template #[`item.billing_shipping_fee`]="{ item }">
+          <span class="red--text">{{ $moneyFormat(item.billing_shipping_fee) }}</span>
+        </template>
+        <template #[`item.billing_tax`]="{ item }">
+          <span class="red--text">{{ $moneyFormat(item.billing_tax) }}</span>
+        </template>
         <template #[`item.order_product_count`]="{ item }">
           <span><v-chip color="primary">{{ item.order_product_count }}</v-chip></span>
         </template>
@@ -54,9 +60,9 @@
           <v-btn
             color="success"
             icon
-            :to="{ name: 'admin-products-id',params: { id: item.id }}"
+            :to="{ name: 'admin-orders-id',params: { id: item.id }}"
           >
-            <v-icon>mdi-pencil-outline</v-icon>
+            <v-icon>mdi-eye-outline</v-icon>
           </v-btn>
           <v-btn
             color="error"
@@ -111,9 +117,9 @@ export default {
         { text: 'Khách hàng', align: 'start', value: 'billing_name' },
         { text: 'Hoá đơn', value: 'billing_total' },
         { text: 'Giỏ hàng', value: 'order_product_count' },
-        { text: 'Địa chỉ', value: 'billing_address', sortable: false },
-        { text: 'Quận/Huyện', value: 'district.name', sortable: false },
-        { text: 'Tỉnh/Thành', value: 'province.name', sortable: false },
+        { text: 'Thuế', value: 'billing_tax' },
+        { text: 'Phí ship', value: 'billing_shipping_fee' },
+        { text: 'Phương thức thanh toán', value: 'payment_type', sortable: false },
         { text: 'Thanh toán', value: 'is_paid' },
         { text: 'Vận chuyển', value: 'shipped' },
         { text: 'Tình trạng', value: 'status' },
