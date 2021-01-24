@@ -80,12 +80,13 @@
         <table>
           <thead style="color:#ffffff;background:#1976d2;text-align:left">
             <tr style="padding:8px">
-              <th>Tên</th>
+              <th>Sản phẩm</th>
               <th style="text-align:right">SL</th>
               <th style="text-align:right">Giá</th>
               <th style="text-align:right">Tổng</th>
             </tr>
           </thead>
+          <tbody>
           @foreach($order->products as $product)
             <tr>
               <td class="img--col">
@@ -97,6 +98,7 @@
               <td style="text-align:right">{{ number_format($product->pivot->price * $product->pivot->quantity).' ₫' }}</td>
             </tr>
           @endforeach
+          </tbody>
           <tfoot style="text-align:right">
             <tr style="background-color:#f3f3f3">
               <td style="text-align:right" colspan="3"><b>Thành tiền</b></td>
@@ -109,7 +111,7 @@
             </tr>
             @endif
             <tr style="background-color:#f3f3f3">
-              <td style="text-align:right" colspan="3"><b>Thuế(VAT)</b></td>
+              <td style="text-align:right" colspan="3"><b>Thuế</b></td>
               <td style="text-align:right">{{ number_format($order->billing_tax).' ₫' }}</td>
             </tr>
             <tr style="background-color:#f3f3f3">
