@@ -78,6 +78,8 @@ class OrderSeeder extends Seeder
         'billing_shipping_fee' => $shipping_fee,
         'billing_total' => $total,
         'payment_type' => 'cod',
+        'is_paid' => $faker->boolean(70),
+        'shipped' => $faker->boolean(70),
         'created_at' => $time,
         'updated_at' => $time
       ]);

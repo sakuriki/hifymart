@@ -67,7 +67,7 @@ class RatingController extends Controller
       ->limit($request->input('page_size', 4))
       ->get();
     $ratings->transform(function ($item) use ($orders) {
-      $item->is_purchased = $orders[$item->user->id]->is_paid ?? 0;
+      $item->is_purchased = $orders[$item->user->id]->is_paid ?? false;
       return $item;
     });
     return response()->json([

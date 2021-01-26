@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tax;
 use App\Models\Order;
 use App\Models\Coupon;
 use App\Models\Product;
