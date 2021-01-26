@@ -17,9 +17,9 @@ $factory->define(Coupon::class, function (Faker $faker) {
   } else {
     $value = $faker->numberBetween(10, 300) * 1000;
   }
-  if ($faker->boolean(70)) {
-    $min = $faker->numberBetween(10, 300) * 1000;
-    $max = $faker->numberBetween($min / 1000, 400) * 1000;
+  if ($is_percent && $faker->boolean(70)) {
+    $min = $faker->numberBetween(100, 500) * 1000;
+    $max = $faker->numberBetween(10, $min / 1000 * 0.9) * 1000;
   }
   if ($faker->boolean(70)) {
     $starts_at = $faker->dateTimeBetween('-1 years', '+1 year');

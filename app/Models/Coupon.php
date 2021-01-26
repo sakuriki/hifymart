@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Coupon extends Model
 {
@@ -60,14 +61,20 @@ class Coupon extends Model
     return false;
   }
 
-  public function scopeRedeemable(Builder $query)
+  public function scopeRedeemable(Builder $query, $now = null, $total = null)
   {
-    $now = Carbon::now()->toDateTimeString();
+    $now = $now ?? Carbon::now()->toDateTimeString();
     return $query->where('starts_at', '<=', $now)
       ->where('expires_at', '>', $now)
       ->where(function ($query) {
         $query->where('number', '>', 0)
           ->orWhereNull('number');
+      })
+      ->when($total, function ($query, $total) {
+        return $query->where(function ($query) use ($total) {
+          $query->where('min', '<=', $total)
+            ->orWhereNull('min');
+        });
       });
   }
 }

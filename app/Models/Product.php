@@ -117,7 +117,7 @@ class Product extends Model
 
   public function getSalePrice($now = null)
   {
-    $now = $now ? $now : Carbon::now()->toDateTimeString();
+    $now = $now ?? Carbon::now()->toDateTimeString();
     if (
       ($this->sale_off_quantity && $this->sale_off_quantity <= 0)
       || $now < $this->sale_off_start

@@ -209,6 +209,18 @@
                 :rules="[rules.image, rules.size]"
               />
               <v-autocomplete
+                v-model="data.tax_id"
+                :items="taxes"
+                item-text="name"
+                item-value="id"
+                label="Thuế"
+                prepend-icon="mdi-alpha-t-box-outline"
+                hint="Loại thuế của sản phẩm"
+                persistent-hint
+                required
+                :rules="[rules.required]"
+              />
+              <v-autocomplete
                 v-model="data.brand_id"
                 :items="brands"
                 item-text="name"
@@ -226,7 +238,7 @@
                 item-text="name"
                 item-value="id"
                 label="Danh mục"
-                prepend-icon="mdi-alpha-d-box-outline"
+                prepend-icon="mdi-archive-outline"
                 hint="Sản phẩm thuộc danh mục nào?"
                 persistent-hint
                 required
@@ -317,8 +329,10 @@ export default {
     let { categories } = await app.$axios.$get("/categories");
     let { brands } = await app.$axios.$get("/brands");
     let { tags } = await app.$axios.$get("/tags");
+    let { taxes } = await app.$axios.$get("/taxes");
     return {
       tags: tags,
+      taxes: taxes,
       brands: brands,
       data: product,
       categories: categories
@@ -348,6 +362,7 @@ export default {
         description: null,
         brand_id: null,
         category_id: null,
+        tax_id: null,
         tags: [],
         price: null,
         quantity: null,
