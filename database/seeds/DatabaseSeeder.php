@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\Tax;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Setting;
 use App\Models\Permission;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -63,6 +65,12 @@ class DatabaseSeeder extends Seeder
       array("name" => "tag.update", "group" => "tag", "description" => "Cập nhật thẻ"),
       array("name" => "tag.view", "group" => "tag", "description" => "Xem chi tiết thẻ"),
       array("name" => "tag.delete", "group" => "tag", "description" => "Xoá thẻ"),
+      // quyền loại thuế
+      array("name" => "tax.access", "group" => "tax", "description" => "Truy cập danh sách loại thuế"),
+      array("name" => "tax.create", "group" => "tax", "description" => "Thêm loại thuế"),
+      array("name" => "tax.update", "group" => "tax", "description" => "Cập nhật loại thuế"),
+      array("name" => "tax.view", "group" => "tax", "description" => "Xem chi tiết loại thuế"),
+      array("name" => "tax.delete", "group" => "tax", "description" => "Xoá loại thuế"),
       // người dùng
       array("name" => "user.access", "group" => "user", "description" => "Truy cập danh người dùng"),
       array("name" => "user.create", "group" => "user", "description" => "Thêm người dùng"),
@@ -99,5 +107,25 @@ class DatabaseSeeder extends Seeder
       ]
     );
     $user->roles()->sync([$role_customer->id]);
+    // Thuế
+    Tax::firstOrCreate(['name' => 'None', 'value' => '0']);
+    Tax::firstOrCreate(['name' => 'VAT', 'value' => '10']);
+    /**
+     * Cài đặt
+     */
+    // Cài đặt chung
+    $settings = [
+      ['name' => 'logo'],
+      ['name' => 'favicon'],
+      ['name' => 'app-name', 'value' => 'VietShop'],
+      ['name' => 'contact-mail'],
+      ['name' => 'contact-phone'],
+      ['name' => 'contact-address'],
+      ['name' => 'facebook'],
+      ['name' => 'twitter'],
+      ['name' => 'instagram'],
+      ['name' => 'youtube'],
+    ];
+    Setting::insert($settings);
   }
 }

@@ -16,12 +16,15 @@ class CheckoutController extends Controller
     try {
       DB::beginTransaction();
       $products = Product::whereIn("id", collect($request->input("product"))->keys())->get();
+      $taxes = Tax::all()->keyBy('id');
       $subTotal = 0;
+      $tax = 0;
       $orderProduct = [];
       foreach ($products as $product) {
         $quantity = $request->input("product")[$product->id];
         $price = $product->getSalePrice();
         $subTotal += $price * $quantity;
+        $tax += $subTotal * $taxes[$product->tax_id]->value / 100;
         $orderProduct[] = [
           "product_id" => $product->id,
           "quantity" => $quantity,
@@ -52,7 +55,6 @@ class CheckoutController extends Controller
         $coupon->number = --$coupon->number;
         $coupon->save();
       }
-      $tax = $subTotal * 0.1;
       $shipping_fee = $subTotal >= 200000 ? 0 : 19000;
       $totalAfterDiscount = $subTotal - $discount;
       $total = $totalAfterDiscount > 0 ? $totalAfterDiscount + $tax + $shipping_fee : $shipping_fee;

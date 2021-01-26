@@ -175,7 +175,7 @@ class ProductController extends Controller
         'response' => 'You are unauthorized to access this resource'
       ]);
     }
-    $product = Product::select(['id', 'brand_id', 'category_id', 'name', 'slug', 'description', 'price', 'quantity', 'sale_off_price', 'sale_off_quantity', 'sale_off_start', 'sale_off_end', 'featured_image'])
+    $product = Product::select(['id', 'brand_id', 'category_id', 'tax_id', 'name', 'slug', 'description', 'price', 'quantity', 'sale_off_price', 'sale_off_quantity', 'sale_off_start', 'sale_off_end', 'featured_image'])
       ->with(['tags:id,name', 'images:id,product_id,url'])
       ->findOrFail($id);
     // $product = $product->load(['tags:id,name', 'images:id,product_id,url']);
