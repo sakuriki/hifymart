@@ -155,7 +155,7 @@ export default {
       },
       {
         group: "/admin/brands",
-        icon: "mdi-alpha-b-box-outline",
+        icon: "mdi-alpha-n-box-outline",
         title: "Nhãn hiệu",
         permission: "brand.access",
         children: [
@@ -222,6 +222,24 @@ export default {
             title: "Thêm mới",
             permission: "tag.create",
             to: "/admin/tags/add",
+          },
+        ],
+      },
+      {
+        group: "/admin/taxes",
+        icon: "mdi-alpha-t-box-outline",
+        title: "Thuế",
+        permission: "tax.access",
+        children: [
+          {
+            title: "Danh sách loại thuế",
+            permission: "tax.access",
+            to: "/admin/taxes",
+          },
+          {
+            title: "Thêm mới",
+            permission: "tax.create",
+            to: "/admin/taxes/add",
           },
         ],
       },
