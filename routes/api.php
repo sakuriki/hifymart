@@ -21,6 +21,7 @@ Route::group(['prefix' => '/auth', ['middleware' => 'throttle:20,5']], function 
 Route::group(['middleware' => 'jwtnew'], function () {
   Route::group(['prefix' => '/admin'], function () {
     Route::apiResource('tags', 'Admin\TagController');
+    Route::apiResource('taxes', 'Admin\TaxController');
     Route::apiResource('roles', 'Admin\RoleController');
     Route::apiResource('users', 'Admin\UserController');
     Route::apiResource('brands', 'Admin\BrandController');
@@ -51,6 +52,7 @@ Route::get('/provinces', 'ProvinceController@index');
 Route::get('/tags', 'TagController@index');
 Route::get('/coupons/{code}', 'CouponController');
 Route::apiResource('brands', 'BrandController')->only(["index", "show"]);
+Route::apiResource('taxes', 'TaxController')->only(["index", "show"]);
 Route::apiResource('orders', 'OrderController');
 Route::apiResource('categories', 'CategoryController')->only(["index", "show"]);
 Route::apiResource('ratings', 'RatingController')->only(["show"]);
