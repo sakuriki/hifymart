@@ -27,6 +27,8 @@ Route::group(['middleware' => 'jwtnew'], function () {
     Route::apiResource('brands', 'Admin\BrandController');
     Route::apiResource('orders', 'Admin\OrderController');
     Route::apiResource('coupons', 'Admin\CouponController');
+    Route::apiResource('ratings', 'Admin\RatingController');
+    Route::apiResource('comments', 'Admin\CommentController');
     Route::apiResource('products', 'Admin\ProductController');
     Route::apiResource('categories', 'Admin\CategoryController');
     Route::apiResource('permissions', 'Admin\PermissionController');

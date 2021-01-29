@@ -154,6 +154,18 @@ export default {
         ],
       },
       {
+        icon: "mdi-comment-multiple-outline",
+        title: "Bình luận",
+        permission: "comment.access",
+        to: "/admin/comments",
+      },
+      {
+        icon: "mdi-star-outline",
+        title: "Đánh giá",
+        permission: "rating.access",
+        to: "/admin/ratings",
+      },
+      {
         group: "/admin/brands",
         icon: "mdi-alpha-n-box-outline",
         title: "Nhãn hiệu",

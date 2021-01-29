@@ -35,6 +35,12 @@ class DatabaseSeeder extends Seeder
       array("name" => "category.update", "group" => "category", "description" => "Cập nhật danh mục"),
       array("name" => "category.view", "group" => "category", "description" => "Xem chi tiết danh mục"),
       array("name" => "category.delete", "group" => "category", "description" => "Xoá danh mục"),
+      // quyền danh bình luận
+      array("name" => "comment.access", "group" => "comment", "description" => "Truy cập danh sách bình luận"),
+      array("name" => "comment.create", "group" => "comment", "description" => "Thêm bình luận"),
+      array("name" => "comment.update", "group" => "comment", "description" => "Cập nhật bình luận"),
+      array("name" => "comment.view", "group" => "comment", "description" => "Xem chi tiết bình luận"),
+      array("name" => "comment.delete", "group" => "comment", "description" => "Xoá bình luận"),
       // quyền danh mã giảm giá/coupon
       array("name" => "coupon.access", "group" => "coupon", "description" => "Truy cập danh sách mã giảm giá"),
       array("name" => "coupon.create", "group" => "coupon", "description" => "Thêm mã giảm giá"),
@@ -53,6 +59,12 @@ class DatabaseSeeder extends Seeder
       array("name" => "product.update", "group" => "product", "description" => "Cập nhật sản phẩm"),
       array("name" => "product.view", "group" => "product", "description" => "Xem chi tiết sản phẩm"),
       array("name" => "product.delete", "group" => "product", "description" => "Xoá sản phẩm"),
+      // quyền đánh giá/rating
+      array("name" => "rating.access", "group" => "rating", "description" => "Truy cập danh đánh giá"),
+      array("name" => "rating.create", "group" => "rating", "description" => "Thêm đánh giá"),
+      array("name" => "rating.update", "group" => "rating", "description" => "Cập nhật đánh giá"),
+      array("name" => "rating.view", "group" => "rating", "description" => "Xem chi tiết đánh giá"),
+      array("name" => "rating.delete", "group" => "rating", "description" => "Xoá đánh giá"),
       // quyền vai trò/role
       array("name" => "role.access", "group" => "role", "description" => "Truy cập danh vai trò"),
       array("name" => "role.create", "group" => "role", "description" => "Thêm vai trò"),
