@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 class Rating extends Model
 {
   protected $fillable = ['approved', 'user_id', 'rating', 'review'];
+  protected $casts = [
+    'approved' => 'boolean'
+  ];
 
   public function user()
   {
