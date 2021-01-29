@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Builder;
 class Comment extends Model
 {
   protected $fillable = [
+    'name',
+    'phone',
+    'email',
     'content',
     'user_id',
     'product_id',
@@ -34,7 +37,8 @@ class Comment extends Model
   public function scopeSearch(Builder $query, ?string $search)
   {
     if ($search) {
-      return $query->where('comments', 'LIKE', "%{$search}%");
+      return $query->where('content', 'LIKE', "%{$search}%")
+        ->orWhere('name', 'LIKE', "%{$search}%");
     }
   }
 }
