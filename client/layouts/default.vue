@@ -108,9 +108,8 @@
           <span style="font-size:12px;color: #ffba00">DĐ: 01212123</span>
         </ToolbarIcon>
         <ToolbarIcon
-          class="pl-4"
+          class="pl-4 pointer"
           icon="mdi-cart"
-          style="cursor: pointer"
           @click.native="openSideCart"
         >
           <span>({{ total }}) Sản phẩm</span>

@@ -11,3 +11,6 @@ button.multi-line > span.v-btn__content {
 .user-rating > .v-icon {
   padding: 0;
 }
+.pointer {
+  cursor: pointer;
+}

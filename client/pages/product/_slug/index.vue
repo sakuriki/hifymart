@@ -111,8 +111,7 @@
                     prepend-icon="mdi-minus"
                     hide-details
                     @click:append-outer="data.count++"
-                    @click:prepend="data.count > 1 && data.count--"
-                    @change="onCountChange"
+                    @click:prepend="data.count > 2 && data.count--"
                   />
                 </div>
                 <div class="mt-2">
@@ -131,6 +130,7 @@
                       color="success"
                       width="100%"
                       x-large
+                      @click="addToCart"
                     >
                       <span class="subtitle-1">Thêm vào giỏ</span>
                       <span class="subtitle-2 text-none">Tiếp tục mua sắm</span>
@@ -146,6 +146,7 @@
                       color="info"
                       width="100%"
                       x-large
+                      @click="checkOut"
                     >
                       <span class="subtitle-1">Mua ngay</span>
                       <span class="subtitle-2 text-none">Giao hàng miễn phí tận nơi</span>
@@ -272,6 +273,7 @@
   </v-container>
 </template>
 <script>
+import { mapActions } from "vuex";
 export default {
   async asyncData({ app, params, store }) {
     let { product } = await app.$axios.$get("/products/" + params.slug);
@@ -403,9 +405,7 @@ export default {
     'pagination.current_page': 'fetchReview'
   },
   methods: {
-    onCountChange() {
-      console.log(this.data.count)
-    },
+    ...mapActions('cart', ['addItem']),
     scrollToReview() {
       this.$vuetify.goTo(0)
     },
@@ -447,6 +447,19 @@ export default {
       }
       timeDiff = parseInt(timeDiff / (60*60*24*30*1000));
       return "".concat(timeDiff, " tháng trước")
+    },
+    addToCart() {
+      this.addItem({ product: this.product, add: this.data.count });
+      this.data.count = 1;
+      this.$notifier.showMessage({
+        content: 'Thêm vào giỏ hàng thành công!',
+        color: 'success',
+        right: false
+      })
+    },
+    checkOut() {
+      this.addItem({ product: this.product, add: this.data.count });
+      this.$router.push({ name: 'checkout' });
     }
   },
 }

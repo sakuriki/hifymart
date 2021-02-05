@@ -7,7 +7,7 @@
       <v-carousel-item
         v-for="(slide, i) in slides"
         :key="i"
-        src="http://banhang.test/storage/banners/690x300.png"
+        src="http://via.placeholder.com/690x300?text=Banner%20ngang"
       />
     </v-carousel>
     <IndexList

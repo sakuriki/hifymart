@@ -33,7 +33,6 @@
             <v-card-title>
               {{ 47 > product.name.length ? product.name : product.name.substring(0, 47) + "..." }}
             </v-card-title>
-
             <v-card-subtitle>
               <span
                 class="red--text"
