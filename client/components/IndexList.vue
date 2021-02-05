@@ -4,10 +4,10 @@
     style="height: unset"
   >
     <v-col
-      v-if="left"
       cols="12"
       md="4"
       sm="12"
+      :order="left ? 0 : 1"
     >
       <v-img
         height="100%"
@@ -18,6 +18,7 @@
       cols="12"
       md="8"
       sm="12"
+      :order="left ? 1 : 0"
     >
       <div class="align-center">
         <v-flex class="d-flex flex flex-row justify-left align-center flex-wrap mb-3">
@@ -39,17 +40,6 @@
         </v-flex>
         <ProductList :products="products" />
       </div>
-    </v-col>
-    <v-col
-      v-if="!left"
-      cols="12"
-      md="4"
-      sm="12"
-    >
-      <v-img
-        height="100%"
-        :src="banner"
-      />
     </v-col>
   </v-layout>
 </template>
@@ -74,7 +64,7 @@ export default {
     },
     banner: {
       type: String,
-      default: "http://banhang.test/storage/banners/325x400.png"
+      default: "http://via.placeholder.com/325x600.png?text=Banner%20d%E1%BB%8Dc"
     }
   }
 }
