@@ -127,16 +127,16 @@ class DatabaseSeeder extends Seeder
      */
     // Cài đặt chung
     $settings = [
-      ['name' => 'logo'],
-      ['name' => 'favicon'],
+      ['name' => 'logo', 'value' => null],
+      ['name' => 'favicon', 'value' => null],
       ['name' => 'app-name', 'value' => 'VietShop'],
-      ['name' => 'contact-mail'],
-      ['name' => 'contact-phone'],
-      ['name' => 'contact-address'],
-      ['name' => 'facebook'],
-      ['name' => 'twitter'],
-      ['name' => 'instagram'],
-      ['name' => 'youtube'],
+      ['name' => 'contact-mail', 'value' => null],
+      ['name' => 'contact-phone', 'value' => null],
+      ['name' => 'contact-address', 'value' => null],
+      ['name' => 'facebook', 'value' => null],
+      ['name' => 'twitter', 'value' => null],
+      ['name' => 'instagram', 'value' => null],
+      ['name' => 'youtube', 'value' => null],
     ];
     Setting::insert($settings);
   }

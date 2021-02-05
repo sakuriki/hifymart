@@ -26,7 +26,7 @@ class DevCommentSeeder extends Seeder
           $comments[] = [
             'product_id' => $product->id,
             'user_id' => $user->id,
-            'comment' => $faker->realText(),
+            'content' => $faker->realText(),
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
           ];
