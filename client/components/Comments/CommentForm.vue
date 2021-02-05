@@ -4,7 +4,7 @@
       ref="form"
       v-model="valid"
     >
-      <template v-if="!$auth.loggedIn && (!commentInfo.name || edit_info)">
+      <template v-if="!$auth.loggedIn && (!name || edit_info)">
         <v-text-field
           v-model="info.name"
           label="Họ tên"
@@ -20,7 +20,10 @@
           :rules="[v => !!v || 'Không được bỏ trống']"
         />
       </template>
-      <span v-if="!$auth.loggedIn && commentInfo.name && !edit_info">Bình luận dưới tư cách <span class="primary--text">{{ commentInfo.name }}</span>(<span @click="edit_info=true">Thay đổi</span>)</span>
+      <span v-if="!$auth.loggedIn && name && !edit_info">Bình luận dưới tư cách <span class="primary--text">{{ name }}</span>(<span
+        class="pointer"
+        @click="edit_info=true"
+      >Thay đổi</span>)</span>
       <v-textarea
         v-model="content"
         name="comment"
@@ -65,6 +68,7 @@
   </v-card-text>
 </template>
 <script>
+import { mapGetters } from "vuex";
 export default{
   name: 'CommentForm',
   props: {
@@ -91,13 +95,18 @@ export default{
     }
   },
   computed: {
-    commentInfo() {
-      return this.$store.getters['comment/info'];
-    },
+    ...mapGetters('customer', ['name', 'phone', 'email']),
     requireValidation(v) {
       return this.$auth.loggedIn
         ? true
         : !!v || 'Không được bỏ trống';
+    }
+  },
+  created() {
+    this.info = {
+      name: this.name,
+      phone: this.phone,
+      email: this.email
     }
   },
   methods: {
@@ -112,8 +121,8 @@ export default{
       }
       // console.log(config);
       try {
-        if (!this.commentInfo.name || this.edit_info) {
-          this.$store.dispatch('comment/setInfo', this.info);
+        if (!this.name || this.edit_info) {
+          this.$store.dispatch('customer/setInfo', this.info);
           this.edit_info = false;
         }
         let { comment } = await this.$axios.$post('/comments', config);

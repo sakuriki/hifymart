@@ -39,5 +39,7 @@ export const actions = {
 
   setPhone: ({ commit }) => commit("SET_PHONE"),
 
+  setInfo: ({ commit }) => commit("SET_INFO"),
+
   clearInfo: ({ commit }) => commit("CLEAR_INFO")
 };

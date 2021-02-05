@@ -50,7 +50,7 @@ export const getters = {
 export const mutations = {
   ADD_ITEM: (state, { product, add }) => {
     if (!product) return;
-    if (product.count + add < 0) {
+    if (product.count + add <= 0) {
       Vue.delete(state.cart, product.id);
     } else {
       if (product.id in state.cart) {
