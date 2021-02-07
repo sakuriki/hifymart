@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\Admin\ProductCollection;
@@ -18,7 +19,7 @@ class ProductController extends Controller
 {
   public function index(Request $request)
   {
-    $user = auth()->user();
+    $user = Auth::user();
     if (!$user || !$user->can('product.access')) {
       return response()->json([
         'code'   => 401,
@@ -47,6 +48,12 @@ class ProductController extends Controller
       case "orders_count":
         $data = $data->orderBy("orders_count", $sortDesc);
         break;
+      case 'views_count':
+        $list = RedisManager::zRevRangeByScore("products_visits", "+inf", "-inf");
+        $ids_ordered = implode(',', $list);
+        $data = $data->whereIn('id', $list)
+          ->orderByRaw("FIELD(id, $ids_ordered)");
+        break;
       default:
         $data = $data->latest();
     }
@@ -59,7 +66,7 @@ class ProductController extends Controller
 
   public function store(ProductRequest $request)
   {
-    $user = auth()->user();
+    $user = Auth::user();
     if (!$user || !$user->can('product.create')) {
       return response()->json([
         'code'   => 401,
@@ -115,7 +122,7 @@ class ProductController extends Controller
 
   public function update($id, ProductRequest $request)
   {
-    $user = auth()->user();
+    $user = Auth::user();
     if (!$user || !$user->can('product.update')) {
       return response()->json([
         'code'   => 401,
@@ -168,7 +175,7 @@ class ProductController extends Controller
 
   public function show($id)
   {
-    $user = auth()->user();
+    $user = Auth::user();
     if (!$user || !$user->can('product.view')) {
       return response()->json([
         'code'   => 401,
@@ -188,7 +195,7 @@ class ProductController extends Controller
 
   public function destroy(Product $product)
   {
-    $user = auth()->user();
+    $user = Auth::user();
     if (!$user || !$user->can('product.delete')) {
       return response()->json([
         'code'   => 401,

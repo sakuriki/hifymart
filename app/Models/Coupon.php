@@ -6,6 +6,37 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * App\Models\Coupon
+ *
+ * @property int $id
+ * @property string $code
+ * @property int $value
+ * @property int|null $number
+ * @property int|null $min
+ * @property int|null $max
+ * @property bool $is_percent
+ * @property string|null $starts_at
+ * @property string|null $expires_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static Builder|Coupon newModelQuery()
+ * @method static Builder|Coupon newQuery()
+ * @method static Builder|Coupon query()
+ * @method static Builder|Coupon redeemable($now = null, $total = null)
+ * @method static Builder|Coupon whereCode($value)
+ * @method static Builder|Coupon whereCreatedAt($value)
+ * @method static Builder|Coupon whereExpiresAt($value)
+ * @method static Builder|Coupon whereId($value)
+ * @method static Builder|Coupon whereIsPercent($value)
+ * @method static Builder|Coupon whereMax($value)
+ * @method static Builder|Coupon whereMin($value)
+ * @method static Builder|Coupon whereNumber($value)
+ * @method static Builder|Coupon whereStartsAt($value)
+ * @method static Builder|Coupon whereUpdatedAt($value)
+ * @method static Builder|Coupon whereValue($value)
+ * @mixin \Eloquent
+ */
 class Coupon extends Model
 {
   protected $fillable = [

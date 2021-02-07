@@ -16,6 +16,67 @@ use App\Models\ProductImage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * App\Models\Product
+ *
+ * @property int $id
+ * @property int|null $brand_id
+ * @property int|null $category_id
+ * @property int|null $tax_id
+ * @property string $name
+ * @property string $slug
+ * @property string $description
+ * @property int $price
+ * @property int|null $sale_off_price
+ * @property int|null $sale_off_quantity
+ * @property string|null $sale_off_start
+ * @property string|null $sale_off_end
+ * @property int $quantity
+ * @property string $featured_image
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read Brand|null $brand
+ * @property-read Category|null $category
+ * @property-read \Illuminate\Database\Eloquent\Collection|Comment[] $comments
+ * @property-read int|null $comments_count
+ * @property-read mixed $tag_names
+ * @property-read \Illuminate\Database\Eloquent\Collection|ProductImage[] $images
+ * @property-read int|null $images_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|Order[] $orders
+ * @property-read int|null $orders_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|Rating[] $ratings
+ * @property-read int|null $ratings_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|Rating[] $ratingsWithUser
+ * @property-read int|null $ratings_with_user_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|Tag[] $tags
+ * @property-read int|null $tags_count
+ * @property-read User $user
+ * @property-read \Illuminate\Database\Eloquent\Collection|Wishlist[] $wishlists
+ * @property-read int|null $wishlists_count
+ * @method static Builder|Product latest($order = 'desc')
+ * @method static Builder|Product newModelQuery()
+ * @method static Builder|Product newQuery()
+ * @method static Builder|Product onSale()
+ * @method static Builder|Product query()
+ * @method static Builder|Product search($search, $from)
+ * @method static Builder|Product whereBrandId($value)
+ * @method static Builder|Product whereCategoryId($value)
+ * @method static Builder|Product whereCreatedAt($value)
+ * @method static Builder|Product whereDescription($value)
+ * @method static Builder|Product whereFeaturedImage($value)
+ * @method static Builder|Product whereId($value)
+ * @method static Builder|Product whereName($value)
+ * @method static Builder|Product wherePrice($value)
+ * @method static Builder|Product whereQuantity($value)
+ * @method static Builder|Product whereSaleOffEnd($value)
+ * @method static Builder|Product whereSaleOffPrice($value)
+ * @method static Builder|Product whereSaleOffQuantity($value)
+ * @method static Builder|Product whereSaleOffStart($value)
+ * @method static Builder|Product whereSlug($value)
+ * @method static Builder|Product whereTaxId($value)
+ * @method static Builder|Product whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Product extends Model
 {
   use Helper;
