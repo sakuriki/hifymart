@@ -1,38 +1,40 @@
 import Vue from "vue";
 
 export const state = () => ({
-  product: {}
+  products: {}
 });
 
 export const getters = {
-  product: ({ product }) => product
+  products: ({ products }) => products,
+  count: ({ products }) => Object.keys(products).length
 };
 
 export const mutations = {
   SET_PRODUCT: (state, payload) => {
-    state.product = payload;
+    state.products = payload;
   },
   ADD_PRODUCT: (state, product) => {
-    if (!(product.id in state.product)) {
-      Vue.set(state.product, product.id, product);
+    console.log(product);
+    if (!(product.id in state.products)) {
+      Vue.set(state.products, product.id, product);
     }
   },
   REMOVE_PRODUCT: (state, product) => {
-    if (state.product[product.id]) {
-      Vue.delete(state.product, product.id);
+    if (state.products[product.id]) {
+      Vue.delete(state.products, product.id);
     }
   },
   CLEAR_PRODUCT: state => {
-    state.product = {};
+    state.products = {};
   }
 };
 
 export const actions = {
-  setProduct: ({ commit }) => commit("SET_PRODUCT"),
+  setProduct: ({ commit }, payload) => commit("SET_PRODUCT", payload),
 
-  addProduct: ({ commit }) => commit("ADD_PRODUCT"),
+  addProduct: ({ commit }, item) => commit("ADD_PRODUCT", item),
 
-  removeProduct: ({ commit }) => commit("REMOVE_PRODUCT"),
+  removeProduct: ({ commit }, item) => commit("REMOVE_PRODUCT", item),
 
   clearProduct: ({ commit }) => commit("CLEAR_PRODUCT")
 };

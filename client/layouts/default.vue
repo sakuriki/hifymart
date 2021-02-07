@@ -79,12 +79,12 @@
       style="z-index: 7"
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title class="headline text-uppercase">
+      <v-toolbar-title class="headline">
         <NuxtLink
           class="toolbar-title white--text text-decoration-none"
           to="/"
         >
-          shop.re
+          VietShop
         </NuxtLink>
       </v-toolbar-title>
       <v-spacer class="hidden-sm-and-down" />
@@ -121,6 +121,39 @@
     <v-main>
       <nuxt />
       <BackToTop />
+      <v-btn
+        v-show="count > 0"
+        fab
+        dark
+        fixed
+        bottom
+        right
+        color="accent"
+        style="bottom: 86px"
+        :to="{ name: 'compare' }"
+      >
+        <v-icon>mdi-compare</v-icon>
+      </v-btn>
+      <v-btn
+        fab
+        dark
+        fixed
+        bottom
+        left
+        color="success"
+      >
+        <v-icon>mdi-phone</v-icon>
+      </v-btn>
+      <v-btn
+        dark
+        fixed
+        bottom
+        left
+        color="success"
+        style="left:60px;bottom:26px;z-index:3"
+      >
+        0971-123-321
+      </v-btn>
       <GlobalSnackBar />
     </v-main>
     <Footer />
@@ -254,7 +287,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('cart', ['total'])
+    ...mapGetters('cart', ['total']),
+    ...mapGetters('compare', ['count']),
   },
   beforeMount() {
     this.updateBrowserDimensions()
