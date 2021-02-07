@@ -35,6 +35,9 @@
         <template #[`item.quantity`]="{ item }">
           <span><v-chip color="primary">{{ item.quantity }}</v-chip></span>
         </template>
+        <template #[`item.views_count`]="{ item }">
+          <span><v-chip color="primary">{{ item.views_count }}</v-chip></span>
+        </template>
         <template #[`item.actions`]="{ item }">
           <v-btn
             v-if="canUpdate"
@@ -114,6 +117,7 @@ export default {
         { text: 'Giá', value: 'price' },
         { text: 'Tồn kho', value: 'quantity' },
         { text: 'Số order', value: 'orders_count' },
+        { text: 'Lượt xem', value: 'views_count' },
         { text: 'Nhãn hiệu', value: 'brand.name', sortable: false },
         { text: 'Danh mục', value: 'category.name', sortable: false },
         { text: 'Actions', value: 'actions', sortable: false }

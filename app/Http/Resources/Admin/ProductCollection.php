@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Admin;
 
+use RedisManager;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class ProductCollection extends ResourceCollection
@@ -15,7 +16,11 @@ class ProductCollection extends ResourceCollection
   public function toArray($request)
   {
     return [
-      'products' => $this->collection,
+      // dùng tạm, đợi PHPRedis update ZMSCORE trong Redis 6.2
+      'products' => $this->collection->transform(function ($item) {
+        $item->views_count = RedisManager::ZSCORE("products_visits", $item->id) ?: 0;
+        return $item;
+      }),
       'pagination' => [
         'total' => $this->total(),
         'count' => $this->count(),
