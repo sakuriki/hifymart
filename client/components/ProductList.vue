@@ -88,6 +88,7 @@
                       class="mx-2"
                       v-bind="attrs"
                       v-on="on"
+                      @click.prevent="addCompare(product)"
                     >
                       mdi-compare
                     </v-icon>
@@ -124,7 +125,11 @@ export default {
     roundRating(rating) {
       return Math.round(rating * 10) / 10;
     },
-    ...mapActions('cart', ['addItem']),
+    ...mapActions('cart', { addItem: 'addItem' }),
+    ...mapActions('compare', { addCompare: 'addProduct' }),
+    // addCompare(a) {
+    //   console.log(a)
+    // }
     // addItem(item) {
     //   return this.$store.dispatch('cart/addItem', { item, count: 1 })
     //     .then(console.log(item))

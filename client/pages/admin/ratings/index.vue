@@ -30,7 +30,7 @@
           <span><v-btn
             small
             :color="item.approved?'success':'accent'"
-          >{{ item.approved ? "Approved" : "No" }}</v-btn></span>
+          >{{ item.approved ? "Duyệt" : "Chưa" }}</v-btn></span>
         </template>
         <template #[`item.rating`]="{ item }">
           <span>{{ item.rating }}<v-icon
@@ -39,22 +39,36 @@
           >mdi-star</v-icon></span>
         </template>
         <template #[`item.actions`]="{ item }">
-          <v-btn
-            v-if="canUpdate"
-            color="success"
-            icon
-            :to="{ name: 'admin-ratings-id',params: { id: item.id }}"
-          >
-            <v-icon>mdi-pencil-outline</v-icon>
-          </v-btn>
-          <v-btn
-            v-if="canDelete"
-            color="error"
-            icon
-            @click="beforeDelete"
-          >
-            <v-icon>mdi-delete-outline</v-icon>
-          </v-btn>
+          <v-tooltip bottom>
+            <template #activator="{ on, attrs }">
+              <v-btn
+                v-if="canUpdate"
+                v-bind="attrs"
+                color="success"
+                icon
+                v-on="on"
+                @click="beforeApprove(item.id)"
+              >
+                <v-icon>mdi-check</v-icon>
+              </v-btn>
+            </template>
+            <span>Duyệt</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template #activator="{ on, attrs }">
+              <v-btn
+                v-if="canDelete"
+                color="error"
+                v-bind="attrs"
+                icon
+                v-on="on"
+                @click="beforeDelete"
+              >
+                <v-icon>mdi-delete-outline</v-icon>
+              </v-btn>
+            </template>
+            <span>Xoá</span>
+          </v-tooltip>
         </template>
       </v-data-table>
     </v-card>
@@ -82,10 +96,10 @@ export default {
       options: {},
       selected: [],
       headers: [
-        { text: 'Review', align: 'start', value: 'review' },
-        { text: 'Đánh giá', value: 'rating' },
         { text: 'Người viết', value: 'user.name', sortable: false },
-        { text: 'Xét duyệt', value: 'approved' },
+        { text: 'Review', align: 'start', value: 'review', width: '40%' },
+        { text: 'Đánh giá', value: 'rating' },
+        { text: 'Trạng thái', value: 'approved' },
         { text: 'Actions', value: 'actions', sortable: false }
       ],
     }
@@ -139,8 +153,11 @@ export default {
         })
       }
     },
+    beforeApprove(item) {
+      console.log('xét duyệt ', item)
+    },
     beforeDelete: function(item) {
-      console.log("xác nhận xoá", item)
+      console.log("xác nhận xoá ", item)
     }
   },
 }

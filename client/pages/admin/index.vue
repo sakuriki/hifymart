@@ -210,7 +210,7 @@ export default {
     todayData() {
       let time = new Date(),
         day = ("0" + time.getDate()).slice(-2),
-        month = ("0" + time.getMonth()+1).slice(-2),
+        month = ("0" + (time.getMonth() + 1)).slice(-2),
         year = time.getFullYear();
       let today = `${year}-${month}-${day}`;
       let index = this.last_month.findIndex(p => p.date == today);
@@ -222,9 +222,6 @@ export default {
         amoun: 0
       }
     }
-  },
-  mounted() {
-    console.log(this.$route)
   },
 }
 </script>
