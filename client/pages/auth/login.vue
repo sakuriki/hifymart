@@ -101,6 +101,9 @@ export default {
     async login() {
       try {
         await this.$auth.login({ data: this.data });
+        this.$router.push(
+          this.$route.query.redirect ? this.$route.query.redirect : "/"
+        );
       } catch (e) {
         this.$notifier.showMessage({
           content: 'Có lỗi, vui lòng thử lại',
@@ -108,9 +111,6 @@ export default {
           right: false
         })
       }
-      this.$router.push(
-        this.$route.query.redirect ? this.$route.query.redirect : "/"
-      );
     },
   },
 }

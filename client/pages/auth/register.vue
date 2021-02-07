@@ -123,6 +123,8 @@ export default {
     async register() {
       try {
         await this.$axios.post("/auth/register", this.data);
+        this.$auth.login({ data: this.data });
+        this.$router.push({ name: "index" });
       } catch (e) {
         this.$notifier.showMessage({
           content: 'Có lỗi, vui lòng thử lại',
@@ -130,8 +132,6 @@ export default {
           right: false
         })
       }
-      this.$auth.login({ data: this.data });
-      this.$router.push({ name: "index" });
     }
   },
 }
