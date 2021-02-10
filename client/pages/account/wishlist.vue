@@ -37,7 +37,7 @@
           <v-img
             max-height="200px"
             aspect-ratio="1"
-            :src="'http://banhang.test/storage/featured_image/' + item.featured_image"
+            :src="apiUrl + item.featured_image"
           />
         </template>
         <template #[`item.price`]="{ item }">
@@ -65,14 +65,8 @@
   </v-container>
 </template>
 <script>
-// import debounce from "lodash/debounce";
 export default {
   middleware: "authorized",
-  // meta: {
-  //   auth: {
-  //     permission: "brand.read"
-  //   }
-  // },
   data () {
     return {
       pagination: {
@@ -86,7 +80,6 @@ export default {
       options: {},
       selected: [],
       headers: [
-        // { text: 'ID', align: 'start', value: 'id' },
         { text: 'Ảnh', align: 'start', value: 'image' },
         { text: 'Tên', value: 'name' },
         { text: 'Giá', value: 'price' },
@@ -94,14 +87,11 @@ export default {
       ],
     }
   },
-  // computed: {
-  //   canUpdate() {
-  //     return this.$auth.user.permissions.includes("brand.update")
-  //   },
-  //   canDelete() {
-  //     return this.$auth.user.permissions.includes("brand.delete")
-  //   }
-  // },
+  computed: {
+    apiUrl() {
+      return process.env.apiUrl
+    }
+  },
   watch: {
     options: {
       handler () {

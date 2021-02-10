@@ -90,7 +90,7 @@ export default {
         { text: 'SĐT', value: 'phone' },
         { text: 'Số bình luận', value: 'comments_count' },
         { text: 'Số order', value: 'orders_count' },
-        { text: 'Wishlists', value: 'wishlists_count' },
+        { text: 'Muốn mua', value: 'wishlists_count' },
         { text: 'Actions', value: 'actions', sortable: false }
       ],
     }

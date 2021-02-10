@@ -76,11 +76,12 @@
                       class="mx-2"
                       v-bind="attrs"
                       v-on="on"
+                      @click.prevent="beforeWishlist(product.id)"
                     >
                       mdi-heart-plus
                     </v-icon>
                   </template>
-                  <span>Thêm vào wishlist</span>
+                  <span>Thêm vào danh sách muốn mua</span>
                 </v-tooltip>
                 <v-tooltip bottom>
                   <template #activator="{ on, attrs }">
@@ -127,6 +128,30 @@ export default {
     },
     ...mapActions('cart', { addItem: 'addItem' }),
     ...mapActions('compare', { addCompare: 'addProduct' }),
+    beforeWishlist(product) {
+      if (this.$auth.loggedIn) {
+        return this.addToWishlist(product)
+      }
+      console.log('chưa đăng nhập', product)
+    },
+    async addToWishlist(product) {
+      try {
+        await this.$axios.$post('/wishlists', {
+          product_id: product
+        });
+        this.$notifier.showMessage({
+          content: 'Thêm vào danh sách muốn mua thành công',
+          color: 'success',
+          right: false
+        })
+      } catch(err) {
+        this.$notifier.showMessage({
+          content: 'Có lỗi, vui lòng thử lại',
+          color: 'error',
+          right: false
+        })
+      }
+    }
     // addCompare(a) {
     //   console.log(a)
     // }

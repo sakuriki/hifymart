@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\WishlistCollection;
 
 class WishlistController extends Controller
@@ -16,7 +17,18 @@ class WishlistController extends Controller
    */
   public function store(Request $request)
   {
-    //
+    try {
+      Wishlist::firstOrCreate([
+        'product_id' => $request->product_id,
+        'user_id' => auth()->user()->id
+      ]);
+      return response()->noContent();
+    } catch (\Exception $exception) {
+      return response()->json([
+        "success" => false,
+        "errors" => $exception->getMessage()
+      ], 422);
+    }
   }
 
   /**
@@ -57,8 +69,16 @@ class WishlistController extends Controller
    * @param  \App\Wishlist  $wishlist
    * @return \Illuminate\Http\Response
    */
-  public function destroy(Wishlist $wishlist)
+  public function destroy($product_id)
   {
-    //
+    try {
+      Wishlist::where('product_id', $product_id)->first()->delete();
+    } catch (\Exception $exception) {
+      return response()->json([
+        'success' => false,
+        'msg' => $exception->getMessage()
+      ], 422);
+    };
+    return response()->noContent();
   }
 }

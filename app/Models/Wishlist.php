@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Wishlist extends Model
 {
+  public $timestamps = false;
   protected $fillable = ['product_id', 'user_id'];
 
   public function user()
