@@ -1,4 +1,7 @@
 export const state = () => ({
+  brands: [],
+  categories: [],
+  settings: {},
   latestProducts: [],
   onsaleProducts: [],
   hottestProducts: [],
@@ -21,7 +24,10 @@ export const getters = {
   // randomProducts(state) {
   //   return state.randomProducts;
   // },
+  settings: ({ settings }) => settings,
   latestProducts: ({ latestProducts }) => latestProducts,
+  brands: ({ brands }) => brands,
+  categories: ({ categories }) => categories,
   onsaleProducts: ({ onsaleProducts }) => onsaleProducts,
   hottestProducts: ({ hottestProducts }) => hottestProducts,
   randomProducts: ({ randomProducts }) => randomProducts,
@@ -41,6 +47,15 @@ export const getters = {
 export const mutations = {
   SET_ERRORS(state, errors) {
     state.errors = errors;
+  },
+  SET_SETTINGS(state, data) {
+    state.settings = data;
+  },
+  SET_BRANDS(state, data) {
+    state.brands = data;
+  },
+  SET_CATEGORIES(state, data) {
+    state.categories = data;
   },
   SET_LASTEST_PRODUCTS(state, data) {
     state.latestProducts = data;
@@ -89,6 +104,13 @@ export const actions = {
         });
         vuexContext.commit("cart/SET_CART_ITEM", cartProduct);
       }
+
+      let { data } = await this.$axios.$get("/settings");
+      vuexContext.commit("SET_SETTINGS", data);
+
+      let { brands, categories } = await this.$axios.$get("/footer");
+      vuexContext.commit("SET_BRANDS", brands);
+      vuexContext.commit("SET_CATEGORIES", categories);
 
       var latestProducts = await this.$axios.$get("/products?per_page=8");
       vuexContext.commit("SET_LASTEST_PRODUCTS", latestProducts.products);

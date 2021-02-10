@@ -24,13 +24,17 @@ export default function({ store, redirect, route }) {
       }
     });
   }
-  const permission = route.meta.map(meta => {
+  let permission = route.meta.map(meta => {
     if (meta.auth && typeof meta.auth.permission !== "undefined")
       return meta.auth.permission;
     return null;
   });
   const checker = (arr, target) => target.every(v => arr.includes(v));
-  if (permission && !checker(store.getters.user.permissions, permission)) {
+  if (
+    permission &&
+    !(permission.length === 1 && permission[0] === null) &&
+    !checker(store.getters.user.permissions, permission)
+  ) {
     return redirect("/");
   }
 }

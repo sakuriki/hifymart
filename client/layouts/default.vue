@@ -104,8 +104,8 @@
         <ToolbarIcon
           icon="mdi-phone"
         >
-          <a href="tel:01212122">01212122</a>
-          <span style="font-size:12px;color: #ffba00">DĐ: 01212123</span>
+          <a :href="'tel:'+settings['contact-phone']">{{ settings['contact-phone'] }}</a>
+          <span style="font-size:12px;color: #ffba00">DĐ: {{ settings['contact-mobile'] }}</span>
         </ToolbarIcon>
         <ToolbarIcon
           class="pl-4 pointer"
@@ -141,19 +141,25 @@
         bottom
         left
         color="success"
+        :href="'tel:'+settings['contact-phone']"
+        @mouseover="phone = true"
+        @mouseleave="phone = false"
       >
         <v-icon>mdi-phone</v-icon>
       </v-btn>
-      <v-btn
-        dark
-        fixed
-        bottom
-        left
-        color="success"
-        style="left:60px;bottom:26px;z-index:3"
-      >
-        0971-123-321
-      </v-btn>
+      <v-slide-x-transition>
+        <v-btn
+          v-show="phone"
+          dark
+          fixed
+          bottom
+          left
+          color="success"
+          style="left:60px;bottom:26px;z-index:3"
+        >
+          {{ settings['contact-phone'] }}
+        </v-btn>
+      </v-slide-x-transition>
       <GlobalSnackBar />
     </v-main>
     <Footer />
@@ -169,6 +175,7 @@ export default {
   },
   data() {
     return {
+      phone: false,
       searchText: "",
       drawer: null,
       items: [
@@ -287,6 +294,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['settings']),
     ...mapGetters('cart', ['total']),
     ...mapGetters('compare', ['count']),
   },

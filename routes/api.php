@@ -36,7 +36,7 @@ Route::group(['middleware' => 'jwtnew'], function () {
     Route::get('/dashboard', 'Admin\DashboardController');
   });
   Route::get('/auth/user', 'Auth\AuthController@user');
-  Route::apiResource('wishlists', 'WishlistController')->only(["index", "show"]);
+  Route::apiResource('wishlists', 'WishlistController')->only(["store", "show", "destroy"]);
   Route::apiResource('addressBooks', 'AddressBookController');
 });
 Route::group(['middleware' => 'jwtoptinal'], function () {
@@ -53,6 +53,8 @@ Route::get('/user/{id}', 'UserController@show');
 Route::get('/provinces', 'ProvinceController@index');
 Route::get('/tags', 'TagController@index');
 Route::get('/coupons/{code}', 'CouponController');
+Route::get('/footer', 'FooterController');
+Route::get('/settings', 'SettingController');
 Route::apiResource('brands', 'BrandController')->only(["index", "show"]);
 Route::apiResource('taxes', 'TaxController')->only(["index", "show"]);
 Route::apiResource('orders', 'OrderController');
