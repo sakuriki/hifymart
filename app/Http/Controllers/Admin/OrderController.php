@@ -4,14 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
+use App\Exports\OrdersExport;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Resources\Admin\OrderCollection;
 
 class OrderController extends Controller
 {
   public function index(Request $request)
   {
-    $user = auth()->user();
+    $user = Auth::user();
     if (!$user || $user->cannot('order.access')) {
       return response()->json([
         'code'   => 401,
@@ -74,7 +77,7 @@ class OrderController extends Controller
 
   public function destroy(Product $product)
   {
-    $user = auth()->user();
+    $user = Auth::user();
     if (!$user || $user->cannot('order.delete')) {
       return response()->json([
         'code'   => 401,
@@ -83,5 +86,11 @@ class OrderController extends Controller
     }
     $product->delete();
     return response()->noContent();
+  }
+
+  public function export(Request $request)
+  {
+    $type = $request->input('type', 'xlsx');
+    return Excel::download(new OrdersExport, 'users.' . $type);
   }
 }

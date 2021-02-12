@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/export', 'Admin\OrderController@export');
 Route::group(['prefix' => '/auth', ['middleware' => 'throttle:20,5']], function () {
   Route::post('/register', 'Auth\AuthController@register')->name('register');
   Route::post('/login', 'Auth\AuthController@login')->name('login');
