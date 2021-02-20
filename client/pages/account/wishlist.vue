@@ -52,13 +52,34 @@
           </span>
         </template>
         <template #[`item.actions`]="{ item }">
-          <v-btn
-            color="error"
-            icon
-            @click="beforeDelete(item)"
-          >
-            <v-icon>mdi-delete-outline</v-icon>
-          </v-btn>
+          <v-tooltip bottom>
+            <template #activator="{ on, attrs }">
+              <v-btn
+                color="success"
+                icon
+                v-bind="attrs"
+                v-on="on"
+                @click="addItem(item.id)"
+              >
+                <v-icon>mdi-cart-plus</v-icon>
+              </v-btn>
+            </template>
+            <span>Thêm vào giỏ hàng</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template #activator="{ on, attrs }">
+              <v-btn
+                color="error"
+                icon
+                v-bind="attrs"
+                v-on="on"
+                @click="deleteItem(item.id)"
+              >
+                <v-icon>mdi-delete-outline</v-icon>
+              </v-btn>
+            </template>
+            <span>Xoá khỏi danh sách</span>
+          </v-tooltip>
         </template>
       </v-data-table>
     </v-card>
@@ -83,7 +104,7 @@ export default {
         { text: 'Ảnh', align: 'start', value: 'image' },
         { text: 'Tên', value: 'name' },
         { text: 'Giá', value: 'price' },
-        { text: 'Xoá', value: 'actions', sortable: false }
+        { text: 'Hành động', value: 'actions', sortable: false }
       ],
     }
   },
@@ -120,7 +141,7 @@ export default {
           sortDesc: this.options.sortDesc[0]
         }
       }
-      this.$axios.get("/wishlists/" + this.$auth.user.id, config)
+      this.$axios.get("/wishlists", config)
       .then(res => {
         if(res.status==200) {
           this.data = res.data.products,
@@ -129,8 +150,48 @@ export default {
         }
       });
     },
-    beforeDelete: function(item) {
-      console.log("xác nhận xoá", item)
+    addItem(id) {
+      let t = this;
+      let index = this.data.findIndex(p => p.id == id);
+      if (index > -1) {
+        this.$store.dispatch('cart/addItem', {
+          product: t.data[index],
+          add: 1
+        });
+      } else {
+        this.$notifier.showMessage({
+          content: 'Có lỗi khi thêm, vui lòng thử lại',
+          color: 'error',
+          right: false
+        })
+      }
+    },
+    // async beforeDelete() {
+    //   let confirm = await this.$refs.confirm.open('Xoá sản phẩm', 'Bạn có chắc muốn xoá sản phẩm này? Đây là hành động vĩnh viễn và không thể thay đổi!', { color: 'red' });
+    //   if (confirm) {
+    //     this.deleteItem()
+    //   }
+    // },
+    deleteItem(id) {
+      this.$axios.delete("/wishlists/" + id)
+      .then(() => {
+        let index = this.data.findIndex(p => p.id == id);
+        if (index > -1) {
+          this.data.splice(index, 1);
+        }
+        this.$notifier.showMessage({
+          content: 'Xoá thành công',
+          color: 'success',
+          right: false
+        })
+      })
+      .catch(() => {
+        this.$notifier.showMessage({
+          content: 'Có lỗi khi xoá, vui lòng thử lại',
+          color: 'error',
+          right: false
+        })
+      });
     },
   },
 }
