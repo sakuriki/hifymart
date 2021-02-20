@@ -12,7 +12,7 @@ module.exports = {
   head: {
     titleTemplate: titleChunk =>
       titleChunk
-        ? `${titleChunk} - ${process.env.APP_NAME}`
+        ? titleChunk + " - " + process.env.APP_NAME
         : process.env.APP_NAME,
     meta: [
       { charset: "utf-8" },
@@ -51,14 +51,15 @@ module.exports = {
     "~/plugins/notifier.js",
     "~/plugins/global-method.js",
     { src: "~/plugins/vuex-persistedstate" },
-    { src: "~/plugins/vue-apexcharts", ssr: false }
+    { src: "~/plugins/vue-apexcharts", ssr: false },
+    { src: "~/plugins/vuex-shared-mutations", ssr: false }
   ],
 
   env: {
     baseUrl: process.env.CLIENT_BASE_URL || "http://localhost:3000",
     apiUrl: process.env.APP_URL || "http://localhost:8000",
     GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
-    appName: process.env.APP_NAME || "VietShop"
+    appName: process.env.APP_NAME || "VietMart"
   },
   vue: {
     config: {
