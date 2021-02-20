@@ -47,7 +47,7 @@
                 color="success"
                 icon
                 v-on="on"
-                @click="beforeApprove(item.id)"
+                @click="approve(item.id)"
               >
                 <v-icon>mdi-check</v-icon>
               </v-btn>
@@ -62,7 +62,7 @@
                 v-bind="attrs"
                 icon
                 v-on="on"
-                @click="beforeDelete"
+                @click="beforeDelete(item.id)"
               >
                 <v-icon>mdi-delete-outline</v-icon>
               </v-btn>
@@ -72,6 +72,7 @@
         </template>
       </v-data-table>
     </v-card>
+    <ConfirmDialog ref="confirm" />
   </v-container>
 </template>
 <script>
@@ -153,12 +154,51 @@ export default {
         })
       }
     },
-    beforeApprove(item) {
-      console.log('xét duyệt ', item)
+    approve(id) {
+      let config = {
+
+      };
+      this.$axios.post("/admin/ratings/" + id, config)
+      .then(() => {
+        this.fetchData();
+        this.$notifier.showMessage({
+          content: 'Xoá thành công',
+          color: 'success',
+          right: false
+        })
+      })
+      .catch(() => {
+        this.$notifier.showMessage({
+          content: 'Có lỗi khi xoá, vui lòng thử lại',
+          color: 'error',
+          right: false
+        })
+      });
     },
-    beforeDelete: function(item) {
-      console.log("xác nhận xoá ", item)
-    }
+    async beforeDelete(id) {
+      let confirm = await this.$refs.confirm.open('Xoá đánh giá', 'Bạn có chắc muốn xoá đánh giá này? Đây là hành động vĩnh viễn và không thể thay đổi!', { color: 'red' });
+      if (confirm) {
+        this.deleteItem(id)
+      }
+    },
+    deleteItem(id) {
+      this.$axios.delete("/admin/ratings/" + id)
+      .then(() => {
+        this.fetchData();
+        this.$notifier.showMessage({
+          content: 'Xoá thành công',
+          color: 'success',
+          right: false
+        })
+      })
+      .catch(() => {
+        this.$notifier.showMessage({
+          content: 'Có lỗi khi xoá, vui lòng thử lại',
+          color: 'error',
+          right: false
+        })
+      });
+    },
   },
 }
 </script>

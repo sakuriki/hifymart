@@ -42,13 +42,14 @@
             v-if="canDelete"
             color="error"
             icon
-            @click="beforeDelete"
+            @click="beforeDelete(item.id)"
           >
             <v-icon>mdi-delete-outline</v-icon>
           </v-btn>
         </template>
       </v-data-table>
     </v-card>
+    <ConfirmDialog ref="confirm" />
   </v-container>
 </template>
 <script>
@@ -130,9 +131,30 @@ export default {
         })
       }
     },
-    beforeDelete: function(item) {
-      console.log("xác nhận xoá", item)
-    }
+    async beforeDelete(id) {
+      let confirm = await this.$refs.confirm.open('Xoá vai trò', 'Bạn có chắc muốn xoá vai trò này? Đây là hành động vĩnh viễn và không thể thay đổi!', { color: 'red' });
+      if (confirm) {
+        this.deleteItem(id)
+      }
+    },
+    deleteItem(id) {
+      this.$axios.delete("/admin/roles/" + id)
+      .then(() => {
+        this.fetchData();
+        this.$notifier.showMessage({
+          content: 'Xoá thành công',
+          color: 'success',
+          right: false
+        })
+      })
+      .catch(() => {
+        this.$notifier.showMessage({
+          content: 'Có lỗi khi xoá, vui lòng thử lại',
+          color: 'error',
+          right: false
+        })
+      });
+    },
   },
 }
 </script>
