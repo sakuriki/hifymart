@@ -113,7 +113,7 @@
       <v-divider />
 
       <v-card-text class="white--text">
-        © {{ new Date().getFullYear() }} — <strong>VietShop</strong>
+        © {{ new Date().getFullYear() }} — <strong>{{ settings['app-name'] }}</strong>
       </v-card-text>
     </v-card>
   </v-footer>

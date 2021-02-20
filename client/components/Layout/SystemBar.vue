@@ -120,8 +120,11 @@ export default {
       try {
         await this.$auth.logout();
       } catch (e) {
-        console.error('lỗi logout: ', e);
-        return;
+        this.$notifier.showMessage({
+          content: 'Có lỗi, vui lòng thử lại',
+          color: 'error',
+          right: false
+        })
       }
     },
   },

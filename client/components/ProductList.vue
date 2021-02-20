@@ -102,6 +102,7 @@
         </v-hover>
       </v-badge>
     </v-col>
+    <ConfirmDialog ref="confirm" />
   </v-row>
 </template>
 <script>
@@ -128,11 +129,19 @@ export default {
     },
     ...mapActions('cart', { addItem: 'addItem' }),
     ...mapActions('compare', { addCompare: 'addProduct' }),
-    beforeWishlist(product) {
+    async beforeWishlist(product) {
       if (this.$auth.loggedIn) {
         return this.addToWishlist(product)
       }
-      console.log('chưa đăng nhập', product)
+      let confirm = await this.$refs.confirm.open('Yêu cầu đăng nhập', 'Bạn cần phải đăng nhập để thực hiện hàng động này! Chuyển đến đăng nhập?', { color: 'primary' });
+      if (confirm) {
+        this.$router.push({
+          path: '/auth/login',
+          query: {
+            redirect: this.$route.path
+          }
+        });
+      }
     },
     async addToWishlist(product) {
       try {
@@ -152,13 +161,6 @@ export default {
         })
       }
     }
-    // addCompare(a) {
-    //   console.log(a)
-    // }
-    // addItem(item) {
-    //   return this.$store.dispatch('cart/addItem', { item, count: 1 })
-    //     .then(console.log(item))
-    // },
 
   },
 }

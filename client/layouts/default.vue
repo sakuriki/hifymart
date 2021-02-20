@@ -84,7 +84,7 @@
           class="toolbar-title white--text text-decoration-none"
           to="/"
         >
-          VietShop
+          {{ settings['app-name'] }}
         </NuxtLink>
       </v-toolbar-title>
       <v-spacer class="hidden-sm-and-down" />

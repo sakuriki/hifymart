@@ -37,7 +37,7 @@ Route::group(['middleware' => 'jwtnew'], function () {
     Route::get('/dashboard', 'Admin\DashboardController');
   });
   Route::get('/auth/user', 'Auth\AuthController@user');
-  Route::apiResource('wishlists', 'WishlistController')->only(["store", "show", "destroy"]);
+  Route::apiResource('wishlists', 'WishlistController')->only(["index", "store", "destroy"]);
   Route::apiResource('addressBooks', 'AddressBookController');
 });
 Route::group(['middleware' => 'jwtoptinal'], function () {

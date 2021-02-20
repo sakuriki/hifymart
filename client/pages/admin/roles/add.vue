@@ -140,8 +140,7 @@ export default {
           })
         }
       })
-      .catch((err) => {
-        console.error(err)
+      .catch(() => {
         this.$notifier.showMessage({
           content: 'Có lỗi, vui lòng thử lại',
           color: 'error',

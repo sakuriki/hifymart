@@ -12,6 +12,7 @@
       <v-img
         height="100%"
         :src="banner"
+        aspect-ratio="1"
       />
     </v-col>
     <v-col

@@ -136,7 +136,7 @@
                     <div v-if="data.payment_type=='cod'">
                       <p>Bạn sẽ nhận hàng và thanh toán với nhân viên giao hàng.</p>
                       <p class="mb-0">
-                        Nếu có dấu hiệu bất thường xin vui lòng thông báo qua hotline 0123 456 789.
+                        Nếu có dấu hiệu bất thường xin vui lòng thông báo qua {{ settings['contact-phone'] }}.
                       </p>
                     </div>
                   </v-expand-transition>
@@ -147,15 +147,15 @@
                     value="banking"
                   />
                   <v-expand-transition>
-                    <div v-if="data.payment_type=='banking'">
-                      <p>Lưu ý: Quý khách vui lòng đợi nhân viên liên hệ xác nhận đơn hàng trước khi thực hiện thanh toán.</p>
-                      <p>Công Ty TNHH VietShop:</p>
+                    <div v-if="data.payment_type=='banking'" v-html="bankInfo" />
+                    <!-- <p>Lưu ý: Quý khách vui lòng đợi nhân viên liên hệ xác nhận đơn hàng trước khi thực hiện thanh toán.</p>
+                      <p>Công Ty TNHH VietMart:</p>
                       <p>BIDV</p>
                       <p>Số tài khoản : 36210000123456</p>
                       <p class="mb-0">
                         Ngân hàng TMCP Đầu tư và Phát triển Việt Nam – Hà Nội
                       </p>
-                    </div>
+                    </div> -->
                   </v-expand-transition>
                 </v-sheet>
                 <v-sheet
@@ -179,11 +179,11 @@
             <div class="pt-4">
               <v-card>
                 <v-card-title>Vận chuyển</v-card-title>
-                <v-card-text>
-                  <p>Phí vận chuyển: {{ $moneyFormat(19000).replace('&nbsp;', '') }}</p>
+                <v-card-text v-html="delivery" />
+                <!-- <p>Phí vận chuyển: {{ $moneyFormat(19000).replace('&nbsp;', '') }}</p>
                   <p>Miễn phí với đơn hàng từ {{ $moneyFormat(200000).replace('&nbsp;', '') }} trở lên</p>
                   <p>Chỉ hỗ trợ vận chuyển đối với đơn hàng từ {{ $moneyFormat(100000).replace('&nbsp;', '') }}. Với đơn hàng có giá trị thấp hơn, quý khách vui lòng mua tại showroom</p>
-                </v-card-text>
+                </v-card-text> -->
               </v-card>
             </div>
           </v-col>
@@ -409,6 +409,7 @@ export default {
   computed: {
     ...mapGetters('cart', ['cart', 'total', 'amount', 'discount', 'tax', 'shipping_fee', 'total_amount', 'coupon']),
     ...mapGetters('address-book', ['addresses']),
+    ...mapGetters(['settings']),
     // shippingFee() {
     //   return this.is_fee ? this.$moneyFormat(19000) : "Miễn phí"
     // },
@@ -417,6 +418,12 @@ export default {
       let index = this.provinces.findIndex(p => p.id == t.data.province_id);
       return this.provinces[index].districts;
     },
+    bankInfo() {
+      return this.settings['bank-info'].replace(/(\\r)*\\n/g, '')
+    },
+    delivery() {
+      return this.settings['delivery'].replace(/(\\r)*\\n/g, '')
+    }
   },
   watch: {
     addressBook: {

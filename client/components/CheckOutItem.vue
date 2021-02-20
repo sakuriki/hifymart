@@ -55,10 +55,7 @@ export default {
       return this.product.count > 1 && this.addItem({ product: this.product, add: -1 })
     },
     onChange(number, event) {
-      // console.log(number, event);
-      // let target = event < 1 ? 1 : event;
       let newNumber = Number(event-number);
-      // if(newNumber==0) return
       this.addItem({ product: this.product, add: newNumber })
     }
   },

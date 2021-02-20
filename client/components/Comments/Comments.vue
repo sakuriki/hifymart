@@ -69,7 +69,11 @@
           this.$store.dispatch('comment/addMultiple', comments);
           this.$store.dispatch('comment/setTotal', total);
         } catch(err) {
-          console.error('loi: ',err)
+          this.$notifier.showMessage({
+            content: 'Có lỗi, vui lòng thử lại',
+            color: 'error',
+            right: false
+          })
         }
         this.loading = false;
       },

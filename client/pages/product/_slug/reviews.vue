@@ -226,9 +226,6 @@ export default {
         params: this.data
       }
       let { ratings } = await this.$axios.$get("/ratings/" + this.product.id, config);
-      // let a = JSON.parse(JSON.stringify(this.ratings));
-      // a.push.apply(a, ratings)
-      // console.log(a);
       this.ratings.push.apply(this.ratings, ratings);
       this.loading = false;
     },

@@ -462,7 +462,6 @@ export default {
       for (let file of this.product_image) {
         formData.append("images[]", file);
       }
-      // console.log(formData);
       this.$axios.post("/admin/products/" + this.$route.params.id, formData)
       .then(() => {
         this.$notifier.showMessage({

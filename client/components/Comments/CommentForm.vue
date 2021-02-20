@@ -119,7 +119,6 @@ export default{
         product_id: this.productId,
         parent_id: this.parent,
       }
-      // console.log(config);
       try {
         if (!this.name || this.edit_info) {
           this.$store.dispatch('customer/setInfo', this.info);
@@ -131,7 +130,11 @@ export default{
         this.$store.dispatch('comment/setTotal', ++total);
         this.unfocus();
       } catch(err) {
-        console.error('add comment', err)
+        this.$notifier.showMessage({
+          content: 'Có lỗi, vui lòng thử lại',
+          color: 'error',
+          right: false
+        })
       }
     },
     onFocus: function() {

@@ -105,11 +105,12 @@
       absolute
       inset
     >
-      <span>© {{ new Date().getFullYear() }} — <strong>VietShop</strong></span>
+      <span>© {{ new Date().getFullYear() }} — <strong>{{ settings['app-name'] }}</strong></span>
     </v-footer>
   </v-app>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 import simplebar from "simplebar-vue";
 import "simplebar/dist/simplebar.min.css";
 export default {
@@ -314,6 +315,9 @@ export default {
       },
     ],
   }),
+  computed: {
+    ...mapGetters(['settings'])
+  },
   mounted() {
     this.handleResize();
   },

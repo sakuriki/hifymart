@@ -105,7 +105,6 @@
       },
       // save: function(e) {
       //   if(this.depth>=2) {
-      //     console.log("hi")
       //     return this.$emit('save', e)
       //   }
       //   if(this.comment.replies_count > 0 && !this.is_replies_visible) {

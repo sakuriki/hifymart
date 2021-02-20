@@ -6,7 +6,7 @@
     <v-card>
       <v-card-title>Thanh toán thành công</v-card-title>
       <v-card-text>
-        <p>Cảm ơn bạn đã mua hàng tại VietShop</p>
+        <p>Cảm ơn bạn đã mua hàng tại {{ settings['app-name'] }}</p>
         <p>Mã đơn hàng: #{{ order.id }}</p>
       </v-card-text>
       <v-card-actions>
@@ -27,6 +27,7 @@
   </v-container>
 </template>
 <script>
+import { mapGetters } from "vuex";
 export default {
   async asyncData({ app, query }) {
     let { success, order } = await app.$axios.$get('/payment/vnpay/process', { params: query });
@@ -35,8 +36,8 @@ export default {
       order: order
     }
   },
-  mounted() {
-    console.log(this.$route)
+  computed: {
+    ...mapGetters(['settings']),
   },
 }
 </script>
