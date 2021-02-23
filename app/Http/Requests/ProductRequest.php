@@ -29,6 +29,7 @@ class ProductRequest extends FormRequest
       'category_id' => 'required|numeric|exists:categories,id',
       'tax_id' => 'required|numeric|exists:taxes,id',
       'description' => 'nullable|string',
+      'content' => 'nullable|string',
       'price' => 'required|numeric|min:0',
       'quantity' => 'required|numeric|min:0',
       'featured_image' => 'image|mimes:jpeg,jpg,png,gif|sometimes|max:10000',

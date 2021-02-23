@@ -86,6 +86,7 @@ class Product extends Model
     'brand_id',
     'category_id',
     'description',
+    'content',
     'price',
     'sale_off_price',
     'sale_off_start',
@@ -107,6 +108,11 @@ class Product extends Model
   public function category()
   {
     return $this->belongsTo(Category::class);
+  }
+
+  public function tax()
+  {
+    return $this->belongsTo(Tax::class);
   }
 
   public function tags()
