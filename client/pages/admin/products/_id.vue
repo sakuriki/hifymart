@@ -33,12 +33,20 @@
                 @focus="slugFocus=true"
                 @blur="slugFocus=false"
               />
-              <v-textarea
-                v-model="data.description"
-                outlined
-                label="Giới thiệu"
-                :rules="[rules.required]"
-              />
+              <v-card-subtitle>Giới thiệu:</v-card-subtitle>
+              <client-only>
+                <quill-editor
+                  ref="editor"
+                  v-model="data.description"
+                />
+              </client-only>
+              <v-card-subtitle>Nội dung:</v-card-subtitle>
+              <client-only>
+                <quill-editor
+                  ref="editor"
+                  v-model="data.content"
+                />
+              </client-only>
             </v-card-text>
           </v-card>
           <v-card class="mb-3">
@@ -360,6 +368,7 @@ export default {
         name: null,
         slug: null,
         description: null,
+        content: null,
         brand_id: null,
         category_id: null,
         tax_id: null,
@@ -531,3 +540,8 @@ export default {
   },
 };
 </script>
+<style>
+.ql-container.ql-snow {
+  min-height: 200px;
+}
+</style>
