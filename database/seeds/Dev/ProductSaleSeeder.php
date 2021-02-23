@@ -5,7 +5,7 @@ use Faker\Factory;
 use App\Models\Product;
 use Illuminate\Database\Seeder;
 
-class ProductSale extends Seeder
+class ProductSaleSeeder extends Seeder
 {
   /**
    * Run the database seeds.

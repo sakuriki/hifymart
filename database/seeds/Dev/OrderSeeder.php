@@ -27,6 +27,7 @@ class OrderSeeder extends Seeder
     $districtIds = $districts->pluck('id')->toArray();
     $users = User::all();
     $taxes = Tax::all()->keyBy('id');
+    $coupons = Coupon::all();
     for ($i = 0; $i < 10000; $i++) {
       $user = $faker->boolean(10) ? $users->random() : null;
       $subTotal = 0;
@@ -45,7 +46,12 @@ class OrderSeeder extends Seeder
         ];
       }
       $discount = 0;
-      $coupon = $faker->boolean(20) ? Coupon::inRandomOrder()->Redeemable($time, $subTotal)->first() : null;
+      $coupon = null;
+      if ($faker->boolean(20)) {
+        $coupon = $coupons->filter(function ($item) use ($time, $subTotal) {
+          return $item->Redeemable($time, $subTotal);
+        })->first();
+      }
       if ($coupon && $coupon->value) {
         $discount = $coupon->value;
         if ($coupon->is_percent) {
@@ -69,7 +75,7 @@ class OrderSeeder extends Seeder
         'province_id' => $districts[$randDistrict]->province_id,
         'billing_email' => $user ? $user->email : $faker->safeEmail,
         'billing_name' => $user ? $user->name : $faker->name,
-        'billing_address' => $faker->unique()->sentence(2),
+        'billing_address' => $faker->sentence(2),
         'billing_phone' => $user ? $user->phone : $faker->phoneNumber,
         'billing_discount' => $discount,
         'billing_discount_code' => $coupon ? $coupon->code : null,
