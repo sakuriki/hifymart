@@ -138,7 +138,7 @@ export default {
         {
           hid: 'description',
           name: 'description',
-          content: 'Đánh giá sản phẩm: ' + this.product.description
+          content: 'Đánh giá sản phẩm: ' + this.$strippedContent(this.product.description)
         },
         {
           property: 'og:site_name',
@@ -150,7 +150,7 @@ export default {
         },
         {
           property: 'og:description',
-          content: 'Đánh giá sản phẩm: ' + this.product.description
+          content: 'Đánh giá sản phẩm: ' + this.$strippedContent(this.product.description)
         },
         {
           property: 'og:image',
@@ -170,7 +170,7 @@ export default {
         },
         {
           property: 'twitter:description',
-          content: 'Đánh giá sản phẩm: ' + this.product.description
+          content: 'Đánh giá sản phẩm: ' + this.$strippedContent(this.product.description)
         },
         {
           property: 'twitter:image',

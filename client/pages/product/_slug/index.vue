@@ -69,7 +69,6 @@
                     dense
                     half-increments
                     readonly
-                    large
                   />
                   <v-btn
                     text
@@ -87,6 +86,11 @@
                     :to="{ name: 'brand-slug', params: { slug: product.brand.slug } }"
                   >{{ product.brand.name }}</NuxtLink></span>
                   <span class="px-2">|</span>
+                  <span>Danh mục: <NuxtLink
+                    class="text-decoration-none"
+                    :to="{ name: 'category-slug', params: { slug: product.category.slug } }"
+                  >{{ product.category.name }}</NuxtLink></span>
+                  <span class="px-2">|</span>
                   <span>Tình trạng: <span class="primary--text">{{ product.quantity > 0 ? "Còn hàng" : "Hết hàng" }}</span></span>
                 </div>
                 <span
@@ -98,6 +102,10 @@
                     class="pl-1 grey--text text-decoration-line-through"
                   >{{ $moneyFormat(product.price) }}</span>
                 </span>
+                <div class="mt-2">
+                  {{ product.description }}
+                </div>
+                <v-spacer />
                 <div>
                   <span>Số lượng:</span>
                   <v-text-field
@@ -114,11 +122,6 @@
                     @click:prepend="data.count > 2 && data.count--"
                   />
                 </div>
-                <div class="mt-2">
-                  <span>Giới thiệu:</span>
-                  <span>{{ product.description }}</span>
-                </div>
-                <v-spacer />
                 <v-row class="align-center mx-0 mt-2">
                   <v-col
                     cols="12"
@@ -153,93 +156,127 @@
                     </v-btn>
                   </v-col>
                 </v-row>
+                <v-spacer />
+                <div class="my-4">
+                  Tags:
+                  <span
+                    v-for="(tag, i) in product.tags"
+                    :key="tag.id"
+                  ><NuxtLink
+                    class="text-decoration-none grey--text"
+                    :to="{ name: 'tag-slug', params: { slug: tag.slug } }"
+                  >{{ tag.name }}</NuxtLink>{{ i != product.tags.length - 1 ? ', ' : '.' }}</span>
+                </div>
               </v-col>
             </v-row>
           </v-card-text>
         </v-card>
-        <v-card class="mt-2">
-          <v-card-title>Nhận xét của khách hàng:</v-card-title>
-          <v-card-text>
-            <v-row>
-              <v-col
-                class="d-flex flex-column align-center justify-center"
-                cols="12"
-                md="4"
-              >
-                <template v-if="product.ratings_count>0">
-                  <span>Đánh giá trung bình</span>
-                  <span class="text-h5 red--text">{{ roundRating + "/5" }}</span>
-                  <span>({{ product.ratings_count }} đánh giá)</span>
-                </template>
-                <span v-else>Chưa có đánh giá, hãy là người đầu tiên</span>
-              </v-col>
-              <v-col
-                cols="12"
-                md="4"
-              >
-                <div
-                  v-for="star in [5,4,3,2,1]"
-                  :key="star"
-                  class="d-flex flex-wrap align-center"
-                >
-                  <div
-                    class="d-flex"
-                  >
-                    <span>{{ star }}</span>
-                    <v-icon
-                      small
-                      color="amber"
+        <v-card class="mt-2 tab-scroll">
+          <v-tabs v-model="tab">
+            <v-tabs-slider />
+
+            <v-tab href="#tab-description">
+              Giới thiệu
+            </v-tab>
+
+            <v-tab href="#tab-review">
+              Nhận xét ({{ product.ratings_count }})
+            </v-tab>
+          </v-tabs>
+
+          <v-tabs-items v-model="tab">
+            <v-tab-item :value="'tab-description'">
+              <v-card flat>
+                <v-card-text>{{ product.content }}</v-card-text>
+              </v-card>
+            </v-tab-item>
+            <v-tab-item :value="'tab-review'">
+              <v-card class="mt-2">
+                <v-card-title>Nhận xét của khách hàng:</v-card-title>
+                <v-card-text>
+                  <v-row>
+                    <v-col
+                      class="d-flex flex-column align-center justify-center"
+                      cols="12"
+                      md="4"
                     >
-                      mdi-star
-                    </v-icon>
-                  </div>
-                  <v-flex>
-                    <v-progress-linear
-                      :value="ratingWithPercentage[star].percentage"
-                      height="10"
-                      rounded
-                      class="my-1"
-                    />
-                  </v-flex>
-                  <div
-                    class="d-flex col-1 pa-0 ml-1"
+                      <template v-if="product.ratings_count>0">
+                        <span>Đánh giá trung bình</span>
+                        <span class="text-h5 red--text">{{ roundRating + "/5" }}</span>
+                        <span>({{ product.ratings_count }} đánh giá)</span>
+                      </template>
+                      <span v-else>Chưa có đánh giá, hãy là người đầu tiên</span>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      md="4"
+                    >
+                      <div
+                        v-for="star in [5,4,3,2,1]"
+                        :key="star"
+                        class="d-flex flex-wrap align-center"
+                      >
+                        <div
+                          class="d-flex"
+                        >
+                          <span>{{ star }}</span>
+                          <v-icon
+                            small
+                            color="amber"
+                          >
+                            mdi-star
+                          </v-icon>
+                        </div>
+                        <v-flex>
+                          <v-progress-linear
+                            :value="ratingWithPercentage[star].percentage"
+                            height="10"
+                            rounded
+                            class="my-1"
+                          />
+                        </v-flex>
+                        <div
+                          class="d-flex col-1 pa-0 ml-1"
+                        >
+                          <span>{{ (ratingWithPercentage[star].percentage||0)+"%" }}</span>
+                        </div>
+                      </div>
+                    </v-col>
+                    <v-col
+                      class="d-flex flex-column align-center justify-center"
+                      cols="12"
+                      md="4"
+                    >
+                      <v-btn
+                        color="red"
+                        dark
+                      >
+                        Viết đánh giá của bạn
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+                <v-divider />
+                <v-card-text v-if="product.ratings_count<=0">
+                  Chưa có đánh giá
+                </v-card-text>
+                <template v-else>
+                  <Rating :ratings="ratings" />
+                  <v-btn
+                    color="primary"
+                    outlined
+                    :to="{ name: 'product-slug-reviews', params: { slug: $route.params.slug } }"
+                    class="ma-2"
                   >
-                    <span>{{ (ratingWithPercentage[star].percentage||0)+"%" }}</span>
-                  </div>
-                </div>
-              </v-col>
-              <v-col
-                class="d-flex flex-column align-center justify-center"
-                cols="12"
-                md="4"
-              >
-                <v-btn
-                  color="red"
-                  dark
-                >
-                  Viết đánh giá của bạn
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-card-text>
-          <v-divider />
-          <v-card-text v-if="product.ratings_count<=0">
-            Chưa có đánh giá
-          </v-card-text>
-          <template v-else>
-            <Rating :ratings="ratings" />
-            <v-btn
-              color="primary"
-              outlined
-              :to="{ name: 'product-slug-reviews', params: { slug: $route.params.slug } }"
-              class="ma-2"
-            >
-              Xem tất cả đánh giá
-              <v-icon right>
-                mdi-chevron-right
-              </v-icon>
-            </v-btn>
-          </template>
+                    Xem tất cả đánh giá
+                    <v-icon right>
+                      mdi-chevron-right
+                    </v-icon>
+                  </v-btn>
+                </template>
+              </v-card>
+            </v-tab-item>
+          </v-tabs-items>
         </v-card>
         <Comments :product-id="product.id" />
       </v-col>
@@ -312,6 +349,7 @@ export default {
       },
       selected_image: null,
       loading: false,
+      tab: null
     }
   },
   head() {
@@ -321,7 +359,7 @@ export default {
         {
           hid: 'description',
           name: 'description',
-          content: this.product.description
+          content: this.$strippedContent(this.product.description)
         },
         {
           property: 'og:site_name',
@@ -333,7 +371,7 @@ export default {
         },
         {
           property: 'og:description',
-          content: this.product.description
+          content: this.$strippedContent(this.product.description)
         },
         {
           property: 'og:image',
@@ -353,7 +391,7 @@ export default {
         },
         {
           property: 'twitter:description',
-          content: this.product.description
+          content: this.$strippedContent(this.product.description)
         },
         {
           property: 'twitter:image',
@@ -407,7 +445,8 @@ export default {
   methods: {
     ...mapActions('cart', ['addItem']),
     scrollToReview() {
-      this.$vuetify.goTo(0)
+      this.tab = 'tab-review';
+      this.$vuetify.goTo('.tab-scroll')
     },
     onImageHover(img) {
       this.selected_image = img;

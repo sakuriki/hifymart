@@ -49,4 +49,9 @@ export default (context, inject) => {
       .replace(/-+$/, "");
   };
   inject("slugify", slugify);
+
+  const strippedContent = string => {
+    return string.replace(/<\/?[^>]+>/gi, " ");
+  };
+  inject("strippedContent", strippedContent);
 };

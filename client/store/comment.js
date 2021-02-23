@@ -2,26 +2,17 @@ import Vue from "vue";
 
 export const state = () => ({
   comments: [],
-  info: {
-    name: null,
-    phone: null,
-    email: null
-  },
   total: 0
 });
 
 export const getters = {
   comments: ({ comments }) => comments,
-  info: ({ info }) => info,
   total: ({ total }) => total
 };
 
 export const mutations = {
   SET_ITEM: (state, payload) => {
     state.comments = payload;
-  },
-  SET_INFO: (state, payload) => {
-    state.info = payload;
   },
   SET_TOTAL: (state, total) => {
     state.total = total;
@@ -56,7 +47,6 @@ export const mutations = {
 
 export const actions = {
   setItem: ({ commit }, comments) => commit("SET_ITEM", comments),
-  setInfo: ({ commit }, name) => commit("SET_INFO", name),
   setTotal: ({ commit }, total) => commit("SET_TOTAL", total),
   addOne: ({ commit }, comment) => commit("ADD_ONE", comment),
   addMultiple: ({ commit }, comment) => commit("ADD_MULTIPLE", comment),

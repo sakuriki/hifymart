@@ -1,3 +1,4 @@
+var webpack = require("webpack");
 module.exports = {
   srcDir: __dirname,
   buildDir: ".nuxt",
@@ -20,8 +21,7 @@ module.exports = {
       {
         hid: "description",
         name: "description",
-        content:
-          "Mua điện thoại thông minh mới nhất 2020. Giảm giá hấp dẫn. Trả góp 0%. Bảo hành chính hãng."
+        content: "Mua hàng tốt giá rẻ"
       },
       {
         property: "og:type",
@@ -52,14 +52,15 @@ module.exports = {
     "~/plugins/global-method.js",
     { src: "~/plugins/vuex-persistedstate" },
     { src: "~/plugins/vue-apexcharts", ssr: false },
-    { src: "~/plugins/vuex-shared-mutations", ssr: false }
+    { src: "~/plugins/vuex-shared-mutations", ssr: false },
+    { src: "~/plugins/vue-quill-editor", ssr: false }
   ],
 
   env: {
     baseUrl: process.env.CLIENT_BASE_URL || "http://localhost:3000",
     apiUrl: process.env.APP_URL || "http://localhost:8000",
     GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
-    appName: process.env.APP_NAME || "VietMart"
+    appName: process.env.APP_NAME || "HifyMart"
   },
   vue: {
     config: {
@@ -158,6 +159,12 @@ module.exports = {
       splitChunks: {
         name: true
       }
-    }
+    },
+    plugins: [
+      new webpack.ProvidePlugin({
+        "window.Quill": "quill/dist/quill.js",
+        Quill: "quill/dist/quill.js"
+      })
+    ]
   }
 };

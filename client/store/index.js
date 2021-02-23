@@ -100,7 +100,9 @@ export const actions = {
           }
         });
         cartKeys.map(function(key) {
-          cartProduct[key].count = cart_id[key];
+          if (cartProduct[key]) {
+            cartProduct[key].count = cart_id[key];
+          }
         });
         vuexContext.commit("cart/SET_CART_ITEM", cartProduct);
       }

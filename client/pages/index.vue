@@ -64,11 +64,11 @@ export default {
         },
         {
           property: 'og:title',
-          content: 'Trang chủ'
+          content: 'HifyMart - Nuxt Laravel Ecommerce'
         },
         {
           property: 'og:description',
-          content: 'Trang chủ'
+          content: ''
         },
         // {
         //   property: 'og:image',
@@ -84,11 +84,11 @@ export default {
         },
         {
           property: 'twitter:title',
-          content: 'Trang chủ'
+          content: 'HifyMart - Nuxt Laravel Ecommerce'
         },
         {
           property: 'twitter:description',
-          content: 'Trang chủ'
+          content: ''
         },
         // {
         //   property: 'twitter:image',

@@ -149,7 +149,7 @@
                   <v-expand-transition>
                     <div v-if="data.payment_type=='banking'" v-html="bankInfo" />
                     <!-- <p>Lưu ý: Quý khách vui lòng đợi nhân viên liên hệ xác nhận đơn hàng trước khi thực hiện thanh toán.</p>
-                      <p>Công Ty TNHH VietMart:</p>
+                      <p>Công Ty TNHH HifyMart:</p>
                       <p>BIDV</p>
                       <p>Số tài khoản : 36210000123456</p>
                       <p class="mb-0">
