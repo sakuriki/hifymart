@@ -27,6 +27,7 @@ class DashboardController extends Controller
       // DB::raw('DATE_FORMAT(created_at, "%d/%m") as `day`'),
     ])
       ->groupBy('date')
+      ->where('status', 3)
       ->whereDate('created_at', '>=', Carbon::now()->subDays(30))
       ->whereDate('created_at', '<=', Carbon::now()) // limit dev seeder có order trong tương lai
       ->get();
@@ -38,7 +39,9 @@ class DashboardController extends Controller
       DB::raw('DATE_FORMAT(created_at, "%Y-%m") as `date`'),
     ])
       ->groupBy('date')
+      ->where('status', 3)
       ->whereDate('created_at', '>=', Carbon::now()->subYear())
+      ->whereDate('created_at', '<=', Carbon::now()) // limit dev seeder có order trong tương lai
       ->get();
     return response()->json([
       "total_count" => $count,
