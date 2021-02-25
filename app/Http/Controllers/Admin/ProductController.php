@@ -207,6 +207,20 @@ class ProductController extends Controller
     return response()->noContent();
   }
 
+
+  public function bulkDestroy(Request $request)
+  {
+    $user = auth()->user();
+    if (!$user || $user->cannot('product.delete')) {
+      return response()->json([
+        'code'   => 401,
+        'response' => 'You are unauthorized to access this resource'
+      ]);
+    }
+    Product::whereIn('id', $request->listIds)->delete();
+    return response()->noContent();
+  }
+
   private function uploadOne(UploadedFile $file, $folder = null, $filename = null)
   {
     $name = !is_null($filename)

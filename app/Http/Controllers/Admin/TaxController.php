@@ -119,4 +119,17 @@ class TaxController extends Controller
     $tax->delete();
     return response()->noContent();
   }
+
+  public function bulkDestroy(Request $request)
+  {
+    $user = auth()->user();
+    if (!$user || $user->cannot('tax.delete')) {
+      return response()->json([
+        'code'   => 401,
+        'response' => 'You are unauthorized to access this resource'
+      ]);
+    }
+    Tax::whereIn('id', $request->listIds)->delete();
+    return response()->noContent();
+  }
 }

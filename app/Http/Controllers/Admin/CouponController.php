@@ -131,4 +131,17 @@ class CouponController extends Controller
     $coupon->delete();
     return response()->noContent();
   }
+
+  public function bulkDestroy(Request $request)
+  {
+    $user = auth()->user();
+    if (!$user || $user->cannot('coupon.delete')) {
+      return response()->json([
+        'code'   => 401,
+        'response' => 'You are unauthorized to access this resource'
+      ]);
+    }
+    Coupon::whereIn('id', $request->listIds)->delete();
+    return response()->noContent();
+  }
 }

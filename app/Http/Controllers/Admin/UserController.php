@@ -128,4 +128,17 @@ class UserController extends Controller
     $user->delete();
     return response()->noContent();
   }
+
+  public function bulkDestroy(Request $request)
+  {
+    $user = auth()->user();
+    if (!$user || $user->cannot('user.delete')) {
+      return response()->json([
+        'code'   => 401,
+        'response' => 'You are unauthorized to access this resource'
+      ]);
+    }
+    User::whereIn('id', $request->listIds)->delete();
+    return response()->noContent();
+  }
 }

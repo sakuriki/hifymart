@@ -88,6 +88,20 @@ class OrderController extends Controller
     return response()->noContent();
   }
 
+
+  public function bulkDestroy(Request $request)
+  {
+    $user = auth()->user();
+    if (!$user || $user->cannot('order.delete')) {
+      return response()->json([
+        'code'   => 401,
+        'response' => 'You are unauthorized to access this resource'
+      ]);
+    }
+    Order::whereIn('id', $request->listIds)->delete();
+    return response()->noContent();
+  }
+
   public function export(Request $request)
   {
     $type = $request->input('type', 'xlsx');

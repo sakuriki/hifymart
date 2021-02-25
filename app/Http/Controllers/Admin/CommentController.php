@@ -116,4 +116,17 @@ class CommentController extends Controller
     $comment->delete();
     return response()->noContent();
   }
+
+  public function bulkDestroy(Request $request)
+  {
+    $user = auth()->user();
+    if (!$user || $user->cannot('comment.delete')) {
+      return response()->json([
+        'code'   => 401,
+        'response' => 'You are unauthorized to access this resource'
+      ]);
+    }
+    Comment::whereIn('id', $request->listIds)->delete();
+    return response()->noContent();
+  }
 }
