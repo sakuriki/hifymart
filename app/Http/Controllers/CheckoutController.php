@@ -31,7 +31,7 @@ class CheckoutController extends Controller
           "quantity" => $quantity,
           "price" => $price
         ];
-        // $newQuantity = $product->quantity - $quantity;
+        $newQuantity = $product->quantity - $quantity;
         // if ($newQuantity < 0) {
         //   $text = $product->quantity == 0 ? "đã hết hàng." : 'không đủ số lượng bạn yêu cầu, vui lòng giảm số lượng hoặc mua lại sau.';
         //   return response()->json([
@@ -40,12 +40,12 @@ class CheckoutController extends Controller
         //     ]
         //   ], 422);
         // }
-        // $product->quantity = $newQuantity;
-        // $product->save();
+        $product->quantity = $newQuantity;
+        $product->save();
       }
       $discount = 0;
       $coupon = $request->coupon ? Coupon::where('code', $request->coupon)->first() : null;
-      if ($coupon && (!$coupon->min || $subTotal >= $coupon->min) && $coupon->isRedeemable()) {
+      if ($coupon && $coupon->isRedeemable($subTotal)) {
         $discount = $coupon->value;
         if ($coupon->is_percent) {
           $discount = $subTotal * $coupon->value / 100;

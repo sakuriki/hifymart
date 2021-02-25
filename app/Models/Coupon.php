@@ -84,9 +84,14 @@ class Coupon extends Model
     return $this->number <= 0;
   }
 
-  public function isRedeemable()
+  public function isUseable($total = 0)
   {
-    if (!$this->isOutOfUse() && !$this->isExpired() && $this->isStarted()) {
+    return (!$this->min || $total >= $this->min);
+  }
+
+  public function isRedeemable($total = 0)
+  {
+    if (!$this->isOutOfUse() && !$this->isExpired() && $this->isStarted() && $this->isUseable($total)) {
       return true;
     }
     return false;
