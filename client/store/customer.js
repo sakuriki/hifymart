@@ -33,13 +33,13 @@ export const mutations = {
 };
 
 export const actions = {
-  setName: ({ commit }) => commit("SET_NAME"),
+  setName: ({ commit }, payload) => commit("SET_NAME", payload),
 
-  setEmail: ({ commit }) => commit("SET_EMAIL"),
+  setEmail: ({ commit }, payload) => commit("SET_EMAIL", payload),
 
-  setPhone: ({ commit }) => commit("SET_PHONE"),
+  setPhone: ({ commit }, payload) => commit("SET_PHONE", payload),
 
-  setInfo: ({ commit }) => commit("SET_INFO"),
+  setInfo: ({ commit }, payload) => commit("SET_INFO", payload),
 
   clearInfo: ({ commit }) => commit("CLEAR_INFO")
 };

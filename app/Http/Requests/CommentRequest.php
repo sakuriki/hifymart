@@ -24,12 +24,12 @@ class CommentRequest extends FormRequest
   public function rules()
   {
     return [
-      'name' => 'required|string|max:255',
-      'email' => 'required|email:rfc,dns',
+      'name' => 'required_without:user_id|string|max:255',
+      'email' => 'required_without:user_id|email:rfc,dns',
       'phone' => 'nullable|numeric',
       'content' => 'required|string|max:2000',
       'parent_id' => 'nullable|numeric|exists:comments,id',
-      'user_id' => 'required|numeric|exists:users,id',
+      'user_id' => 'required_without_all:name,email|numeric|exists:users,id',
       'product_id' => 'required|numeric|exists:products,id'
     ];
   }

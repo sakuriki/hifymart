@@ -75,7 +75,7 @@ export default {
       selected: [],
       headers: [
         { text: 'Tên', align: 'start', value: 'name' },
-        { text: 'Bình luận', value: 'content' },
+        { text: 'Bình luận', value: 'content', width: '70%' },
         { text: 'Actions', value: 'actions', sortable: false }
       ],
     }

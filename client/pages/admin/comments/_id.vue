@@ -44,36 +44,37 @@
               </v-alert>
             </v-slide-x-transition>
           </div>
-          <v-text-field
-            v-model="data.name"
-            label="Tên người đăng"
-            flat
-            dense
-            outlined
-            required
-            class="d-flex"
-            :rules="[rules.required]"
-          />
-          <v-text-field
-            v-model="data.email"
-            label="Địa chỉ email"
-            flat
-            dense
-            outlined
-            required
-            class="d-flex"
-            :rules="[rules.required]"
-          />
-          <v-text-field
-            v-model="data.phone"
-            label="Số điện thoại"
-            flat
-            dense
-            outlined
-            required
-            class="d-flex"
-            :rules="[rules.required]"
-          />
+          <template v-if="!data.user_id">
+            <v-text-field
+              v-model="data.name"
+              label="Tên người đăng"
+              flat
+              dense
+              outlined
+              required
+              class="d-flex"
+              :rules="[rules.required]"
+            />
+            <v-text-field
+              v-model="data.email"
+              label="Địa chỉ email"
+              flat
+              dense
+              outlined
+              required
+              class="d-flex"
+              :rules="[rules.required]"
+            />
+            <v-text-field
+              v-model="data.phone"
+              label="Số điện thoại"
+              flat
+              dense
+              outlined
+              required
+              class="d-flex"
+            />
+          </template>
           <v-textarea
             v-model="data.content"
             outlined

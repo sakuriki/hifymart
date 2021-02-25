@@ -206,26 +206,32 @@ export default {
       switch (status) {
         case 0:
           output = {
-            text: "New",
+            text: "Mới",
             color: "info"
           };
           break;
         case 1:
           output = {
-            text: "Processing",
-            color: "info"
+            text: "Đang xử lý",
+            color: "accent"
           };
           break;
         case 2:
           output = {
-            text: "Completed",
+            text: "Đang vận chuyển",
+            color: "info"
+          };
+          break;
+        case 3:
+          output = {
+            text: "Thành công",
             color: "success"
           };
           break;
         default:
           output = {
-            text: "Lỗi",
-            color: "error"
+            text: "Đóng",
+            color: "grey"
           };
           break;
       }
