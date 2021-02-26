@@ -166,12 +166,6 @@ export default {
         })
       }
     },
-    // async beforeDelete() {
-    //   let confirm = await this.$refs.confirm.open('Xoá sản phẩm', 'Bạn có chắc muốn xoá sản phẩm này? Đây là hành động vĩnh viễn và không thể thay đổi!', { color: 'red' });
-    //   if (confirm) {
-    //     this.deleteItem()
-    //   }
-    // },
     deleteItem(id) {
       this.$axios.delete("/wishlists/" + id)
       .then(() => {

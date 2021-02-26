@@ -256,21 +256,6 @@ export default {
           },
         ],
       },
-      // {
-      //   group: "/admin/medias",
-      //   icon: "mdi-image-outline",
-      //   title: "Bộ sưu tập",
-      //   children: [
-      //     {
-      //       title: "Thư viện",
-      //       to: "/admin/medias",
-      //     },
-      //     {
-      //       title: "Thêm mới",
-      //       to: "/admin/medias/add",
-      //     },
-      //   ],
-      // },
       {
         group: "/admin/users",
         icon: "mdi-account-multiple-outline",

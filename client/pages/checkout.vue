@@ -410,9 +410,6 @@ export default {
     ...mapGetters('cart', ['cart', 'total', 'amount', 'discount', 'tax', 'shipping_fee', 'total_amount', 'coupon']),
     ...mapGetters('address-book', ['addresses']),
     ...mapGetters(['settings']),
-    // shippingFee() {
-    //   return this.is_fee ? this.$moneyFormat(19000) : "Miễn phí"
-    // },
     districtList() {
       let t = this;
       let index = this.provinces.findIndex(p => p.id == t.data.province_id);

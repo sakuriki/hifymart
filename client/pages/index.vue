@@ -70,10 +70,10 @@ export default {
           property: 'og:description',
           content: ''
         },
-        // {
-        //   property: 'og:image',
-        //   content: ''
-        // },
+        {
+          property: 'og:image',
+          content: ''
+        },
         {
           property: 'twitter:site',
           content: process.env.appName
@@ -90,10 +90,10 @@ export default {
           property: 'twitter:description',
           content: ''
         },
-        // {
-        //   property: 'twitter:image',
-        //   content: ''
-        // },
+        {
+          property: 'twitter:image',
+          content: ''
+        },
       ]
     }
   },
@@ -104,12 +104,6 @@ export default {
       'onsaleProducts',
       'hottestProducts',
     ]),
-    // carouselSize() {
-    //   return this.$store.getters.browserWidth < 600 ? "152px" : "765px"
-    // },
-    // hideDelimiters() {
-    //   return this.$store.getters.browserWidth < 600 ? true : false
-    // }
   }
 }
 </script>

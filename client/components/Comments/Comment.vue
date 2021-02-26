@@ -74,7 +74,6 @@
         page_size: 12,
         is_replies_visible: false,
         is_loading: false,
-        // comment: this.commentIn,
         replyForm: false,
         childForm: false
       }
@@ -103,21 +102,6 @@
           t.total = res.data.total;
         })
       },
-      // save: function(e) {
-      //   if(this.depth>=2) {
-      //     return this.$emit('save', e)
-      //   }
-      //   if(this.comment.replies_count > 0 && !this.is_replies_visible) {
-      //     this.showMore();
-      //   }
-      //   this.is_replies_visible = true;
-      //   this.comment.replies_count++;
-      //   this.child_comments.unshift(e);
-      // },
-      // edit: function(e) {
-      //   this.comment.comment = e.comment;
-      //   this.comment.updated_at = this.timeFormat(new Date());
-      // },
       timeFormat: function (time) {
         let hour = time.getHours(),
           minute = time.getMinutes(),
