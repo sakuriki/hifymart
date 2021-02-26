@@ -19,6 +19,7 @@
             </v-icon>
           </v-btn>
           <v-btn
+            v-if="canDelete"
             color="error"
             class="ml-2"
             @click="beforeDelete"
@@ -109,6 +110,9 @@ export default {
     baseUrl() {
       return process.env.baseUrl + "/"
     },
+    canDelete() {
+      return this.$auth.user.permissions.includes("tag.delete")
+    }
   },
   watch: {
     watchName: {
@@ -139,6 +143,13 @@ export default {
       })
     },
     async beforeDelete() {
+      if (!this.canDelete) {
+        this.$notifier.showMessage({
+          content: 'Bạn không có quyền thực hiện hành động này!',
+          color: 'error',
+          right: false
+        })
+      }
       let confirm = await this.$refs.confirm.open('Xoá tag', 'Bạn có chắc muốn xoá tag này? Đây là hành động vĩnh viễn và không thể thay đổi!', { color: 'red' });
       if (confirm) {
         this.deleteItem()

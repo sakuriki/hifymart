@@ -42,22 +42,36 @@
           <span>{{ humanTime(item.expires_at) }}</span>
         </template>
         <template #[`item.actions`]="{ item }">
-          <v-btn
-            v-if="canUpdate"
-            color="success"
-            icon
-            :to="{ name: 'admin-coupons-id',params: { id: item.id }}"
-          >
-            <v-icon>mdi-pencil-outline</v-icon>
-          </v-btn>
-          <v-btn
-            v-if="canDelete"
-            color="error"
-            icon
-            @click="beforeDelete(item.id)"
-          >
-            <v-icon>mdi-delete-outline</v-icon>
-          </v-btn>
+          <v-tooltip bottom>
+            <template #activator="{ on, attrs }">
+              <v-btn
+                v-if="canUpdate"
+                v-bind="attrs"
+                color="success"
+                icon
+                :to="{ name: 'admin-coupons-id',params: { id: item.id }}"
+                v-on="on"
+              >
+                <v-icon>mdi-pencil-outline</v-icon>
+              </v-btn>
+            </template>
+            <span>Sửa</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template #activator="{ on, attrs }">
+              <v-btn
+                v-if="canDelete"
+                color="error"
+                v-bind="attrs"
+                icon
+                v-on="on"
+                @click="beforeDelete(item.id)"
+              >
+                <v-icon>mdi-delete-outline</v-icon>
+              </v-btn>
+            </template>
+            <span>Xoá</span>
+          </v-tooltip>
         </template>
       </v-data-table>
     </v-card>
@@ -146,6 +160,13 @@ export default {
       }
     },
     async beforeDelete(id) {
+      if (!this.canDelete) {
+        this.$notifier.showMessage({
+          content: 'Bạn không có quyền thực hiện hành động này!',
+          color: 'error',
+          right: false
+        })
+      }
       let confirm = await this.$refs.confirm.open('Xoá mã giảm giá', 'Bạn có chắc muốn xoá mã giảm giá này? Đây là hành động vĩnh viễn và không thể thay đổi!', { color: 'red' });
       if (confirm) {
         this.deleteItem(id)

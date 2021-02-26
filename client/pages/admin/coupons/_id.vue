@@ -19,6 +19,7 @@
             </v-icon>
           </v-btn>
           <v-btn
+            v-if="canDelete"
             color="error"
             class="ml-2"
             @click="beforeDelete"
@@ -213,7 +214,10 @@ export default {
     percentLabel() {
       let text = this.data.is_percent ? "Giảm theo phần trăm" : "Giảm cố định";
       return `Loại: ${text}`
-    }
+    },
+    canDelete() {
+      return this.$auth.user.permissions.includes("coupon.delete")
+    },
   },
   watch: {
     'date.start': {
@@ -273,6 +277,13 @@ export default {
       return true;
     },
     async beforeDelete() {
+      if (!this.canDelete) {
+        this.$notifier.showMessage({
+          content: 'Bạn không có quyền thực hiện hành động này!',
+          color: 'error',
+          right: false
+        })
+      }
       let confirm = await this.$refs.confirm.open('Xoá mã giảm giá', 'Bạn có chắc muốn xoá mã giảm giá này? Đây là hành động vĩnh viễn và không thể thay đổi!', { color: 'red' });
       if (confirm) {
         this.deleteItem()

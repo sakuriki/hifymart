@@ -57,20 +57,36 @@
           >{{ statusText(item.status).text }}</v-btn></span>
         </template>
         <template #[`item.actions`]="{ item }">
-          <v-btn
-            color="success"
-            icon
-            :to="{ name: 'admin-orders-id',params: { id: item.id }}"
-          >
-            <v-icon>mdi-eye-outline</v-icon>
-          </v-btn>
-          <v-btn
-            color="error"
-            icon
-            @click="beforeDelete(item.id)"
-          >
-            <v-icon>mdi-delete-outline</v-icon>
-          </v-btn>
+          <v-tooltip bottom>
+            <template #activator="{ on, attrs }">
+              <v-btn
+                v-if="canUpdate"
+                v-bind="attrs"
+                color="success"
+                icon
+                :to="{ name: 'admin-brands-id',params: { id: item.id }}"
+                v-on="on"
+              >
+                <v-icon>mdi-orders-outline</v-icon>
+              </v-btn>
+            </template>
+            <span>Sửa</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template #activator="{ on, attrs }">
+              <v-btn
+                v-if="canDelete"
+                color="error"
+                v-bind="attrs"
+                icon
+                v-on="on"
+                @click="beforeDelete(item.id)"
+              >
+                <v-icon>mdi-delete-outline</v-icon>
+              </v-btn>
+            </template>
+            <span>Xoá</span>
+          </v-tooltip>
         </template>
         <template #footer>
           <div
@@ -128,14 +144,14 @@ export default {
       ],
     }
   },
-  // computed: {
-  //   canUpdate() {
-  //     return this.$auth.user.permissions.includes("brand.update")
-  //   },
-  //   canDelete() {
-  //     return this.$auth.user.permissions.includes("brand.delete")
-  //   }
-  // },
+  computed: {
+    canUpdate() {
+      return this.$auth.user.permissions.includes("order.update")
+    },
+    canDelete() {
+      return this.$auth.user.permissions.includes("order.delete")
+    }
+  },
   watch: {
     options: {
       handler () {
@@ -178,6 +194,13 @@ export default {
       }
     },
     async beforeDelete(id) {
+      if (!this.canDelete) {
+        this.$notifier.showMessage({
+          content: 'Bạn không có quyền thực hiện hành động này!',
+          color: 'error',
+          right: false
+        })
+      }
       let confirm = await this.$refs.confirm.open('Xoá đơn hàng', 'Bạn có chắc muốn xoá đơn hàng này? Đây là hành động vĩnh viễn và không thể thay đổi!', { color: 'red' });
       if (confirm) {
         this.deleteItem(id)

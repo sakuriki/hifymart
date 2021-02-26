@@ -19,6 +19,7 @@
             </v-icon>
           </v-btn>
           <v-btn
+            v-if="canDelete"
             color="error"
             class="ml-2"
             @click="beforeDelete"
@@ -116,6 +117,11 @@ export default {
       },
     };
   },
+  computed: {
+    canDelete() {
+      return this.$auth.user.permissions.includes("comment.delete")
+    }
+  },
   methods: {
     save() {
       this.$axios.patch("/admin/comments/" + this.$route.params.id, this.data)
@@ -135,6 +141,13 @@ export default {
       })
     },
     async beforeDelete() {
+      if (!this.canDelete) {
+        this.$notifier.showMessage({
+          content: 'Bạn không có quyền thực hiện hành động này!',
+          color: 'error',
+          right: false
+        })
+      }
       let confirm = await this.$refs.confirm.open('Xoá bình luận', 'Bạn có chắc muốn xoá bình luận này? Đây là hành động vĩnh viễn và không thể thay đổi!', { color: 'red' });
       if (confirm) {
         this.deleteItem()

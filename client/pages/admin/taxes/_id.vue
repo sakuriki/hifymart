@@ -19,6 +19,7 @@
             </v-icon>
           </v-btn>
           <v-btn
+            v-if="canDelete"
             color="error"
             class="ml-2"
             @click="beforeDelete"
@@ -115,6 +116,13 @@ export default {
       })
     },
     async beforeDelete() {
+      if (!this.canDelete) {
+        this.$notifier.showMessage({
+          content: 'Bạn không có quyền thực hiện hành động này!',
+          color: 'error',
+          right: false
+        })
+      }
       let confirm = await this.$refs.confirm.open('Xoá loại thuế', 'Bạn có chắc muốn xoá loại thuế này? Đây là hành động vĩnh viễn và không thể thay đổi!', { color: 'red' });
       if (confirm) {
         this.deleteItem()

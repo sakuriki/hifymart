@@ -39,59 +39,43 @@
           <span><v-chip color="primary">{{ item.views_count }}</v-chip></span>
         </template>
         <template #[`item.actions`]="{ item }">
-          <v-btn
-            v-if="canUpdate"
-            color="success"
-            icon
-            :to="{ name: 'admin-products-id',params: { id: item.id }}"
-          >
-            <v-icon>mdi-pencil-outline</v-icon>
-          </v-btn>
-          <v-btn
-            v-if="canDelete"
-            color="error"
-            icon
-            @click="beforeDelete(item.id)"
-          >
-            <v-icon>mdi-delete-outline</v-icon>
-          </v-btn>
+          <v-tooltip bottom>
+            <template #activator="{ on, attrs }">
+              <v-btn
+                v-if="canUpdate"
+                v-bind="attrs"
+                color="success"
+                icon
+                :to="{ name: 'admin-products-id',params: { id: item.id }}"
+                v-on="on"
+              >
+                <v-icon>mdi-pencil-outline</v-icon>
+              </v-btn>
+            </template>
+            <span>Sửa</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template #activator="{ on, attrs }">
+              <v-btn
+                v-if="canDelete"
+                color="error"
+                v-bind="attrs"
+                icon
+                v-on="on"
+                @click="beforeDelete(item.id)"
+              >
+                <v-icon>mdi-delete-outline</v-icon>
+              </v-btn>
+            </template>
+            <span>Xoá</span>
+          </v-tooltip>
         </template>
       </v-data-table>
     </v-card>
-    <v-dialog
-      v-model="dialog"
-      max-width="290"
-    >
-      <v-card>
-        <v-card-title>
-          Xác nhận xoá
-        </v-card-title>
-        <v-card-text>
-          Bạn có chắc muốn xoá sản phẩm này? Đây là hành động vĩnh viễn và không thể thay đổi!
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="green darken-1"
-            text
-            @click="resetDelete"
-          >
-            Huỷ
-          </v-btn>
-          <v-btn
-            color="red darken-1"
-            text
-            @click="deleteItem"
-          >
-            Xoá
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <ConfirmDialog ref="confirm" />
   </v-container>
 </template>
 <script>
-// import debounce from "lodash/debounce";
 export default {
   layout: "admin",
   middleware: "authorized",
@@ -175,18 +159,23 @@ export default {
         })
       }
     },
-    beforeDelete(item) {
-      this.dialog = true;
-      this.confirmItem = item;
+    async beforeDelete(id) {
+      if (!this.canDelete) {
+        this.$notifier.showMessage({
+          content: 'Bạn không có quyền thực hiện hành động này!',
+          color: 'error',
+          right: false
+        })
+      }
+      let confirm = await this.$refs.confirm.open('Xoá đánh giá', 'Bạn có chắc muốn xoá đánh giá này? Đây là hành động vĩnh viễn và không thể thay đổi!', { color: 'red' });
+      if (confirm) {
+        this.deleteItem(id)
+      }
     },
-    deleteItem() {
-      this.$axios.delete("/admin/products/" + this.confirmItem)
+    deleteItem(id) {
+      this.$axios.delete("/admin/ratings/" + id)
       .then(() => {
-        let index = this.data.findIndex(p => p.id == this.confirmItem);
-        if (index > -1) {
-          this.data.splice(index, 1);
-        }
-        this.pagination.total--;
+        this.fetchData();
         this.$notifier.showMessage({
           content: 'Xoá thành công',
           color: 'success',
@@ -199,14 +188,7 @@ export default {
           color: 'error',
           right: false
         })
-      })
-      .then(() => {
-        this.resetDelete()
       });
-    },
-    resetDelete() {
-      this.dialog = false;
-      this.confirmItem = null
     }
   },
 }

@@ -176,6 +176,13 @@ export default {
       });
     },
     async beforeDelete(id) {
+      if (!this.canDelete) {
+        this.$notifier.showMessage({
+          content: 'Bạn không có quyền thực hiện hành động này!',
+          color: 'error',
+          right: false
+        })
+      }
       let confirm = await this.$refs.confirm.open('Xoá đánh giá', 'Bạn có chắc muốn xoá đánh giá này? Đây là hành động vĩnh viễn và không thể thay đổi!', { color: 'red' });
       if (confirm) {
         this.deleteItem(id)

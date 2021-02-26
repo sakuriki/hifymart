@@ -140,15 +140,14 @@
   </v-container>
 </template>
 <script>
-// import { mapGetters } from "vuex";
 export default {
   layout: "admin",
   middleware: "authorized",
-  // meta: {
-  //   auth: {
-  //     permission: "admin"
-  //   }
-  // },
+  meta: {
+    auth: {
+      permission: "admin"
+    }
+  },
   async asyncData({ app }) {
     let { data } = await app.$axios.$get("/settings");
     return {
@@ -171,13 +170,9 @@ export default {
       },
     }
   },
-  // computed: {
-  //   ...mapGetters(['settings']),
-  // },
   methods: {
     save() {
       this.loading = true;
-      // this.data.permissions = this.data.selected_permissions
       this.$axios.patch("/admin/settings", this.data)
       .then(res => {
         if(res.status) {

@@ -36,20 +36,36 @@
           <span><v-chip color="primary">{{ item.wishlists_count }}</v-chip></span>
         </template>
         <template #[`item.actions`]="{ item }">
-          <v-btn
-            color="success"
-            icon
-            :to="{ name: 'admin-products-id',params: { id: item.id }}"
-          >
-            <v-icon>mdi-pencil-outline</v-icon>
-          </v-btn>
-          <v-btn
-            color="error"
-            icon
-            @click="beforeDelete(item.id)"
-          >
-            <v-icon>mdi-delete-outline</v-icon>
-          </v-btn>
+          <v-tooltip bottom>
+            <template #activator="{ on, attrs }">
+              <v-btn
+                v-if="canUpdate"
+                v-bind="attrs"
+                color="success"
+                icon
+                :to="{ name: 'admin-users-id',params: { id: item.id }}"
+                v-on="on"
+              >
+                <v-icon>mdi-pencil-outline</v-icon>
+              </v-btn>
+            </template>
+            <span>Sửa</span>
+          </v-tooltip>
+          <v-tooltip bottom>
+            <template #activator="{ on, attrs }">
+              <v-btn
+                v-if="canDelete"
+                color="error"
+                v-bind="attrs"
+                icon
+                v-on="on"
+                @click="beforeDelete(item.id)"
+              >
+                <v-icon>mdi-delete-outline</v-icon>
+              </v-btn>
+            </template>
+            <span>Xoá</span>
+          </v-tooltip>
         </template>
       </v-data-table>
     </v-card>
@@ -65,13 +81,6 @@ export default {
       permission: "user.access"
     }
   },
-  // async asyncData({ app }) {
-  //   let { products, pagination } = await app.$axios.$get("/admin/users?per_page=10");
-  //   return {
-  //     data: products,
-  //     pagination: pagination
-  //   }
-  // },
   data () {
     return {
       pagination: {
@@ -85,7 +94,6 @@ export default {
       options: {},
       selected: [],
       headers: [
-        // { text: 'ID', align: 'start', value: 'id' },
         { text: 'Tên', align: 'start', value: 'name' },
         { text: 'Email', value: 'email' },
         { text: 'SĐT', value: 'phone' },
@@ -96,14 +104,14 @@ export default {
       ],
     }
   },
-  // computed: {
-  //   canUpdate() {
-  //     return this.$auth.user.permissions.includes("brand.update")
-  //   },
-  //   canDelete() {
-  //     return this.$auth.user.permissions.includes("brand.delete")
-  //   }
-  // },
+  computed: {
+    canUpdate() {
+      return this.$auth.user.permissions.includes("user.update")
+    },
+    canDelete() {
+      return this.$auth.user.permissions.includes("user.delete")
+    }
+  },
   watch: {
     options: {
       handler () {
@@ -117,7 +125,6 @@ export default {
     },
   },
   mounted () {
-    // this.fetchData();
     this.fetchData = this.$debounce(this.fetchData, 500);
   },
   methods: {
@@ -147,6 +154,13 @@ export default {
       }
     },
     async beforeDelete(id) {
+      if (!this.canDelete) {
+        this.$notifier.showMessage({
+          content: 'Bạn không có quyền thực hiện hành động này!',
+          color: 'error',
+          right: false
+        })
+      }
       let confirm = await this.$refs.confirm.open('Xoá người dùng', 'Bạn có chắc muốn xoá người dùng này? Đây là hành động vĩnh viễn và không thể thay đổi!', { color: 'red' });
       if (confirm) {
         this.deleteItem(id)

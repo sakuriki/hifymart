@@ -86,7 +86,7 @@ export default {
   middleware: "authorized",
   meta: {
     auth: {
-      permission: "role.add"
+      permission: "role.create"
     }
   },
   async asyncData({ app }) {
@@ -100,7 +100,6 @@ export default {
       valid: false,
       permissions: [],
       selected_permissions: [],
-      // data: [],
       data: {
         name: null,
         slug: null,

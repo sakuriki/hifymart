@@ -16,6 +16,7 @@
             Lưu thay đổi
           </v-btn>
           <v-btn
+            v-if="canDelete"
             color="error"
             class="ml-2"
             @click="beforeDelete"
@@ -120,12 +121,14 @@ export default {
         }
       });
       return arr
+    },
+    canDelete() {
+      return this.$auth.user.permissions.includes("role.delete")
     }
   },
   methods: {
     saveRole() {
       this.loading = true;
-      // this.data.permissions = this.data.selected_permissions
       this.$axios.patch("/admin/roles/" + this.$route.params.id, this.data)
       .then(res => {
         if(res.status) {
@@ -148,6 +151,13 @@ export default {
       });
     },
     async beforeDelete() {
+      if (!this.canDelete) {
+        this.$notifier.showMessage({
+          content: 'Bạn không có quyền thực hiện hành động này!',
+          color: 'error',
+          right: false
+        })
+      }
       let confirm = await this.$refs.confirm.open('Xoá vai trò', 'Bạn có chắc muốn xoá vai trò này? Đây là hành động vĩnh viễn và không thể thay đổi!', { color: 'red' });
       if (confirm) {
         this.deleteItem()
