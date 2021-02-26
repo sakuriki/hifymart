@@ -25,6 +25,16 @@
             v-for="item in items"
             :key="item.group"
           >
+            <v-divider
+              v-if="item.divider"
+              class="my-1"
+            />
+            <v-subheader
+              v-if="item.subheader"
+              inset
+            >
+              {{ item.subheader }}
+            </v-subheader>
             <v-list-group
               v-if="item.children"
               :prepend-icon="item.icon"
@@ -120,20 +130,6 @@
     <SideCart />
     <v-main>
       <nuxt />
-      <BackToTop />
-      <v-btn
-        v-show="count > 0"
-        fab
-        dark
-        fixed
-        bottom
-        right
-        color="accent"
-        style="bottom: 86px"
-        :to="{ name: 'compare' }"
-      >
-        <v-icon>mdi-compare</v-icon>
-      </v-btn>
       <v-btn
         fab
         dark
@@ -178,125 +174,56 @@ export default {
       phone: false,
       searchText: "",
       drawer: null,
-      items: [
-      {
-        icon: "mdi-home",
-        title: "Trang chủ",
-        to: "/",
-      },
-      {
-        group: "/admin/products",
-        icon: "mdi-alpha-s-box-outline",
-        title: "Sản phẩm",
-        children: [
-          {
-            title: "Danh sách sản phẩm",
-            to: "/admin/products",
-          },
-          {
-            title: "Thêm mới",
-            to: "/admin/products/add",
-          },
-        ],
-      },
-      {
-        group: "/admin/brands",
-        icon: "mdi-alpha-b-box-outline",
-        title: "Hãng",
-        children: [
-          {
-            title: "Danh sách hãng",
-            to: "/admin/brands",
-          },
-          {
-            title: "Thêm mới",
-            to: "/admin/brands/add",
-          },
-        ],
-      },
-      {
-        group: "/admin/categories",
-        icon: "mdi-alpha-t-box-outline",
-        title: "Thể loại",
-        children: [
-          {
-            title: "Danh sách Thể loại",
-            to: "/admin/categories",
-          },
-          {
-            title: "Thêm mới",
-            to: "/admin/categories/add",
-          },
-        ],
-      },
-      {
-        group: "/admin/tags",
-        icon: "mdi-tag-outline",
-        title: "Tags",
-        children: [
-          {
-            title: "Danh sách Tag",
-            to: "/admin/tags",
-          },
-          {
-            title: "Thêm mới",
-            to: "/admin/tags/add",
-          },
-        ],
-      },
-      {
-        group: "/admin/medias",
-        icon: "mdi-image-outline",
-        title: "Bộ sưu tập",
-        children: [
-          {
-            title: "Thư viện",
-            to: "/admin/medias",
-          },
-          {
-            title: "Thêm mới",
-            to: "/admin/medias/add",
-          },
-        ],
-      },
-      {
-        group: "/admin/users",
-        icon: "mdi-account-outline",
-        title: "Users",
-        children: [
-          {
-            title: "Danh sách User",
-            to: "/admin/users",
-          },
-          {
-            title: "Thêm User",
-            to: "/admin/users/add",
-          },
-        ],
-      },
-      {
-        group: "/admin/roles",
-        icon: "mdi-alpha-r-box-outline",
-        title: "Roles",
-        children: [
-          {
-            title: "Danh sách Role",
-            to: "/admin/roles",
-          },
-          {
-            title: "Thêm Role",
-            to: "/admin/roles/add",
-          },
-        ],
-      }
-    ],
-
     }
   },
   computed: {
-    ...mapGetters(['settings']),
+    ...mapGetters(['brands', 'categories','settings']),
     ...mapGetters('cart', ['total']),
-    ...mapGetters('compare', ['count']),
+    items() {
+      return [
+        {
+          icon: "mdi-home",
+          title: "Trang chủ",
+          to: "/",
+        },
+        {
+          icon: "mdi-sale",
+          title: "Giảm giá",
+          to: "/browser/sale-off",
+          divider: true,
+          subheader: 'Duyệt'
+        },
+        {
+          icon: "mdi-basket-fill",
+          title: "Mua nhiều",
+          to: "/browser/best-selling",
+        },
+        {
+          icon: "mdi-alert-decagram",
+          title: "Sản phẩm mới",
+          to: "/browser/new",
+        },
+        {
+          icon: "mdi-shuffle-variant",
+          title: "Khám phá",
+          to: "/browser/explore",
+        },
+        {
+          group: "/brand",
+          icon: "mdi-alpha-n-box-outline",
+          title: "Nhãn hiệu",
+          children: this.brands.map(i => ({ title: i.name, to: '/brand/' + i.slug})),
+          divider: true,
+          subheader: 'Tài nguyên'
+        },
+        {
+          group: "/category",
+          icon: "mdi-alpha-d-box-outline",
+          title: "Danh mục",
+          children: this.categories.map(i => ({ title: i.name, to: '/category/' + i.slug})),
+        },
+      ];
+    }
   },
   beforeMount() {
     this.updateBrowserDimensions()

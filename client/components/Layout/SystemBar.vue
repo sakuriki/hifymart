@@ -82,15 +82,6 @@
       text
       class="hidden-sm-and-down"
       nuxt
-      :to="{ name: 'compare' }"
-    >
-      <v-icon>mdi-compare</v-icon>
-      So sánh ({{ compareCount }})
-    </v-btn>
-    <v-btn
-      text
-      class="hidden-sm-and-down"
-      nuxt
       :to="{ name: 'browser-type', params: { type: 'sale-off' } }"
     >
       <v-icon>mdi-star</v-icon>
@@ -111,9 +102,6 @@ import { mapGetters } from 'vuex';
 export default {
   computed: {
     ...mapGetters(['settings']),
-    compareCount() {
-      return this.$store.getters['compare/count']
-    }
   },
   methods: {
     async logout() {
