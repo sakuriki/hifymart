@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Mews\Purifier\Facades\Purifier;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProductRequest extends FormRequest
@@ -14,6 +15,19 @@ class ProductRequest extends FormRequest
   public function authorize()
   {
     return true;
+  }
+
+  /**
+   * Get data to be validated from the request.
+   *
+   * @return array
+   */
+  public function validationData()
+  {
+    $all = parent::validationData();
+    $all['description'] = Purifier::clean($all['description']);
+    $all['content'] = Purifier::clean($all['content']);
+    return $all;
   }
 
   /**

@@ -9,9 +9,24 @@ class TagController extends Controller
 {
   public function index(Request $request)
   {
-    $brands = Tag::select(['id', 'name'])->get()->pluck('name');
+    $tags = Tag::select(['id', 'name', 'slug'])->get();
+    if ($request->nameOnly) {
+      return response()->json([
+        'tags' => $tags->pluck('name')
+      ]);
+    }
     return response()->json([
-      'tags' => $brands
+      'tags' => $tags
+    ]);
+  }
+
+  public function show($slug, Request $request)
+  {
+    $tag = Tag::where('slug', $slug)
+      ->select('id', 'name', 'slug')
+      ->firstOrFail();
+    return response()->json([
+      'tag' => $tag
     ]);
   }
 }

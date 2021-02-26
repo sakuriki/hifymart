@@ -292,7 +292,7 @@ export default {
   async asyncData({ app }) {
     let { categories } = await app.$axios.$get("/categories");
     let { brands } = await app.$axios.$get("/brands");
-    let { tags } = await app.$axios.$get("/tags");
+    let { tags } = await app.$axios.$get("/tags?nameOnly=true");
     let { taxes } = await app.$axios.$get("/taxes");
     return {
       tags: tags,

@@ -336,7 +336,7 @@ export default {
     let { product } = await app.$axios.$get("/admin/products/" + params.id);
     let { categories } = await app.$axios.$get("/categories");
     let { brands } = await app.$axios.$get("/brands");
-    let { tags } = await app.$axios.$get("/tags");
+    let { tags } = await app.$axios.$get("/tags?nameOnly=true");
     let { taxes } = await app.$axios.$get("/taxes");
     return {
       tags: tags,

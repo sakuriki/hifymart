@@ -57,11 +57,16 @@ class ProductController extends Controller
             ->orWhereBetween('sale_off_price', $range);
         });
       })
+      ->when($request->input('tags'), function ($query, $id) {
+        $query->whereHas('tags', function ($query) use ($id) {
+          $query->whereIn('tag_id', Arr::wrap($id));
+        });
+      })
       ->when($request->input('brands'), function ($query, $id) {
         $query->whereIn('brand_id', Arr::wrap($id));
       })
-      ->when($request->input('category'), function ($query, $id) {
-        $query->where('category_id', $id);
+      ->when($request->input('categories'), function ($query, $id) {
+        $query->whereIn('category_id', Arr::wrap($id));
       })
       ->when($request->input('rating'), function ($query, $rating) {
         $query->having(DB::raw('AVG(rating)'), '>=', $rating);

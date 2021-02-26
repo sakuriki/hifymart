@@ -89,12 +89,11 @@
                       class="mx-2"
                       v-bind="attrs"
                       v-on="on"
-                      @click.prevent="addCompare(product)"
                     >
-                      mdi-compare
+                      mdi-eye
                     </v-icon>
                   </template>
-                  <span>So sánh</span>
+                  <span>Chi tiết</span>
                 </v-tooltip>
               </div>
             </v-overlay>
@@ -128,7 +127,6 @@ export default {
       return Math.round(rating * 10) / 10;
     },
     ...mapActions('cart', { addItem: 'addItem' }),
-    ...mapActions('compare', { addCompare: 'addProduct' }),
     async beforeWishlist(product) {
       if (this.$auth.loggedIn) {
         return this.addToWishlist(product)
