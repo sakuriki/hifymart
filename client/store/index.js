@@ -1,4 +1,8 @@
 export const state = () => ({
+  footer: {
+    categories: [],
+    brands: []
+  },
   brands: [],
   categories: [],
   settings: {},
@@ -26,6 +30,7 @@ export const getters = {
   // },
   settings: ({ settings }) => settings,
   latestProducts: ({ latestProducts }) => latestProducts,
+  footer: ({ footer }) => footer,
   brands: ({ brands }) => brands,
   categories: ({ categories }) => categories,
   onsaleProducts: ({ onsaleProducts }) => onsaleProducts,
@@ -50,6 +55,9 @@ export const mutations = {
   },
   SET_SETTINGS(state, data) {
     state.settings = data;
+  },
+  SET_FOOTER(state, data) {
+    state.footer = data;
   },
   SET_BRANDS(state, data) {
     state.brands = data;
@@ -110,9 +118,14 @@ export const actions = {
       let { data } = await this.$axios.$get("/settings");
       vuexContext.commit("SET_SETTINGS", data);
 
-      let { brands, categories } = await this.$axios.$get("/footer");
-      vuexContext.commit("SET_BRANDS", brands);
+      let { categories } = await this.$axios.$get("/categories");
       vuexContext.commit("SET_CATEGORIES", categories);
+
+      let { brands } = await this.$axios.$get("/brands");
+      vuexContext.commit("SET_BRANDS", brands);
+
+      let footer = await this.$axios.$get("/footer");
+      vuexContext.commit("SET_FOOTER", footer);
 
       var latestProducts = await this.$axios.$get("/products?per_page=8");
       vuexContext.commit("SET_LASTEST_PRODUCTS", latestProducts.products);

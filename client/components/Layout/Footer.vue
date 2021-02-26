@@ -37,7 +37,7 @@
               Danh mục
             </p>
             <NuxtLink
-              v-for="category in categories"
+              v-for="category in footer.categories"
               :key="category.slug"
               :to="category.slug"
             >
@@ -49,7 +49,7 @@
               Nhãn hiệu
             </p>
             <NuxtLink
-              v-for="brand in brands"
+              v-for="brand in footer.brands"
               :key="brand.slug"
               :to="brand.slug"
             >
@@ -130,7 +130,7 @@ export default {
     ],
   }),
   computed: {
-    ...mapGetters(['brands', 'categories', 'settings']),
+    ...mapGetters(['footer', 'settings']),
   },
 }
 </script>
