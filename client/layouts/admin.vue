@@ -20,7 +20,7 @@
           class="toolbar-title white--text text-decoration-none"
           to="/"
         >
-          shop.re
+          {{ settings['app-name'] }}
         </NuxtLink>
       </v-toolbar-title>
       <v-spacer />
@@ -311,7 +311,7 @@ export default {
         icon: "mdi-cog-outline",
         title: "Cài đặt",
         permission: "dashboard",
-        to: "/settings",
+        to: "/admin/settings",
       },
     ],
   }),

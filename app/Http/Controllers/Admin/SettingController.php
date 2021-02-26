@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Setting;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SettingRequest;
 use Illuminate\Support\Facades\Cache;
 
 class SettingController extends Controller
 {
-
-  public function update(Setting $setting, Request $request)
+  public function __invoke(SettingRequest $request)
   {
     $user = auth()->user();
-    if (!$user || $user->cannot('setting.update')) {
+    if (!$user || $user->cannot('admin')) {
       return response()->json([
         'errors' => [
           'You are unauthorized to access this resource'
@@ -21,12 +20,11 @@ class SettingController extends Controller
       ], 401);
     }
     Cache::forget('settings');
-    $setting->update($request->only([
-      'name',
-      'value'
-    ]));
-    return response()->json([
-      'setting' => $setting
-    ]);
+    foreach ($request->validated() as $key => $value) {
+      DB::table('settings')
+        ->where('name', $key)
+        ->update(['value' => $value]);
+    }
+    return response()->noContent();
   }
 }

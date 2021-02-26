@@ -26,16 +26,16 @@
           <v-card-title>Địa chỉ cửa hàng</v-card-title>
           <v-card-text>
             <v-card-subtitle>
-              <v-icon>mdi-map-marker</v-icon> Shop.re
+              <v-icon>mdi-map-marker</v-icon> {{ settings['app-name'] }}
             </v-card-subtitle>
             <v-list-item three-line>
               <v-list-item-content>
-                <v-list-item-title>Địa chỉ: Số nhà 001, đường Trần Hưng Đạo, Thành Phố Hà Nội</v-list-item-title>
+                <v-list-item-title>Địa chỉ: {{ settings['contact-address'] }}</v-list-item-title>
                 <v-list-item-subtitle>
-                  Điện thoại: (028) 1234 4321
+                  Điện thoại: {{ settings['contact-phone'] }}
                 </v-list-item-subtitle>
                 <v-list-item-subtitle>
-                  Email: sales@shop.re
+                  Email: {{ settings['contact-mail'] }}
                 </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
@@ -46,6 +46,7 @@
   </v-container>
 </template>
 <script>
+import { mapGetters } from "vuex";
 export default {
   head() {
     return {
@@ -94,6 +95,9 @@ export default {
         },
       ]
     }
+  },
+  computed: {
+    ...mapGetters(['settings'])
   },
   mounted() {
     var t = this;

@@ -42,7 +42,7 @@ module.exports = {
   /*
    ** Global CSS
    */
-  css: ["~assets/css/main.css", "normalize.css/normalize.css"],
+  css: ["@/assets/css/main.css", "normalize.css/normalize.css"],
   /*
    ** Plugins to load before mounting the App
    */
@@ -53,14 +53,16 @@ module.exports = {
     { src: "~/plugins/vuex-persistedstate" },
     { src: "~/plugins/vue-apexcharts", ssr: false },
     { src: "~/plugins/vuex-shared-mutations", ssr: false },
-    { src: "~/plugins/vue-quill-editor", ssr: false }
+    { src: "~/plugins/vue-quill-editor", ssr: false },
+    { src: "~/plugins/vue-fb-customer-chat.js", ssr: false }
   ],
 
   env: {
     baseUrl: process.env.CLIENT_BASE_URL || "http://localhost:3000",
     apiUrl: process.env.APP_URL || "http://localhost:8000",
     GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
-    appName: process.env.APP_NAME || "HifyMart"
+    appName: process.env.APP_NAME || "HifyMart",
+    fbPage: process.env.FB_PAGE || 104938607602675
   },
   vue: {
     config: {
@@ -165,6 +167,19 @@ module.exports = {
         "window.Quill": "quill/dist/quill.js",
         Quill: "quill/dist/quill.js"
       })
-    ]
+    ],
+    /*
+     ** Run ESLint on save
+     */
+    extend(config, ctx) {
+      if (ctx.dev && process.client) {
+        config.module.rules.push({
+          enforce: "pre",
+          test: /\.(js|vue)$/,
+          loader: "eslint-loader",
+          exclude: /(node_modules)/
+        });
+      }
+    }
   }
 };
