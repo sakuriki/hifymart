@@ -41,4 +41,14 @@ class CategoryController extends Controller
     }
     return $data;
   }
+
+  public function show($slug, Request $request)
+  {
+    $category = Category::where('slug', $slug)
+      ->select('id', 'name', 'description')
+      ->firstOrFail();
+    return response()->json([
+      'category' => $category
+    ]);
+  }
 }
