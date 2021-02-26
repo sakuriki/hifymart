@@ -1,8 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,12 +12,37 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/export', 'Admin\OrderController@export');
+Route::get('/user/{id}', 'UserController@show');
+Route::get('/provinces', 'ProvinceController@index');
+Route::get('/coupons/{code}', 'CouponController');
+Route::get('/footer', 'FooterController');
+Route::get('/settings', 'SettingController');
+Route::apiResource('/tags', 'TagController')->only(["index", "show"]);
+Route::apiResource('brands', 'BrandController')->only(["index", "show"]);
+Route::apiResource('taxes', 'TaxController')->only(["index", "show"]);
+Route::apiResource('orders', 'OrderController');
+Route::apiResource('categories', 'CategoryController')->only(["index", "show"]);
+Route::apiResource('ratings', 'RatingController')->only(["show"]);
 Route::group(['prefix' => '/auth', ['middleware' => 'throttle:20,5']], function () {
   Route::post('/register', 'Auth\AuthController@register')->name('register');
   Route::post('/login', 'Auth\AuthController@login')->name('login');
 });
 Route::group(['middleware' => 'jwtnew'], function () {
   Route::group(['prefix' => '/admin'], function () {
+    Route::patch('settings', 'Admin\SettingController');
+    Route::delete('tags/bulkDestroy', 'Admin\TagController@bulkDestroy');
+    Route::delete('taxes/bulkDestroy', 'Admin\TaxController@bulkDestroy');
+    Route::delete('roles/bulkDestroy', 'Admin\RoleController@bulkDestroy');
+    Route::delete('users/bulkDestroy', 'Admin\UserController@bulkDestroy');
+    Route::delete('brands/bulkDestroy', 'Admin\BrandController@bulkDestroy');
+    Route::delete('orders/bulkDestroy', 'Admin\OrderController@bulkDestroy');
+    Route::delete('coupons/bulkDestroy', 'Admin\CouponController@bulkDestroy');
+    Route::delete('ratings/bulkDestroy', 'Admin\RatingController@bulkDestroy');
+    Route::delete('comments/bulkDestroy', 'Admin\CommentController@bulkDestroy');
+    Route::delete('products/bulkDestroy', 'Admin\ProductController@bulkDestroy');
+    Route::delete('categories/bulkDestroy', 'Admin\CategoryController@bulkDestroy');
+    Route::delete('permissions/bulkDestroy', 'Admin\PermissionController@bulkDestroy');
+    Route::delete('productImages/bulkDestroy', 'Admin\ProductImageController@bulkDestroy');
     Route::apiResource('tags', 'Admin\TagController');
     Route::apiResource('taxes', 'Admin\TaxController');
     Route::apiResource('roles', 'Admin\RoleController');
@@ -50,14 +72,3 @@ Route::group(['middleware' => 'jwtoptinal'], function () {
   Route::get('/comments/showreply/{id}', 'ProductCommentController@showreply');
   Route::apiResource('comments', 'ProductCommentController');
 });
-Route::get('/user/{id}', 'UserController@show');
-Route::get('/provinces', 'ProvinceController@index');
-Route::get('/tags', 'TagController@index');
-Route::get('/coupons/{code}', 'CouponController');
-Route::get('/footer', 'FooterController');
-Route::get('/settings', 'SettingController');
-Route::apiResource('brands', 'BrandController')->only(["index", "show"]);
-Route::apiResource('taxes', 'TaxController')->only(["index", "show"]);
-Route::apiResource('orders', 'OrderController');
-Route::apiResource('categories', 'CategoryController')->only(["index", "show"]);
-Route::apiResource('ratings', 'RatingController')->only(["show"]);

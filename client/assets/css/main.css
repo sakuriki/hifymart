@@ -9,7 +9,7 @@ button.multi-line > span.v-btn__content {
   flex-direction: column !important;
 }
 .user-rating > .v-icon {
-  padding: 0;
+  padding: 0 !important;
 }
 .pointer {
   cursor: pointer;

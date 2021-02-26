@@ -170,11 +170,38 @@ export default {
     let { products, pagination } = await app.$axios.$get(`/products?per_page=16&orderBy=${string}`);
     let { brands } = await app.$axios.$get('/brands');
     let { categories } = await app.$axios.$get('/categories');
+    let order, text, description;
+    if (params.type == "sale-off") {
+      order = "&onsale=true";
+      text = "Đang giảm giá";
+      description = "Danh sách sản phẩm đang được giảm giá";
+    } else if (params.type == "best-selling") {
+      order = "orders_count";
+      text = "Mua nhiều";
+      description = "Danh sách sản phẩm được mua nhiều nhất";
+    } else if (params.type == "explore") {
+      order = "random";
+      text = "Khám phá"
+      description = "Danh sách sản phẩm có thể bạn muốn mua";
+    } else {
+      text = "Sản phẩm mới";
+      description = "Danh sách sản phẩm mới trên cửa hàng";
+    }
     return {
       products: products,
       pagination : pagination,
       brands: brands,
-      categories: categories
+      categories: categories,
+      type: params.type,
+      data: {
+        orderBy: order,
+        money_range: [0, 10000000],
+        rating: null,
+        brands: [],
+        category: null
+      },
+      text: text,
+      description: description
     }
   },
   data() {
@@ -182,6 +209,7 @@ export default {
       search: null,
       type: null,
       text: null,
+      description: null,
       loading: false,
       products: [],
       brands: [],
@@ -199,38 +227,52 @@ export default {
         brands: [],
         category: null
       },
-      tree: [
+    }
+  },
+  head() {
+    return {
+      title: this.text,
+      meta: [
         {
-          id: 1,
-          name: "mot"
+          hid: 'description',
+          name: 'description',
+          content: this.$strippedContent(this.description)
         },
         {
-          id: 2,
-          name: "hai"
+          property: 'og:site_name',
+          content: process.env.appName
         },
         {
-          id: 3,
-          name: "ba"
+          property: 'og:title',
+          content: this.text
         },
         {
-          id: 4,
-          name: "ba"
+          property: 'og:description',
+          content: this.$strippedContent(this.description)
         },
         {
-          id: 5,
-          name: "ba"
+          property: 'og:image',
+          content: ''
         },
         {
-          id: 6,
-          name: "bon"
+          property: 'twitter:site',
+          content: process.env.appName
         },
         {
-          id: 7,
-          name: "bon"
+          property: 'twitter:card',
+          content: 'summary_large_image'
         },
         {
-          id: 8,
-          name: "f"
+          property: 'twitter:title',
+          content: this.text
+        },
+        {
+          property: 'twitter:description',
+          content: this.$strippedContent(this.description)
+        },
+        {
+          property: 'twitter:image',
+          content: ''
         },
       ]
     }
@@ -269,27 +311,11 @@ export default {
   },
   beforeMount() {
     this.fetchData = this.$debounce(this.fetchData, 500);
-    this.prepareData();
   },
   methods: {
     reset() {
       this.pagination.current_page = 1;
       this.fetchData()
-    },
-    prepareData() {
-      this.type = this.$route.params.type;
-      if (this.type == "sale-off") {
-        this.data.orderBy = "&onsale=true";
-        this.text = "Đang giảm giá";
-      } else if (this.type == "best-selling") {
-        this.data.orderBy = "orders_count";
-        this.text = "Mua nhiều";
-      } else if (this.type == "explore") {
-        this.data.orderBy = "random";
-        this.text = "Khám phá"
-      } else {
-        this.text = "Sản phẩm mới";
-      }
     },
     fetchData() {
       this.loading = true;
@@ -301,7 +327,7 @@ export default {
           range: this.data.money_range,
           rating: this.data.rating,
           brands: this.data.brands,
-          category: this.data.category
+          categories: this.data.category
         }
       };
       this.$axios.get('/products', data).then(res => {

@@ -304,7 +304,7 @@
                       class="text-right py-0 d-flex align-center"
                     >
                       <span class="body-2 font-weight-light grey--text">
-                        Thuế(VAT):
+                        Thuế:
                       </span>
                       <v-spacer />
                       <v-responsive
