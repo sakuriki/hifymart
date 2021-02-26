@@ -2,12 +2,14 @@ import Vue from "vue";
 import VueQuillEditor, { Quill } from "vue-quill-editor";
 import ImageResize from "quill-image-resize-module";
 import { ImageDrop } from "quill-image-drop-module";
+import ImageUploader from "quill-image-uploader";
 
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 
 Quill.register("modules/imageResize", ImageResize);
 Quill.register("modules/imageDrop", ImageDrop);
+Quill.register("modules/imageUploader", ImageUploader);
 Vue.use(VueQuillEditor, {
   theme: "snow",
   modules: {
@@ -29,7 +31,32 @@ Vue.use(VueQuillEditor, {
       [{ align: [] }],
       ["clean"],
       ["link", "image", "video"]
-    ]
+    ],
+    imageUploader: {
+      upload: file => {
+        return new Promise((resolve, reject) => {
+          const formData = new FormData();
+          formData.append("image", file);
+
+          fetch(
+            "https://api.imgbb.com/1/upload?key=3fc620748fdf8882c4f8efe20d975efb",
+            {
+              method: "POST",
+              body: formData
+            }
+          )
+            .then(response => response.json())
+            .then(result => {
+              console.log(result);
+              resolve(result.data.url);
+            })
+            .catch(error => {
+              reject("Upload failed");
+              console.error("Error:", error);
+            });
+        });
+      }
+    }
   },
   placeholder: "Điền nội dung vào đây ..."
 });

@@ -18,8 +18,10 @@
         "nuxt": "^2.14.7",
         "quill-image-drop-module": "^1.0.3",
         "quill-image-resize-module": "^3.0.0",
+        "quill-image-uploader": "^1.2.2",
         "simplebar-vue": "^1.6.0",
         "vue-apexcharts": "^1.6.0",
+        "vue-fb-customer-chat": "^0.2.0",
         "vue-quill-editor": "^3.0.6",
         "vuex-persistedstate": "^4.0.0-beta.1",
         "vuex-shared-mutations": "^1.0.2"
