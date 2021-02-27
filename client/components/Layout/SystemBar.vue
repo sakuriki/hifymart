@@ -7,6 +7,16 @@
   >
     <span class="hidden-sm-and-down">Mở cửa: {{ settings['working-time'] }}</span>
     <v-spacer class="hidden-sm-and-down" />
+    <v-btn
+      v-if="canAccess"
+      text
+      class="hidden-sm-and-down"
+      nuxt
+      :to="{ name: 'admin' }"
+    >
+      <v-icon>mdi-view-dashboard</v-icon>
+      Dashboard
+    </v-btn>
     <v-menu
       v-if="!$auth.loggedIn"
       top
@@ -102,6 +112,9 @@ import { mapGetters } from 'vuex';
 export default {
   computed: {
     ...mapGetters(['settings']),
+    canAccess() {
+      return this.$auth.loggedIn && this.$auth.user.permissions.includes("dashboard")
+    },
   },
   methods: {
     async logout() {

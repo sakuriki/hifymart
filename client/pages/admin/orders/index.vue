@@ -64,10 +64,10 @@
                 v-bind="attrs"
                 color="success"
                 icon
-                :to="{ name: 'admin-brands-id',params: { id: item.id }}"
+                :to="{ name: 'admin-orders-id',params: { id: item.id }}"
                 v-on="on"
               >
-                <v-icon>mdi-orders-outline</v-icon>
+                <v-icon>mdi-pencil-outline</v-icon>
               </v-btn>
             </template>
             <span>Sửa</span>

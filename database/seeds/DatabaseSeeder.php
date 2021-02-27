@@ -103,7 +103,7 @@ class DatabaseSeeder extends Seeder
     $role_customer = Role::firstOrCreate(['name' => 'customer', 'slug' => 'customer']);
     // Users
     $user = User::firstOrCreate(
-      ['email' => 'admin@admin.admin'],
+      ['email' => 'admin@hifymart.com'],
       [
         'name' => 'Admin',
         'password' => Hash::make('12345678'),
@@ -113,7 +113,7 @@ class DatabaseSeeder extends Seeder
     $user->roles()->sync([$role_admin->id]);
 
     $user = User::firstOrCreate(
-      ['email' => 'test@test.test'],
+      ['email' => 'user@hifymart.com'],
       [
         'name' => 'Customer',
         'password' => Hash::make('12345678'),

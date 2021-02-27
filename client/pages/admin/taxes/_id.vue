@@ -97,6 +97,11 @@ export default {
       },
     };
   },
+  computed: {
+    canDelete() {
+      return this.$auth.user.permissions.includes("tax.delete")
+    }
+  },
   methods: {
     save() {
       this.$axios.patch("/admin/taxes/" + this.$route.params.id, this.data)
@@ -129,7 +134,7 @@ export default {
       }
     },
     deleteItem() {
-      this.$axios.delete("/admin/taxes/" + this.data.id)
+      this.$axios.delete("/admin/taxes/" + this.$route.params.id)
       .then(() => {
         this.$router.push({
           name: "admin-taxes"

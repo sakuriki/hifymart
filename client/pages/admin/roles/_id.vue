@@ -164,7 +164,7 @@ export default {
       }
     },
     deleteItem() {
-      this.$axios.delete("/admin/roles/" + this.data.id)
+      this.$axios.delete("/admin/roles/" + this.$route.params.id)
       .then(() => {
         this.$router.push({
           name: "admin-roles"

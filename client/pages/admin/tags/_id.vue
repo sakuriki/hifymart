@@ -156,7 +156,7 @@ export default {
       }
     },
     deleteItem() {
-      this.$axios.delete("/admin/tags/" + this.data.id)
+      this.$axios.delete("/admin/tags/" + this.$route.params.id)
       .then(() => {
         this.$router.push({
           name: "admin-tags"

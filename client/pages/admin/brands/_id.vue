@@ -162,7 +162,7 @@ export default {
       }
     },
     deleteItem() {
-      this.$axios.delete("/admin/brands/" + this.data.id)
+      this.$axios.delete("/admin/brands/" + this.$route.params.id)
       .then(() => {
         this.$router.push({
           name: "admin-brands"

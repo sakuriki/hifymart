@@ -154,7 +154,7 @@ export default {
       }
     },
     deleteItem() {
-      this.$axios.delete("/admin/comments/" + this.data.id)
+      this.$axios.delete("/admin/comments/" + this.$route.params.id)
       .then(() => {
         this.$router.push({
           name: "admin-comments"

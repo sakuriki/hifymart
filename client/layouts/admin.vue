@@ -30,6 +30,38 @@
       >
         <v-icon>{{ dark ? 'mdi-brightness-5' : 'mdi-brightness-4' }}</v-icon>
       </v-btn>
+      <v-menu
+        bottom
+        left
+        min-width="200px"
+        offset-y
+        origin="top right"
+        transition="scale-transition"
+      >
+        <template #activator="{ on, attrs }">
+          <v-btn
+            text
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon>mdi-account</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+            nuxt
+            exact
+            :to="{ name: 'admin-profile' }"
+          >
+            <v-list-item-title>Tài khoản</v-list-item-title>
+          </v-list-item>
+          <v-list-item
+            @click="logout"
+          >
+            <v-list-item-title>Đăng xuất</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
     <v-navigation-drawer
       v-model="drawer"
@@ -295,7 +327,7 @@ export default {
       {
         icon: "mdi-cog-outline",
         title: "Cài đặt",
-        permission: "dashboard",
+        permission: "setting",
         to: "/admin/settings",
       },
     ],
@@ -327,7 +359,18 @@ export default {
     },
     authorized(permission) {
       return permission ? this.$auth.user.permissions.includes(permission) : true
-    }
+    },
+    async logout() {
+      try {
+        await this.$auth.logout();
+      } catch (e) {
+        this.$notifier.showMessage({
+          content: 'Có lỗi, vui lòng thử lại',
+          color: 'error',
+          right: false
+        })
+      }
+    },
   },
 };
 </script>

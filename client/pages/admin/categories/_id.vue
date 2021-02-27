@@ -179,7 +179,7 @@ export default {
       }
     },
     deleteItem() {
-      this.$axios.delete("/admin/categories/" + this.data.id)
+      this.$axios.delete("/admin/categories/" + this.$route.params.id)
       .then(() => {
         this.$router.push({
           name: "admin-categories"

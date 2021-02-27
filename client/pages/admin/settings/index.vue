@@ -145,7 +145,7 @@ export default {
   middleware: "authorized",
   meta: {
     auth: {
-      permission: "admin"
+      permission: "setting"
     }
   },
   async asyncData({ app }) {
