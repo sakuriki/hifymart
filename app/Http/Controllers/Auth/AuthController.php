@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\UserRequest;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -14,32 +15,12 @@ class AuthController extends Controller
 
   use AuthenticatesUsers;
 
-  public function register(Request $request)
+  public function register(UserRequest $request)
   {
-    $messages = [
-      'required' => ':attribute không được để trống',
-      'unique' => ':attribute đã tồn tại',
-      'password.min' => 'Mật khẩu dài tối thiếu 8 ký tự',
-      'password.confirmed' => 'Mật khẩu nhập lại không khớp',
-      'email' => ':attribute chưa hợp lệ hoặc không có thực',
-      'max' => ':attribute tối đa 255 ký tự',
-      'string' => ':attribute phải là chuỗi'
-    ];
-    $nicenames = [
-      'email' => 'Địa chỉ email',
-      'password' => 'Mật khẩu',
-      'name' => 'Tên hiển thị'
-    ];
-    // validate data
-    $this->validate($request, [
-      'name' => 'required|string|max:255',
-      'email' => 'required|email:rfc,dns|unique:users,email',
-      'password' => 'required|string|min:8|confirmed'
-    ], $messages, $nicenames);
-    // create new user
     $user = User::create([
       'name' => $request->name,
       'email' => $request->email,
+      'phone' => $request->phone,
       'password' => bcrypt($request->password)
     ]);
     $role = Role::where('slug', 'customer')->firstOrFail();

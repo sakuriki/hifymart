@@ -22,9 +22,10 @@
               <v-form
                 ref="form"
                 v-model="valid"
+                @submit="register"
               >
                 <div
-                  v-for="error in errors"
+                  v-for="error in $store.getters.errors"
                   :key="error[0]"
                   class="d-flex"
                 >
@@ -38,13 +39,20 @@
                   v-model="data.name"
                   label="Tên hiển thị"
                   :rules="[rules.required, rules.min]"
+                  autocomplete="name"
                   required
                 />
                 <v-text-field
                   v-model="data.email"
                   label="Địa chỉ emal"
                   :rules="[rules.required, rules.email]"
+                  autocomplete="email"
                   required
+                />
+                <v-text-field
+                  v-model="data.phone"
+                  label="Số điện thoại"
+                  autocomplete="tel"
                 />
                 <v-text-field
                   v-model="data.password"
@@ -55,6 +63,7 @@
                   :rules="[rules.required, rules.min]"
                   counter
                   required
+                  autocomplete="new-password"
                   @click:append="() => (showPassword = !showPassword)"
                 />
                 <v-text-field
@@ -66,6 +75,7 @@
                   :rules="[rules.required, rules.min, passwordConfirmationRule]"
                   counter
                   required
+                  autocomplete="new-password"
                   @click:append="() => (showPassword = !showPassword)"
                 />
                 <v-layout justify-space-between>
@@ -99,10 +109,11 @@ export default {
       valid: false,
       showPassword: false,
       data: {
-        name: "",
-        email: "",
-        password: "",
-        password_confirmation: ""
+        name: null,
+        email: null,
+        phone: null,
+        password: null,
+        password_confirmation: null
       },
       rules: {
         email: v => /.+@.+\..+/.test(v) || 'Địa chỉ email chưa hợp lệ',
@@ -114,9 +125,6 @@ export default {
   computed: {
     passwordConfirmationRule() {
       return () => (this.data.password === this.data.password_confirmation) || 'Mật khẩu nhập lại chưa khớp'
-    },
-    errors() {
-      return this.$store.getters.errors
     }
   },
   methods: {

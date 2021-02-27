@@ -22,9 +22,10 @@
               <v-form
                 ref="form"
                 v-model="valid"
+                @submit="login"
               >
                 <div
-                  v-for="error in errors"
+                  v-for="error in $store.getters.errors"
                   :key="error[0]"
                   class="d-flex"
                 >
@@ -38,6 +39,8 @@
                   v-model="data.email"
                   label="Enter your e-mail address"
                   :rules="[rules.required, rules.email]"
+                  autocomplete="email"
+                  autofocus
                   required
                 />
                 <v-text-field
@@ -49,6 +52,7 @@
                   :rules="[rules.required, rules.min]"
                   counter
                   required
+                  autocomplete="current-password"
                   @click:append="() => (showPassword = !showPassword)"
                 />
                 <v-layout justify-space-between>
@@ -90,11 +94,6 @@ export default {
         required: v => !!v || 'Không được bỏ trống',
         min: v => v.length >= 8 || 'Tối thiểu 8 ký tự'
       },
-    }
-  },
-  computed: {
-    errors() {
-      return this.$store.getters.errors
     }
   },
   methods: {

@@ -15,7 +15,7 @@ class UserController extends Controller
     $user = auth()->user();
     if (!$user || $user->cannot('user.access')) {
       return response()->json([
-        'code'   => 401,
+        'code' => 401,
         'response' => 'You are unauthorized to access this resource'
       ]);
     }
@@ -57,7 +57,7 @@ class UserController extends Controller
     $user = auth()->user();
     if (!$user || $user->cannot('user.create')) {
       return response()->json([
-        'code'   => 401,
+        'code' => 401,
         'response' => 'You are unauthorized to access this resource'
       ]);
     }
@@ -74,24 +74,17 @@ class UserController extends Controller
     }
   }
 
-  public function update($id, UserRequest $request)
+  public function update(User $user, UserRequest $request)
   {
     $user = auth()->user();
     if (!$user || $user->cannot('user.update')) {
       return response()->json([
-        'code'   => 401,
+        'code' => 401,
         'response' => 'You are unauthorized to access this resource'
       ]);
     }
-    try {
-      User::findOrFail($id)->update($request->validated());
-      return response()->noContent();
-    } catch (\Exception $exception) {
-      return response()->json([
-        "success" => false,
-        "errors" => $exception->getMessage()
-      ], 422);
-    }
+    $user->update($request->validated());
+    return response()->noContent();
   }
 
   public function show($id, Request $request)
@@ -99,12 +92,13 @@ class UserController extends Controller
     $user = auth()->user();
     if (!$user || $user->cannot('user.view')) {
       return response()->json([
-        'code'   => 401,
+        'code' => 401,
         'response' => 'You are unauthorized to access this resource'
       ]);
     }
     try {
-      $user = User::findOrFail($id);
+      $user = User::select('id', 'name', 'email', 'phone')
+        ->findOrFail($id);
       return response()->json([
         "user" => $user
       ]);
@@ -121,7 +115,7 @@ class UserController extends Controller
     $user = auth()->user();
     if (!$user || $user->cannot('user.delete')) {
       return response()->json([
-        'code'   => 401,
+        'code' => 401,
         'response' => 'You are unauthorized to access this resource'
       ]);
     }
@@ -134,7 +128,7 @@ class UserController extends Controller
     $user = auth()->user();
     if (!$user || $user->cannot('user.delete')) {
       return response()->json([
-        'code'   => 401,
+        'code' => 401,
         'response' => 'You are unauthorized to access this resource'
       ]);
     }
