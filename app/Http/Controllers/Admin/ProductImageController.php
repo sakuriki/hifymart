@@ -14,9 +14,9 @@ class ProductImageController extends Controller
   public function index(Request $request)
   {
     $user = auth()->user();
-    if (!$user || !$user->can('product.access')) {
+    if (!$user || $user->cannot('product.access')) {
       return response()->json([
-        'code'   => 401,
+        'code' => 401,
         'response' => 'You are unauthorized to access this resource'
       ]);
     }
@@ -28,9 +28,9 @@ class ProductImageController extends Controller
   public function destroy($id)
   {
     $user = auth()->user();
-    if (!$user || !$user->can('product.delete')) {
+    if (!$user || $user->cannot('product.delete')) {
       return response()->json([
-        'code'   => 401,
+        'code' => 401,
         'response' => 'You are unauthorized to access this resource'
       ]);
     }

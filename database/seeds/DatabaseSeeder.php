@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
     $permissions = array(
       // quyền truy cập dashboard
       array("name" => "dashboard", "group" => "dashboard", "description" => "Truy cập dashboard"),
+      // quyền thay đổi thông tin app
+      array("name" => "setting", "group" => "setting", "description" => "Thay đổi thông tin app"),
       // phân quyền
       array("name" => "permission", "group" => "permission", "description" => "Truy cập danh sách quyền"),
       // quyền nhãn hiệu/brand

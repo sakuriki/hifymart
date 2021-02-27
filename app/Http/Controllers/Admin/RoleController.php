@@ -18,9 +18,9 @@ class RoleController extends Controller
   public function index(Request $request)
   {
     $user = auth()->user();
-    if (!$user || !$user->can('role.access')) {
+    if (!$user || $user->cannot('role.access')) {
       return response()->json([
-        'code'   => 401,
+        'code' => 401,
         'response' => 'You are unauthorized to access this resource'
       ]);
     }
@@ -64,9 +64,9 @@ class RoleController extends Controller
   public function update(Request $request, Role $role)
   {
     $user = auth()->user();
-    if (!$user || !$user->can('role.update')) {
+    if (!$user || $user->cannot('role.update')) {
       return response()->json([
-        'code'   => 401,
+        'code' => 401,
         'response' => 'You are unauthorized to access this resource'
       ]);
     }
@@ -93,9 +93,9 @@ class RoleController extends Controller
   public function store(RoleRequest $request)
   {
     $user = auth()->user();
-    if (!$user || !$user->can('role.create')) {
+    if (!$user || $user->cannot('role.create')) {
       return response()->json([
-        'code'   => 401,
+        'code' => 401,
         'response' => 'You are unauthorized to access this resource'
       ]);
     }
@@ -117,9 +117,9 @@ class RoleController extends Controller
   public function show(Role $role)
   {
     $user = auth()->user();
-    if (!$user || !$user->can('role.view')) {
+    if (!$user || $user->cannot('role.view')) {
       return response()->json([
-        'code'   => 401,
+        'code' => 401,
         'response' => 'You are unauthorized to access this resource'
       ]);
     }
@@ -134,9 +134,9 @@ class RoleController extends Controller
   public function destroy(Role $role): Response
   {
     $user = auth()->user();
-    if (!$user || !$user->can('role.delete')) {
+    if (!$user || $user->cannot('role.delete')) {
       return response()->json([
-        'code'   => 401,
+        'code' => 401,
         'response' => 'You are unauthorized to access this resource'
       ]);
     }

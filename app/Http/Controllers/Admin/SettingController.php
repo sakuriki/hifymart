@@ -12,7 +12,7 @@ class SettingController extends Controller
   public function __invoke(SettingRequest $request)
   {
     $user = auth()->user();
-    if (!$user || $user->cannot('admin')) {
+    if (!$user || $user->cannot('setting')) {
       return response()->json([
         'errors' => [
           'You are unauthorized to access this resource'
