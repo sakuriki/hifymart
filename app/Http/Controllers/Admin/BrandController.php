@@ -8,7 +8,7 @@ use App\Http\Requests\BrandRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\BrandCollection;
 
-class Brandcontroller extends Controller
+class BrandController extends Controller
 {
   public function index(Request $request)
   {
