@@ -22,10 +22,10 @@ class ProductSeeder extends Seeder
     $brands = Brand::all();
     $tags = Tag::all();
     $taxes = Tax::all();
-    Storage::disk('local')->deleteDirectory('public\test\products\featured_image');
-    Storage::disk('local')->deleteDirectory('public\test\products\product_images');
-    Storage::disk('local')->makeDirectory('public\test\products\featured_image');
-    Storage::disk('local')->makeDirectory('public\test\products\product_images');
+    Storage::disk('local')->deleteDirectory('public/test/products/featured_image');
+    Storage::disk('local')->deleteDirectory('public/test/products/product_images');
+    Storage::disk('local')->makeDirectory('public/test/products/featured_image');
+    Storage::disk('local')->makeDirectory('public/test/products/product_images');
     factory(Product::class, 200)->create()->each(
       function ($product) use ($categories, $brands, $tags, $taxes) {
         $product->tags()->attach($tags->random(rand(5, 10))->pluck('id'));

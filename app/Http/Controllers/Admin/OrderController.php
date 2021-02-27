@@ -105,6 +105,6 @@ class OrderController extends Controller
   public function export(Request $request)
   {
     $type = $request->input('type', 'xlsx');
-    return Excel::download(new OrdersExport, 'users.' . $type);
+    return Excel::download(new OrdersExport, 'order.' . $type);
   }
 }
