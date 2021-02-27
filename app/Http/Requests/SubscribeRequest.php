@@ -24,7 +24,6 @@ class SubscribeRequest extends FormRequest
   public function rules()
   {
     return [
-      'name' => 'nullable|string',
       'email' => 'required|email:rfc,dns'
     ];
   }
@@ -33,7 +32,6 @@ class SubscribeRequest extends FormRequest
   {
     return [
       'required' => ':attribute không được bỏ trống',
-      'string' => ':attribute phải là chuỗi',
       'email' => ':attribute chưa hợp lệ hoặc không có thực',
     ];
   }
@@ -41,7 +39,6 @@ class SubscribeRequest extends FormRequest
   public function attributes()
   {
     return [
-      'name' => 'Tên',
       'email' => 'Địa chỉ email',
     ];
   }

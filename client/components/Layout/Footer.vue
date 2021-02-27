@@ -16,6 +16,7 @@
               Đăng ký nhận tin mới
             </p>
             <v-text-field
+              v-model="data.email"
               label="Địa chỉ email"
               solo
               light
@@ -25,6 +26,7 @@
                   depressed
                   color="primary"
                   class="mr-n2"
+                  @click="subscribe"
                 >
                   Theo dõi
                 </v-btn>
@@ -122,15 +124,32 @@
 import { mapGetters } from "vuex";
 export default {
   data: () => ({
-    icons: [
-      'mdi-facebook',
-      'mdi-twitter',
-      'mdi-linkedin',
-      'mdi-instagram',
-    ],
+    data: {
+      email: null
+    }
   }),
   computed: {
     ...mapGetters(['footer', 'settings']),
+  },
+  methods: {
+    subscribe() {
+      this.$axios.post('/subscribes', this.data)
+      .then(() => {
+        this.data.email = null;
+        this.$notifier.showMessage({
+          content: 'Thành công, cảm ơn bạn đã đăng ký',
+          color: 'success',
+          right: false
+        })
+      })
+      .catch(() => {
+        this.$notifier.showMessage({
+          content: 'Có lỗi, vui lòng thử lại',
+          color: 'error',
+          right: false
+        })
+      })
+    }
   },
 }
 </script>
