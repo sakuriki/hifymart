@@ -6,6 +6,7 @@
         "start": "nuxt start -c client/nuxt.config.js"
     },
     "dependencies": {
+        "@mdi/font": "^5.9.55",
         "@nuxtjs/auth": "^4.9.1",
         "@nuxtjs/axios": "^5.12.2",
         "@nuxtjs/recaptcha": "^0.6.2",
@@ -16,6 +17,7 @@
         "js-cookie": "^2.2.1",
         "normalize.css": "^8.0.1",
         "nuxt": "^2.14.7",
+        "nuxt-webfontloader": "^1.1.0",
         "quill-image-drop-module": "^1.0.3",
         "quill-image-resize-module": "^3.0.0",
         "quill-image-uploader": "^1.2.2",

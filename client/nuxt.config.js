@@ -42,7 +42,11 @@ module.exports = {
   /*
    ** Global CSS
    */
-  css: ["@/assets/css/main.css", "normalize.css/normalize.css"],
+  css: [
+    "@/assets/css/main.css",
+    "normalize.css/normalize.css",
+    "@mdi/font/css/materialdesignicons.min.css"
+  ],
   /*
    ** Plugins to load before mounting the App
    */
@@ -106,7 +110,8 @@ module.exports = {
     "@nuxtjs/auth",
     // Doc: https://github.com/nuxt-community/robots-module
     "@nuxtjs/robots",
-    "cookie-universal-nuxt"
+    "cookie-universal-nuxt",
+    "nuxt-webfontloader"
     // [
     //   "@nuxtjs/recaptcha",
     //   {
@@ -117,8 +122,20 @@ module.exports = {
     //   }
     // ],
   ],
+  webfontloader: {
+    google: {
+      families: ["Roboto:100,300,400,500,700,900"]
+    }
+  },
   buildModules: ["@nuxtjs/vuetify"],
   vuetify: {
+    // defaultAssets: {
+    //   font: {
+    //     family: "Roboto"
+    //   },
+    //   icons: false
+    // },
+    defaultAssets: false,
     optionsPath: "./vuetify.options.js"
   },
   robots: {
@@ -136,7 +153,7 @@ module.exports = {
 
   render: {
     bundleRenderer: {
-      shouldPrefetch: (file, type) => {
+      shouldPreload: (file, type) => {
         if (type === "script") {
           const ignoredRoutes = ["admin"];
           if (ignoredRoutes.some(r => file.includes(r))) {
