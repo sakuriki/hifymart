@@ -103,12 +103,16 @@ export default {
       permission: "category.update"
     }
   },
-  async asyncData({ app, params }) {
-    let { categories } = await app.$axios.$get("/categories?exclude=" + params.id);
-    let { category } = await app.$axios.$get("/admin/categories/" + params.id);
-    return {
-      categories: categories,
-      data: category
+  async asyncData({ app, params, error }) {
+    try {
+      let { categories } = await app.$axios.$get("/categories?exclude=" + params.id);
+      let { category } = await app.$axios.$get("/admin/categories/" + params.id);
+      return {
+        categories: categories,
+        data: category
+      }
+    } catch (err) {
+      return error({ statusCode: err.response.status, message: err.message })
     }
   },
   data() {

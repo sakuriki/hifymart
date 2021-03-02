@@ -29,11 +29,15 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  async asyncData({ app, query }) {
-    let { success, order } = await app.$axios.$get('/payment/vnpay/process', { params: query });
-    return {
-      success: success,
-      order: order
+  async asyncData({ app, query, error }) {
+    try {
+      let { success, order } = await app.$axios.$get('/payment/vnpay/process', { params: query });
+      return {
+        success: success,
+        order: order
+      }
+    } catch (err) {
+      return error({ statusCode: err.response.status, message: err.message })
     }
   },
   computed: {

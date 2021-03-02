@@ -87,10 +87,14 @@
 export default {
   layout: "admin",
   middleware: "authorized",
-  async asyncData({ app, $auth }) {
-    let { user } = await app.$axios.$get("/admin/users/" + $auth.user.id);
-    return {
-      data: user,
+  async asyncData({ app, $auth, error }) {
+    try {
+      let { user } = await app.$axios.$get("/admin/users/" + $auth.user.id);
+      return {
+        data: user,
+      }
+    } catch (err) {
+      return error({ statusCode: err.response.status, message: err.message })
     }
   },
   data() {

@@ -97,10 +97,14 @@ export default {
       permission: "comment.update"
     }
   },
-  async asyncData({ app, params }) {
-    let { comment } = await app.$axios.$get("/admin/comments/" + params.id);
-    return {
-      data: comment,
+  async asyncData({ app, params, error }) {
+    try {
+      let { comment } = await app.$axios.$get("/admin/comments/" + params.id);
+      return {
+        data: comment,
+      }
+    } catch (err) {
+      return error({ statusCode: err.response.status, message: err.message })
     }
   },
   data() {

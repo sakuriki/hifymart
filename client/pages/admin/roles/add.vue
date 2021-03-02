@@ -89,10 +89,14 @@ export default {
       permission: "role.create"
     }
   },
-  async asyncData({ app }) {
-    let { permissions } = await app.$axios.$get("/admin/permissions");
-    return {
-      permissions: permissions
+  async asyncData({ app, error }) {
+    try {
+      let { permissions } = await app.$axios.$get("/admin/permissions");
+      return {
+        permissions: permissions
+      }
+    } catch (err) {
+      return error({ statusCode: err.response.status, message: err.message })
     }
   },
   data() {

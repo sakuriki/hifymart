@@ -153,17 +153,21 @@ export default {
   components: {
     simplebar,
   },
-  async asyncData({app, params}) {
-    let { tag } = await app.$axios.$get(`/tags/${params.slug}`);
-    let { products, pagination } = await app.$axios.$get(`/products?per_page=16&tags=${tag.id}`);
-    let { brands } = await app.$axios.$get('/brands');
-    let { categories } = await app.$axios.$get('/categories');
-    return {
-      products: products,
-      pagination : pagination,
-      brands: brands,
-      categories: categories,
-      tag: tag
+  async asyncData({ app, params, error }) {
+    try {
+      let { tag } = await app.$axios.$get(`/tags/${params.slug}`);
+      let { products, pagination } = await app.$axios.$get(`/products?per_page=16&tags=${tag.id}`);
+      let { brands } = await app.$axios.$get('/brands');
+      let { categories } = await app.$axios.$get('/categories');
+      return {
+        products: products,
+        pagination : pagination,
+        brands: brands,
+        categories: categories,
+        tag: tag
+      }
+    } catch (err) {
+      return error({ statusCode: err.response.status, message: err.message })
     }
   },
   data() {

@@ -141,10 +141,14 @@
 <script>
 export default {
   layout: 'admin',
-  async asyncData({ app, params }) {
-    let { order } = await app.$axios.$get('/admin/orders/' + params.id);
-    return {
-      order: order
+  async asyncData({ app, params, error }) {
+    try {
+      let { order } = await app.$axios.$get('/admin/orders/' + params.id);
+      return {
+        order: order
+      }
+    } catch (err) {
+      return error({ statusCode: err.response.status, message: err.message })
     }
   },
   computed: {

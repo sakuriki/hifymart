@@ -79,10 +79,14 @@ export default {
       permission: "tax.update"
     }
   },
-  async asyncData({ app, params }) {
-    let { tax } = await app.$axios.$get("/admin/taxes/" + params.id);
-    return {
-      data: tax,
+  async asyncData({ app, params, error }) {
+    try {
+      let { tax } = await app.$axios.$get("/admin/taxes/" + params.id);
+      return {
+        data: tax,
+      }
+    } catch (err) {
+      return error({ statusCode: err.response.status, message: err.message })
     }
   },
   data() {

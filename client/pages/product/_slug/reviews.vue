@@ -112,14 +112,18 @@
 </template>
 <script>
 export default {
-  async asyncData({ app, params }) {
-    let { product } = await app.$axios.$get("/products/" + params.slug);
-    let { ratings, total } = await app.$axios.$get("/ratings/" + product.id + "?page_size=10");
-    return {
-      product: product,
-      total: total,
-      ratings: ratings,
-      selected_image: product.featured_image,
+  async asyncData({ app, params, error }) {
+    try {
+      let { product } = await app.$axios.$get("/products/" + params.slug);
+      let { ratings, total } = await app.$axios.$get("/ratings/" + product.id + "?page_size=10");
+      return {
+        product: product,
+        total: total,
+        ratings: ratings,
+        selected_image: product.featured_image,
+      }
+    } catch (err) {
+      return error({ statusCode: err.response.status, message: err.message })
     }
   },
   data() {

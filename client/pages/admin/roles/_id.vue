@@ -87,13 +87,17 @@ export default {
       permission: "role.update"
     }
   },
-  async asyncData({ app, params }) {
-    let { permissions } = await app.$axios.$get("/admin/permissions");
-    let { role } = await app.$axios.$get("/admin/roles/" + params.id);
-    return {
-      permissions: permissions,
-      data: role,
-      selected_permissions: role.permissions
+  async asyncData({ app, params, error }) {
+    try {
+      let { permissions } = await app.$axios.$get("/admin/permissions");
+      let { role } = await app.$axios.$get("/admin/roles/" + params.id);
+      return {
+        permissions: permissions,
+        data: role,
+        selected_permissions: role.permissions
+      }
+    } catch (err) {
+      return error({ statusCode: err.response.status, message: err.message })
     }
   },
   data() {

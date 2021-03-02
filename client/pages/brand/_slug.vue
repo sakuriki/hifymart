@@ -129,15 +129,19 @@
 </template>
 <script>
 export default {
-  async asyncData({app, params}) {
-    let { brand } = await app.$axios.$get(`/brands/${params.slug}`);
-    let { products, pagination } = await app.$axios.$get(`/products?per_page=16&brands=${brand.id}`);
-    let { categories } = await app.$axios.$get(`/categories`);
-    return {
-      products: products,
-      pagination : pagination,
-      brand: brand,
-      categories: categories
+  async asyncData({ app, params, error }) {
+    try {
+      let { brand } = await app.$axios.$get(`/brands/${params.slug}`);
+      let { products, pagination } = await app.$axios.$get(`/products?per_page=16&brands=${brand.id}`);
+      let { categories } = await app.$axios.$get(`/categories`);
+      return {
+        products: products,
+        pagination : pagination,
+        brand: brand,
+        categories: categories
+      }
+    } catch (err) {
+      return error({ statusCode: err.response.status, message: err.message })
     }
   },
   data() {

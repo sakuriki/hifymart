@@ -366,10 +366,14 @@
 import { mapGetters } from "vuex";
 export default {
   layout: "empty",
-  async asyncData({ app }) {
-    let { provinces } = await app.$axios.$get("/provinces");
-    return {
-      provinces: provinces
+  async asyncData({ app, error }) {
+    try {
+      let { provinces } = await app.$axios.$get("/provinces");
+      return {
+        provinces: provinces
+      }
+    } catch (err) {
+      return error({ statusCode: err.response.status, message: err.message })
     }
   },
   data () {

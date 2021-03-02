@@ -332,18 +332,22 @@ export default {
       permission: "product.update"
     }
   },
-  async asyncData({ app, params }) {
-    let { product } = await app.$axios.$get("/admin/products/" + params.id);
-    let { categories } = await app.$axios.$get("/categories");
-    let { brands } = await app.$axios.$get("/brands");
-    let { tags } = await app.$axios.$get("/tags?nameOnly=true");
-    let { taxes } = await app.$axios.$get("/taxes");
-    return {
-      tags: tags,
-      taxes: taxes,
-      brands: brands,
-      data: product,
-      categories: categories
+  async asyncData({ app, params, error }) {
+    try {
+      let { product } = await app.$axios.$get("/admin/products/" + params.id);
+      let { categories } = await app.$axios.$get("/categories");
+      let { brands } = await app.$axios.$get("/brands");
+      let { tags } = await app.$axios.$get("/tags?nameOnly=true");
+      let { taxes } = await app.$axios.$get("/taxes");
+      return {
+        tags: tags,
+        taxes: taxes,
+        brands: brands,
+        data: product,
+        categories: categories
+      }
+    } catch (err) {
+      return error({ statusCode: err.response.status, message: err.message })
     }
   },
   data() {

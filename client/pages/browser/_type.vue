@@ -157,50 +157,54 @@ export default {
     let allow = ["sale-off", "best-selling", "new", "explore"];
     return allow.includes(params.type);
   },
-  async asyncData({app, params}) {
-    let string;
-    if (params.type == "sale-off") {
-      string = "&onsale=true"
-    } else if (params.type == "best-selling") {
-      string = "orders_count"
-    } else if (params.type == "explore") {
-      string = "random"
-    }
-    let { products, pagination } = await app.$axios.$get(`/products?per_page=16&orderBy=${string}`);
-    let { brands } = await app.$axios.$get('/brands');
-    let { categories } = await app.$axios.$get('/categories');
-    let order, text, description;
-    if (params.type == "sale-off") {
-      order = "&onsale=true";
-      text = "Đang giảm giá";
-      description = "Danh sách sản phẩm đang được giảm giá";
-    } else if (params.type == "best-selling") {
-      order = "orders_count";
-      text = "Mua nhiều";
-      description = "Danh sách sản phẩm được mua nhiều nhất";
-    } else if (params.type == "explore") {
-      order = "random";
-      text = "Khám phá"
-      description = "Danh sách sản phẩm có thể bạn muốn mua";
-    } else {
-      text = "Sản phẩm mới";
-      description = "Danh sách sản phẩm mới trên cửa hàng";
-    }
-    return {
-      products: products,
-      pagination : pagination,
-      brands: brands,
-      categories: categories,
-      type: params.type,
-      data: {
-        orderBy: order,
-        money_range: [0, 10000000],
-        rating: null,
-        brands: [],
-        category: null
-      },
-      text: text,
-      description: description
+  async asyncData({ app, params, error }) {
+    try {
+      let string;
+      if (params.type == "sale-off") {
+        string = "&onsale=true"
+      } else if (params.type == "best-selling") {
+        string = "orders_count"
+      } else if (params.type == "explore") {
+        string = "random"
+      }
+      let { products, pagination } = await app.$axios.$get(`/products?per_page=16&orderBy=${string}`);
+      let { brands } = await app.$axios.$get('/brands');
+      let { categories } = await app.$axios.$get('/categories');
+      let order, text, description;
+      if (params.type == "sale-off") {
+        order = "&onsale=true";
+        text = "Đang giảm giá";
+        description = "Danh sách sản phẩm đang được giảm giá";
+      } else if (params.type == "best-selling") {
+        order = "orders_count";
+        text = "Mua nhiều";
+        description = "Danh sách sản phẩm được mua nhiều nhất";
+      } else if (params.type == "explore") {
+        order = "random";
+        text = "Khám phá"
+        description = "Danh sách sản phẩm có thể bạn muốn mua";
+      } else {
+        text = "Sản phẩm mới";
+        description = "Danh sách sản phẩm mới trên cửa hàng";
+      }
+      return {
+        products: products,
+        pagination : pagination,
+        brands: brands,
+        categories: categories,
+        type: params.type,
+        data: {
+          orderBy: order,
+          money_range: [0, 10000000],
+          rating: null,
+          brands: [],
+          category: null
+        },
+        text: text,
+        description: description
+      }
+    } catch (err) {
+      return error({ statusCode: err.response.status, message: err.message })
     }
   },
   data() {

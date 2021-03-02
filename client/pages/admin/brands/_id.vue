@@ -88,10 +88,14 @@ export default {
       permission: "brand.update"
     }
   },
-  async asyncData({ app, params }) {
-    let { brand } = await app.$axios.$get("/admin/brands/" + params.id);
-    return {
-      data: brand,
+  async asyncData({ app, params, error }) {
+    try {
+      let { brand } = await app.$axios.$get("/admin/brands/" + params.id);
+      return {
+        data: brand,
+      }
+    } catch (err) {
+      return error({ statusCode: err.response.status, message: err.message })
     }
   },
   data() {

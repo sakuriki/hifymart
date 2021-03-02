@@ -82,10 +82,14 @@ export default {
       permission: "tag.update"
     }
   },
-  async asyncData({ app, params }) {
-    let { tag } = await app.$axios.$get("/admin/tags/" + params.id);
-    return {
-      data: tag,
+  async asyncData({ app, params, error }) {
+    try {
+      let { tag } = await app.$axios.$get("/admin/tags/" + params.id);
+      return {
+        data: tag,
+      }
+    } catch (err) {
+      return error({ statusCode: err.response.status, message: err.message })
     }
   },
   data() {

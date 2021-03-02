@@ -104,10 +104,14 @@ export default {
       permission: "user.update"
     }
   },
-  async asyncData({ app, params }) {
-    let { user } = await app.$axios.$get("/admin/users/" + params.id);
-    return {
-      data: user,
+  async asyncData({ app, params, error }) {
+    try {
+      let { user } = await app.$axios.$get("/admin/users/" + params.id);
+      return {
+        data: user,
+      }
+    } catch (err) {
+      return error({ statusCode: err.response.status, message: err.message })
     }
   },
   data() {

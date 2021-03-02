@@ -91,10 +91,14 @@ export default {
       permission: "category.create"
     }
   },
-  async asyncData({ app }) {
-    let { categories } = await app.$axios.$get("/categories");
-    return {
-      categories: categories
+  async asyncData({ app, error }) {
+    try {
+      let { categories } = await app.$axios.$get("/categories");
+      return {
+        categories: categories
+      }
+    } catch (err) {
+      return error({ statusCode: err.response.status, message: err.message })
     }
   },
   data() {

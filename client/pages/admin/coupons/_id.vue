@@ -180,10 +180,14 @@ export default {
       permission: "coupon.update"
     }
   },
-  async asyncData({ app, params }) {
-    let { coupon } = await app.$axios.$get("/admin/coupons/" + params.id);
-    return {
-      data: coupon
+  async asyncData({ app, params, error }) {
+    try {
+      let { coupon } = await app.$axios.$get("/admin/coupons/" + params.id);
+      return {
+        data: coupon
+      }
+    } catch (err) {
+      return error({ statusCode: err.response.status, message: err.message })
     }
   },
   data() {

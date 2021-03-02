@@ -289,16 +289,20 @@ export default {
       permission: "product.create"
     }
   },
-  async asyncData({ app }) {
-    let { categories } = await app.$axios.$get("/categories");
-    let { brands } = await app.$axios.$get("/brands");
-    let { tags } = await app.$axios.$get("/tags?nameOnly=true");
-    let { taxes } = await app.$axios.$get("/taxes");
-    return {
-      tags: tags,
-      taxes: taxes,
-      brands: brands,
-      categories: categories
+  async asyncData({ app, error }) {
+    try {
+      let { categories } = await app.$axios.$get("/categories");
+      let { brands } = await app.$axios.$get("/brands");
+      let { tags } = await app.$axios.$get("/tags?nameOnly=true");
+      let { taxes } = await app.$axios.$get("/taxes");
+      return {
+        tags: tags,
+        taxes: taxes,
+        brands: brands,
+        categories: categories
+      }
+    } catch (err) {
+      return error({ statusCode: err.response.status, message: err.message })
     }
   },
   data() {

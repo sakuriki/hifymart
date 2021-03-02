@@ -148,10 +148,14 @@ export default {
       permission: "setting"
     }
   },
-  async asyncData({ app }) {
-    let { data } = await app.$axios.$get("/settings");
-    return {
-      data
+  async asyncData({ app, error }) {
+    try {
+      let { data } = await app.$axios.$get("/settings");
+      return {
+        data
+      }
+    } catch (err) {
+      return error({ statusCode: err.response.status, message: err.message })
     }
   },
   data() {

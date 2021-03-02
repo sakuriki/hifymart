@@ -312,17 +312,21 @@
 <script>
 import { mapActions } from "vuex";
 export default {
-  async asyncData({ app, params, store }) {
-    let { product } = await app.$axios.$get("/products/" + params.slug);
-    let { ratings, pagination } = await app.$axios.$get("/ratings/" + product.id);
-    let { comments, total } = await app.$axios.$get("/comments/" + product.id);
-    store.dispatch('comment/setItem', comments);
-    store.dispatch('comment/setTotal', total);
-    return {
-      product: product,
-      pagination: pagination,
-      ratings: ratings,
-      selected_image: product.featured_image
+  async asyncData({ app, params, store, error }) {
+    try {
+      let { product } = await app.$axios.$get("/products/" + params.slug);
+      let { ratings, pagination } = await app.$axios.$get("/ratings/" + product.id);
+      let { comments, total } = await app.$axios.$get("/comments/" + product.id);
+      store.dispatch('comment/setItem', comments);
+      store.dispatch('comment/setTotal', total);
+      return {
+        product: product,
+        pagination: pagination,
+        ratings: ratings,
+        selected_image: product.featured_image
+      }
+    } catch (err) {
+      return error({ statusCode: err.response.status, message: err.message })
     }
   },
   data() {

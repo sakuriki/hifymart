@@ -186,12 +186,16 @@ export default {
       permission: "dashboard"
     }
   },
-  async asyncData({ app }) {
-    let { total_count, last_month, last_year } = await app.$axios.$get('/admin/dashboard');
-    return {
-      total_count: total_count,
-      last_month: last_month,
-      last_year: last_year
+  async asyncData({ app, error }) {
+    try {
+      let { total_count, last_month, last_year } = await app.$axios.$get('/admin/dashboard');
+      return {
+        total_count: total_count,
+        last_month: last_month,
+        last_year: last_year
+      }
+    } catch (err) {
+      return error({ statusCode: err.response.status, message: err.message })
     }
   },
   head() {
