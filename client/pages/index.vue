@@ -5,28 +5,29 @@
       class="main-carousel"
     >
       <v-carousel-item
-        v-for="(slide, i) in slides"
-        :key="i"
-        src="http://via.placeholder.com/690x300?text=Banner%20ngang"
+        v-for="slide in slides"
+        :key="slide.title"
+        :src="apiUrl+slide.url"
+        :alt="slide.title"
       />
     </v-carousel>
-    <IndexList
+    <LazyIndexList
       title="Đang giảm giá"
       :to="{ name: 'browser-type', params: { type: 'sale-off' } }"
       :products="onsaleProducts"
     />
-    <IndexList
+    <LazyIndexList
       title="Sản phẩm hot"
       :to="{ name: 'browser-type', params: { type: 'best-selling' } }"
       :products="hottestProducts"
       :left="true"
     />
-    <IndexList
+    <LazyIndexList
       title="Sản phẩm mới"
       :to="{ name: 'browser-type', params: { type: 'new' } }"
       :products="latestProducts"
     />
-    <IndexList
+    <LazyIndexList
       title="Có thể bạn quan tâm"
       :to="{ name: 'browser-type', params: { type: 'explore' } }"
       :products="randomProducts"
@@ -38,15 +39,20 @@
 <script>
 import { mapGetters } from 'vuex';
 export default {
-  data() {
-    return {
-      slides: [
-        'First',
-        'Second',
-        'Third',
-        'Fourth',
-        'Fifth',
-      ],
+  async asyncData({ app, error }) {
+    try {
+        let { products: latestProducts } = await app.$axios.$get("/products?per_page=8");
+        let { products: randomProducts } = await app.$axios.$get("/products?per_page=8&sortBy=random");
+        let { products: onsaleProducts } = await app.$axios.$get("/products?per_page=8&onsale=true");
+        let { products: hottestProducts } = await app.$axios.$get("/products?per_page=8&sortBy=orders_count");
+        return {
+          latestProducts: latestProducts,
+          randomProducts: randomProducts,
+          onsaleProducts: onsaleProducts,
+          hottestProducts: hottestProducts,
+        }
+    } catch (err) {
+      return error({ statusCode: err.response.status, message: err.message })
     }
   },
   head() {
@@ -98,12 +104,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'latestProducts',
-      'randomProducts',
-      'onsaleProducts',
-      'hottestProducts',
-    ]),
+    ...mapGetters(['settings']),
+    slides() {
+      return [...this.settings.slides].sort((a,b) => a.order - b.order)
+    },
+    apiUrl() {
+      return process.env.apiUrl
+    }
   }
 }
 </script>
