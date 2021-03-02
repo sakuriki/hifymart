@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Setting;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 
@@ -21,16 +22,16 @@ class SettingsServiceProvider extends ServiceProvider
   /**
    * Bootstrap the application services.
    *
-   * @param \Illuminate\Support\Facades\Cache $cache
-   * @param \App\Models\Setting            $settings
    *
    * @return void
    */
-  public function boot(Setting $settings)
+  public function boot()
   {
-    $settings = Cache::rememberForever('settings', function () use ($settings) {
-      return $settings->pluck('value', 'name')->all();
-    });
-    config()->set('settings', $settings);
+    if(!App::runningInConsole()) {
+      $settings = Cache::rememberForever('settings', function () {
+        return Setting::all();
+      });
+      config()->set('settings', $settings->pluck('value', 'name')->all());
+    }
   }
 }
