@@ -16,38 +16,19 @@ class ProductController extends Controller
 {
   public function index(Request $request)
   {
-    // $data = Product::leftJoin('ratings', 'ratings.product_id', '=', 'products.id')
-    //   ->select([
-    //     'products.*',
-    //     DB::raw('ROUND(AVG(rating)/0.5, 0)*0.5 as ratings_average')
-    //   ])
-    //   ->having(DB::raw('ROUND(AVG(rating)/0.5, 0)*0.5'), '>=', 3)
-    //   ->groupBy('id')
-    //   ->get();
-    // return $data;
-    // $a = Product::find(82);
-    // $b = $a->averageRating();
-    // return response()->json(collect($a)->merge(['averageRating' => (float) $b->first()]));
     $data = Product::search($request->input('q'), "name")
       ->leftJoin('ratings', 'ratings.product_id', '=', 'products.id')
       ->select([
         'products.id',
-        'products.brand_id',
-        'products.category_id',
         'products.name',
         'products.slug',
-        'products.description',
-        'products.content',
         'products.price',
         'products.sale_off_price',
-        'products.sale_off_quantity',
-        'products.quantity',
         'products.featured_image',
         DB::raw('AVG(rating) as ratings_average')
-        // DB::raw('ROUND(AVG(rating)/0.5, 0)*0.5 as ratings_average')
+        // DB::raw('CAST(AVG(rating) as FLOAT) as ratings_average') // mariadb 10.4.5/mysql 8.0.17
       ])
       ->groupBy('id')
-      // ->selectRaw('FLOOR(100-(products.sale_off_price/products.price*100)) as sale_off_percent')
       ->when($request->input("onsale"), function ($query) {
         $query->onSale();
       })
@@ -70,9 +51,8 @@ class ProductController extends Controller
       })
       ->when($request->input('rating'), function ($query, $rating) {
         $query->having(DB::raw('AVG(rating)'), '>=', $rating);
-        // $query->having(DB::raw('ROUND(AVG(rating)/0.5, 0)*0.5'), '>=', $rating);
       })
-      ->withCount("orders");
+      ->withCount('orders');
     $sortBy = $request->input("sortBy");
     $sortDesc = $request->input("sortDesc") == "false" ? "asc" : "desc";
     switch ($sortBy) {
@@ -126,8 +106,8 @@ class ProductController extends Controller
           'products.sale_off_quantity',
           'products.quantity',
           'products.featured_image',
-          // DB::raw('ROUND(AVG(rating)/0.5, 0)*0.5 as ratings_average')
           DB::raw('AVG(rating) as ratings_average')
+          // DB::raw('CAST(AVG(rating) as FLOAT) as ratings_average') // mariadb 10.4.5/mysql 8.0.17
         ])
         ->groupBy('id')
         ->with([
@@ -170,6 +150,7 @@ class ProductController extends Controller
       RedisManager::incr($redis_prefix . "_total");
       RedisManager::zIncrBy($redis_prefix, 1, $product->id);
       RedisManager::set($redis_prefix . "_recorded_ips:$product->id:$client_ip", true);
+      // limit view count by 1 per 15*60secs
       RedisManager::expire($redis_prefix . "_recorded_ips:$product->id:$client_ip", 15 * 60);
     }
     $product->view_count = RedisManager::zScore($redis_prefix, $product->id) ?: 0;

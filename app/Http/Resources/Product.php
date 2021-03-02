@@ -18,16 +18,10 @@ class Product extends JsonResource
       'id' => $this->id,
       'name' => $this->name,
       'slug' => $this->slug,
-      'description' => $this->description,
-      'content' => $this->content,
       'price' => $this->price,
-      'quantity' => $this->quantity,
       'sale_off_price' => $this->sale_off_price,
-      'sale_off_quantity' => $this->sale_off_quantity,
       'ratings_average' => (float) $this->ratings_average,
       'featured_image' => $this->featured_image,
-      'brand_id' => $this->brand_id,
-      'category_id' => $this->category_id
     ];
   }
 }

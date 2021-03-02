@@ -1,5 +1,8 @@
 import vi from "@/vuetify_vi.js";
 export default {
+  icons: {
+    iconfont: "mdi"
+  },
   lang: {
     locales: { vi },
     current: "vi"

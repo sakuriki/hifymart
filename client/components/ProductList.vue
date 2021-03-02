@@ -127,9 +127,9 @@ export default {
       return Math.round(rating * 10) / 10;
     },
     ...mapActions('cart', { addItem: 'addItem' }),
-    async beforeWishlist(product) {
+    async beforeWishlist(product_id) {
       if (this.$auth.loggedIn) {
-        return this.addToWishlist(product)
+        return this.addToWishlist(product_id)
       }
       let confirm = await this.$refs.confirm.open('Yêu cầu đăng nhập', 'Bạn cần phải đăng nhập để thực hiện hàng động này! Chuyển đến đăng nhập?', { color: 'primary' });
       if (confirm) {
@@ -141,10 +141,10 @@ export default {
         });
       }
     },
-    async addToWishlist(product) {
+    async addToWishlist(product_id) {
       try {
         await this.$axios.$post('/wishlists', {
-          product_id: product
+          product_id: product_id
         });
         this.$notifier.showMessage({
           content: 'Thêm vào danh sách muốn mua thành công',

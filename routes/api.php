@@ -23,12 +23,17 @@ Route::apiResource('taxes', 'TaxController')->only(["index", "show"]);
 Route::apiResource('orders', 'OrderController');
 Route::apiResource('categories', 'CategoryController')->only(["index", "show"]);
 Route::apiResource('ratings', 'RatingController')->only(["show"]);
+Route::apiResource('subscribes', 'SubscribeController')->only(["store", "destroy"]);
 Route::group(['prefix' => '/auth', ['middleware' => 'throttle:20,5']], function () {
   Route::post('/register', 'Auth\AuthController@register')->name('register');
   Route::post('/login', 'Auth\AuthController@login')->name('login');
 });
 Route::group(['middleware' => 'jwtnew'], function () {
   Route::group(['prefix' => '/admin'], function () {
+    Route::get('slides', 'Admin\SlideController@index');
+    Route::post('slides', 'Admin\SlideController@store');
+    Route::patch('slides', 'Admin\SlideController@update');
+    Route::delete('slides', 'Admin\SlideController@destroy');
     Route::patch('settings', 'Admin\SettingController');
     Route::delete('tags/bulkDestroy', 'Admin\TagController@bulkDestroy');
     Route::delete('taxes/bulkDestroy', 'Admin\TaxController@bulkDestroy');

@@ -65,7 +65,7 @@ export default {
     },
     banner: {
       type: String,
-      default: "http://via.placeholder.com/325x600.png?text=Banner%20d%E1%BB%8Dc"
+      default: "https://via.placeholder.com/325x600.png?text=Banner%20d%E1%BB%8Dc"
     }
   }
 }
