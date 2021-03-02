@@ -46,9 +46,9 @@ class ProductRequest extends FormRequest
       'content' => 'nullable|string',
       'price' => 'required|numeric|min:0',
       'quantity' => 'required|numeric|min:0',
-      'featured_image' => 'image|mimes:jpeg,jpg,png,gif|sometimes|max:10000',
+      'featured_image' => 'image|sometimes|max:10000',
       'images' => 'nullable',
-      'images.*' => 'image|mimes:jpeg,jpg,png,gif|max:10000',
+      'images.*' => 'image|max:10000',
     ];
   }
 
@@ -77,7 +77,8 @@ class ProductRequest extends FormRequest
       'description' => 'Giới thiệu',
       'price' => 'Giá',
       'quantity' => 'Số lượng hàng trong kho',
-      'featured_image' => 'Ảnh đại diện'
+      'featured_image' => 'Ảnh đại diện',
+      'images' => 'Album ảnh'
     ];
   }
 }
