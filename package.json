@@ -9,7 +9,6 @@
         "@mdi/font": "^5.9.55",
         "@nuxtjs/auth": "^4.9.1",
         "@nuxtjs/axios": "^5.12.2",
-        "@nuxtjs/recaptcha": "^0.6.2",
         "@nuxtjs/robots": "^2.4.2",
         "apexcharts": "^3.24.0",
         "cookie": "^0.4.1",
@@ -23,7 +22,6 @@
         "quill-image-uploader": "^1.2.2",
         "simplebar-vue": "^1.6.0",
         "vue-apexcharts": "^1.6.0",
-        "vue-fb-customer-chat": "^0.2.0",
         "vue-quill-editor": "^3.0.6",
         "vuex-persistedstate": "^4.0.0-beta.1",
         "vuex-shared-mutations": "^1.0.2"

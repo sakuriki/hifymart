@@ -65,8 +65,7 @@ module.exports = {
     baseUrl: process.env.CLIENT_BASE_URL || "http://localhost:3000",
     apiUrl: process.env.APP_URL || "http://localhost:8000",
     GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
-    appName: process.env.APP_NAME || "HifyMart",
-    fbPage: process.env.FB_PAGE || 104938607602675
+    appName: process.env.APP_NAME || "HifyMart"
   },
   vue: {
     config: {
@@ -97,7 +96,7 @@ module.exports = {
       home: "/"
     },
     plugins: ["~/plugins/auth"],
-    debug: process.env.APP_DEBUG || true
+    debug: process.env.APP_DEBUG || false
   },
 
   /*

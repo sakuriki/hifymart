@@ -1125,10 +1125,6 @@
   dependencies:
     http-proxy-middleware "^1.0.6"
 
-"@nuxtjs/recaptcha@^0.6.2":
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/recaptcha/-/recaptcha-0.6.2.tgz"
-
 "@nuxtjs/robots@^2.4.2":
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/@nuxtjs/robots/-/robots-2.4.2.tgz"
@@ -9121,10 +9117,6 @@ vue-eslint-parser@^7.3.0:
     espree "^6.2.1"
     esquery "^1.0.1"
     lodash "^4.17.15"
-
-vue-fb-customer-chat@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/vue-fb-customer-chat/-/vue-fb-customer-chat-0.2.0.tgz"
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
