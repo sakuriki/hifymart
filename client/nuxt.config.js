@@ -2,7 +2,7 @@ var webpack = require("webpack");
 module.exports = {
   srcDir: __dirname,
   buildDir: ".nuxt",
-  devtools: true,
+  devtools: process.env.APP_DEBUG || false,
   server: {
     port: process.env.CLIENT_PORT || 3000 // default: 3000
   },
@@ -70,8 +70,8 @@ module.exports = {
   },
   vue: {
     config: {
-      productionTip: false,
-      devtools: process.env.APP_DEBUG || true
+      productionTip: process.env.APP_DEBUG || true,
+      devtools: process.env.APP_DEBUG || false
     }
   },
   auth: {

@@ -70,6 +70,7 @@ class OrderSeeder extends Seeder
       $total = $totalAfterDiscount > 0 ? $totalAfterDiscount + $tax + $shipping_fee : $shipping_fee;
       $randDistrict = array_rand($districtIds, 1);
       $order = Order::create([
+        'status' => 3,
         'user_id' => $user ? $user->id : null,
         'district_id' => $districtIds[$randDistrict],
         'province_id' => $districts[$randDistrict]->province_id,
