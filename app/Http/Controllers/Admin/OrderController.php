@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Exports\OrdersExport;
+use App\Http\Requests\OrderRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -68,6 +69,13 @@ class OrderController extends Controller
 
   public function show($id)
   {
+    $user = auth()->user();
+    if (!$user || $user->cannot('order.view')) {
+      return response()->json([
+        'code'   => 401,
+        'response' => 'You are unauthorized to access this resource'
+      ]);
+    }
     $order = Order::with(["products", "province:id,name", "district:id,name", "user"])
       ->findOrFail($id);
     return response()->json([
@@ -75,7 +83,30 @@ class OrderController extends Controller
     ]);
   }
 
-  public function destroy(Product $product)
+  public function update(Order $order, OrderRequest $request)
+  {
+    $user = auth()->user();
+    if (!$user || $user->cannot('order.update')) {
+      return response()->json([
+        'code'   => 401,
+        'response' => 'You are unauthorized to access this resource'
+      ]);
+    }
+    try {
+      $order->update($request->validated());
+      return response()->noContent();
+    } catch (\Exception $exception) {
+      return response()->json([
+        'errors' => [
+          'error' => [
+            $exception->getMessage()
+          ]
+        ]
+      ], 422);
+    }
+  }
+
+  public function destroy(Order $order)
   {
     $user = Auth::user();
     if (!$user || $user->cannot('order.delete')) {
@@ -84,7 +115,7 @@ class OrderController extends Controller
         'response' => 'You are unauthorized to access this resource'
       ]);
     }
-    $product->delete();
+    $order->delete();
     return response()->noContent();
   }
 
