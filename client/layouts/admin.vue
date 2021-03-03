@@ -325,11 +325,23 @@ export default {
         ],
       },
       {
+        group: "/admin/settings",
         icon: "mdi-cog-outline",
         title: "Cài đặt",
         permission: "setting",
-        to: "/admin/settings",
-      },
+        children: [
+          {
+            title: "Cài đặt chung",
+            permission: "setting",
+            to: "/admin/settings",
+          },
+          {
+            title: "Slide ảnh",
+            permission: "setting",
+            to: "/admin/settings/slide",
+          },
+        ],
+      }
     ],
   }),
   computed: {
