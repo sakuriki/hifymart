@@ -14,7 +14,7 @@
     <LazyIndexList
       title="Đang giảm giá"
       :to="{ name: 'browser-type', params: { type: 'sale-off' } }"
-      :products="onsaleProducts"
+      :products="saleOffProducts"
     />
     <LazyIndexList
       title="Sản phẩm hot"
@@ -43,12 +43,12 @@ export default {
     try {
         let { products: latestProducts } = await app.$axios.$get("/products?per_page=8");
         let { products: randomProducts } = await app.$axios.$get("/products?per_page=8&sortBy=random");
-        let { products: onsaleProducts } = await app.$axios.$get("/products?per_page=8&onsale=true");
+        let { products: saleOffProducts } = await app.$axios.$get("/products?per_page=8&onsale=true");
         let { products: hottestProducts } = await app.$axios.$get("/products?per_page=8&sortBy=orders_count");
         return {
           latestProducts: latestProducts,
           randomProducts: randomProducts,
-          onsaleProducts: onsaleProducts,
+          saleOffProducts: saleOffProducts,
           hottestProducts: hottestProducts,
         }
     } catch (err) {
@@ -106,7 +106,13 @@ export default {
   computed: {
     ...mapGetters(['settings']),
     slides() {
-      return [...this.settings.slides].sort((a,b) => a.order - b.order)
+      return (!this.settings.slides || this.settings.slides.length <= 0 )
+        ? [{
+          title: 'banner',
+          url: '/storage/banners/690x300.png',
+          order: 1
+        }]
+        : [...this.settings.slides].sort((a,b) => a.order - b.order)
     },
     apiUrl() {
       return process.env.apiUrl

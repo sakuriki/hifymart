@@ -155,21 +155,27 @@ export default {
       }
     },
     approve(id) {
-      let config = {
-
-      };
-      this.$axios.post("/admin/ratings/" + id, config)
+      if (!this.canUpdate) {
+        return this.$notifier.showMessage({
+          content: 'Bạn không có quyền thực hiện hành động này!',
+          color: 'error',
+          right: false
+        })
+      }
+      this.$axios.patch("/admin/ratings/" + id, {
+        approved: true
+      })
       .then(() => {
         this.fetchData();
         this.$notifier.showMessage({
-          content: 'Xoá thành công',
+          content: 'Duyệt thành công',
           color: 'success',
           right: false
         })
       })
       .catch(() => {
         this.$notifier.showMessage({
-          content: 'Có lỗi khi xoá, vui lòng thử lại',
+          content: 'Có lỗi khi duyệt, vui lòng thử lại',
           color: 'error',
           right: false
         })
@@ -177,7 +183,7 @@ export default {
     },
     async beforeDelete(id) {
       if (!this.canDelete) {
-        this.$notifier.showMessage({
+        return this.$notifier.showMessage({
           content: 'Bạn không có quyền thực hiện hành động này!',
           color: 'error',
           right: false

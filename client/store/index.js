@@ -6,8 +6,6 @@ export const state = () => ({
   brands: [],
   categories: [],
   settings: {},
-  browserWidth: 0,
-  browserHeight: 0,
   errors: {}
 });
 
@@ -16,8 +14,6 @@ export const getters = {
   footer: ({ footer }) => footer,
   brands: ({ brands }) => brands,
   categories: ({ categories }) => categories,
-  browserWidth: ({ browserWidth }) => browserWidth,
-  browserHeight: ({ browserHeight }) => browserHeight,
   errors: ({ errors }) => errors,
   authenticated: ({ auth }) => auth.loggedIn,
   user: ({ auth }) => auth.user
@@ -38,12 +34,6 @@ export const mutations = {
   },
   SET_CATEGORIES(state, data) {
     state.categories = data;
-  },
-  SET_BROWSER_WIDTH(state, data) {
-    state.browserWidth = data;
-  },
-  SET_BROWSER_HEIGHT(state, data) {
-    state.browserHeight = data;
   }
 };
 

@@ -146,7 +146,7 @@ export default {
     },
     async beforeDelete() {
       if (!this.canDelete) {
-        this.$notifier.showMessage({
+        return this.$notifier.showMessage({
           content: 'Bạn không có quyền thực hiện hành động này!',
           color: 'error',
           right: false
