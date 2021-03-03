@@ -21,15 +21,13 @@ $ php artisan migrate --seed
 
 Find and uncomment this line `App\Providers\SettingsServiceProvider::class` in `config.php/app.php`
 
-Make sure the settings (google map key, vnpay and fb page id) are set up correctly:
+Make sure the settings (google map key, vnpay) are set up correctly:
 
 ```
 GOOGLE_MAPS_API_KEY=xxxxxxxxxxxxxxxxxxxxx
 
 VNPAY_TMNCODE=xxxxxxxxxxxxxxxxxxxxx
 VNP_HASHSECRET=xxxxxxxxxxxxxxxxxxxxx
-
-FB_PAGE=xxxxxxxxxxxxxxxxxxxxx // fanpage ID
 ```
 
 IMPORTANT: Make sure that your .env file is updated with the right settings for APP_URL (for your back-end APIs) and CLIENT_URL (for your front-end / Nuxt). These values need to match what you will set in the client-side setup section.
@@ -49,6 +47,18 @@ REDIS_PASSWORD=null
 REDIS_PORT=6379
 ```
 
+And your email
+```
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS=null
+MAIL_FROM_NAME="${APP_NAME}"
+```
+
 ## Front-end setup (Nuxtjs):
 
 ```bash
@@ -66,8 +76,7 @@ Update nuxt.config.js to match the server:port where your Laravel API server is 
     baseUrl: process.env.CLIENT_BASE_URL || "http://localhost:3000",
     apiUrl: process.env.APP_URL || "http://localhost:8000",
     GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
-    appName: process.env.APP_NAME || "HifyMart",
-    fbPage: process.env.FB_PAGE || 104938607602675
+    appName: process.env.APP_NAME || "HifyMart"
   },
 ```
 
