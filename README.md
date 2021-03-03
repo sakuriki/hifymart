@@ -1,61 +1,111 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+## HifyMart
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+Website thương mại điện tử sử dụng Nuxtjs và Laravel API
 
-## About Laravel
+## Setup
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+```bash
+$ git clone https://github.com/sakuriki/hifymart.git
+$ cd hifymart
+$ cp .env.example .env
+$ composer install
+$ php artisan key:generate
+$ php artisan jwt:secret
+$ php artisan vietnam-zone:import
+$ php artisan migrate --seed
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Find and uncomment this line `App\Providers\SettingsServiceProvider::class` in `config.php/app.php`
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Make sure the settings (google map key, vnpay and fb page id) are set up correctly:
 
-## Learning Laravel
+```
+GOOGLE_MAPS_API_KEY=xxxxxxxxxxxxxxxxxxxxx
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+VNPAY_TMNCODE=xxxxxxxxxxxxxxxxxxxxx
+VNP_HASHSECRET=xxxxxxxxxxxxxxxxxxxxx
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+FB_PAGE=xxxxxxxxxxxxxxxxxxxxx // fanpage ID
+```
 
-## Laravel Sponsors
+IMPORTANT: Make sure that your .env file is updated with the right settings for APP_URL (for your back-end APIs) and CLIENT_URL (for your front-end / Nuxt). These values need to match what you will set in the client-side setup section.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+```
+APP_URL=http://localhost
+CLIENT_URL=http://localhost:3000
+CLIENT_PORT=3000
+CLIENT_HTTPS=false
+```
 
-### Premium Partners
+Don't forget to setup your Redis server and match the config inside .env file
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+```
+REDIS_HOST=127.0.0.1
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+```
 
-## Contributing
+## Front-end setup (Nuxtjs):
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+$ yarn install
+or
+$ npm install
+```
 
-## Code of Conduct
+Update nuxt.config.js to match the server:port where your Laravel API server is running:
+This needs to be done in 2 places, both front/dashboard:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+1. baseUrl and apiUrl in the env{} section (either make sure process.env is set, or change the default)
 
-## Security Vulnerabilities
+```
+  env: {
+    baseUrl: process.env.CLIENT_BASE_URL || "http://localhost:3000",
+    apiUrl: process.env.APP_URL || "http://localhost:8000",
+    GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
+    appName: process.env.APP_NAME || "HifyMart",
+    fbPage: process.env.FB_PAGE || 104938607602675
+  },
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Example: `baseUrl: process.env.BASE_URL || 'http://localhost:3000'`
 
-## License
+2. baseURL and https in the axios: {} section
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```
+  /*
+  ** Axios module configuration
+  */
+  axios: {
+    // See https://github.com/nuxt-community/axios-module#options
+    baseURL: (process.env.APP_URL || "http://localhost:8000") + "/api/",
+    https: process.env.CLIENT_HTTPS || true
+  },
+```
+
+Example: `baseURL: "http://localhost:8000/api"`
+
+Finally, start the nuxt development server.
+
+```
+$ yarn dev
+or
+$ npm run dev
+```
+## Optional
+
+Change your Vuetify config in `client/vuetify.option.js`
+
+## Useful commands
+
+Seeding the database:
+
+```bash
+$ php artisan db:seed
+```
+
+Generating fake data:
+
+```bash
+$ php artisan db:seed --class=DevDatabaseSeeder
+```
