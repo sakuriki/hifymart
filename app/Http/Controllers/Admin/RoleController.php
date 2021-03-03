@@ -76,7 +76,10 @@ class RoleController extends Controller
       'permissions' => 'nullable|array'
     ]);
     if ($validator->fails()) {
-      return response()->json(['msg' => $validator->errors()], 404);
+      return response()->json([
+        'success' => false,
+        'errors' => $validator->errors()
+      ], 404);
     }
     $role->update($request->only([
       'name',
@@ -106,8 +109,11 @@ class RoleController extends Controller
       ]);
     } catch (\Exception $exception) {
       return response()->json([
-        "success" => false,
-        "errors" => $exception->getMessage()
+        'errors' => [
+          'error' => [
+            $exception->getMessage()
+          ]
+        ]
       ], 422);
     }
   }

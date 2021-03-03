@@ -66,7 +66,10 @@ class TagController extends Controller
       'name' => 'required|string'
     ]);
     if ($validator->fails()) {
-      return response()->json(['msg' => $validator->errors()], 404);
+      return response()->json([
+        'success' => false,
+        'errors' => $validator->errors()
+      ], 404);
     }
     $tag->update($request->only([
       'name'
@@ -89,7 +92,10 @@ class TagController extends Controller
       'name' => 'required|string'
     ]);
     if ($validator->fails()) {
-      return response()->json(['error' => $validator->errors()], 404);
+      return response()->json([
+        'success' => false,
+        'errors' => $validator->errors()
+      ], 404);
     }
     $tag = Tag::create($request->only([
       'name'

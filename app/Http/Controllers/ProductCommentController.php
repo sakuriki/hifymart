@@ -74,8 +74,11 @@ class ProductCommentController extends Controller
     } catch (\Exception $exception) {
       // dd($exception);
       return response()->json([
-        'success' => false,
-        'msg' => $exception->getMessage()
+        'errors' => [
+          'error' => [
+            $exception->getMessage()
+          ]
+        ]
       ], 422);
     };
     if (!$request->input('parent_id')) {
@@ -103,8 +106,11 @@ class ProductCommentController extends Controller
     } catch (\Exception $exception) {
       // dd($exception);
       return response()->json([
-        'success' => false,
-        'msg' => $exception->getMessage()
+        'errors' => [
+          'error' => [
+            $exception->getMessage()
+          ]
+        ]
       ], 422);
     };
     return response()->noContent();
@@ -120,8 +126,11 @@ class ProductCommentController extends Controller
       }
     } catch (\Exception $exception) {
       return response()->json([
-        'success' => false,
-        'msg' => $exception->getMessage()
+        'errors' => [
+          'error' => [
+            $exception->getMessage()
+          ]
+        ]
       ]);
     };
     return response()->noContent();

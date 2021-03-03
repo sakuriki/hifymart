@@ -42,8 +42,8 @@ class SlideController extends Controller
       ], 401);
     }
     try {
-      DB::beginTransaction();
       if ($request->hasFile('image')) {
+        DB::beginTransaction();
         $slides = Setting::where('name', 'slides')->withCasts([
           'value' => 'array'
         ])->firstOrFail();
@@ -58,15 +58,27 @@ class SlideController extends Controller
         $slides->update([
           'value' => $images
         ]);
+        DB::commit();
+        Cache::forget('settings');
+        return response()->json([
+          'slides' => $slides->value
+        ]);
       }
-      DB::commit();
-      Cache::forget('settings');
-      return response()->noContent();
+      return response()->json([
+        'errors' => [
+          'error' => [
+            'Image required'
+          ]
+        ]
+      ], 422);
     } catch (\Exception $exception) {
       DB::rollBack();
       return response()->json([
-        "success" => false,
-        "errors" => $exception->getMessage()
+        'errors' => [
+          'error' => [
+            $exception->getMessage()
+          ]
+        ]
       ], 422);
     }
   }
@@ -94,8 +106,11 @@ class SlideController extends Controller
     } catch (\Exception $exception) {
       DB::rollBack();
       return response()->json([
-        "success" => false,
-        "errors" => $exception->getMessage()
+        'errors' => [
+          'error' => [
+            $exception->getMessage()
+          ]
+        ]
       ], 422);
     }
   }
@@ -140,8 +155,11 @@ class SlideController extends Controller
       return response()->noContent();
     } catch (\Exception $exception) {
       return response()->json([
-        "success" => false,
-        "errors" => $exception->getMessage()
+        'errors' => [
+          'error' => [
+            $exception->getMessage()
+          ]
+        ]
       ], 422);
     }
   }

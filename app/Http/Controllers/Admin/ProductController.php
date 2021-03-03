@@ -20,9 +20,9 @@ class ProductController extends Controller
   public function index(Request $request)
   {
     $user = Auth::user();
-    if (!$user || !$user->can('product.access')) {
+    if (!$user || $user->cannot('product.access')) {
       return response()->json([
-        'code'   => 401,
+        'code' => 401,
         'response' => 'You are unauthorized to access this resource'
       ]);
     }
@@ -67,9 +67,9 @@ class ProductController extends Controller
   public function store(ProductRequest $request)
   {
     $user = Auth::user();
-    if (!$user || !$user->can('product.create')) {
+    if (!$user || $user->cannot('product.create')) {
       return response()->json([
-        'code'   => 401,
+        'code' => 401,
         'response' => 'You are unauthorized to access this resource'
       ]);
     }
@@ -77,9 +77,10 @@ class ProductController extends Controller
       DB::beginTransaction();
       if (!$request->hasFile("featured_image")) {
         return response()->json([
-          "success" => false,
-          "errors" => [
-            "featured_image" => "Ảnh đại diện không được trống"
+          'errors' => [
+            'featured_image' => [
+              'Ảnh đại diện không được trống'
+            ]
           ]
         ], 422);
       }
@@ -114,8 +115,11 @@ class ProductController extends Controller
       DB::rollBack();
       dd($exception);
       return response()->json([
-        "success" => false,
-        "errors" => $exception->getMessage()
+        'errors' => [
+          'error' => [
+            $exception->getMessage()
+          ]
+        ]
       ], 422);
     }
   }
@@ -123,9 +127,9 @@ class ProductController extends Controller
   public function update($id, ProductRequest $request)
   {
     $user = Auth::user();
-    if (!$user || !$user->can('product.update')) {
+    if (!$user || $user->cannot('product.update')) {
       return response()->json([
-        'code'   => 401,
+        'code' => 401,
         'response' => 'You are unauthorized to access this resource'
       ]);
     }
@@ -167,8 +171,11 @@ class ProductController extends Controller
     } catch (\Exception $exception) {
       DB::rollBack();
       return response()->json([
-        "success" => false,
-        "errors" => $exception->getMessage()
+        'errors' => [
+          'error' => [
+            $exception->getMessage()
+          ]
+        ]
       ], 422);
     }
   }
@@ -176,9 +183,9 @@ class ProductController extends Controller
   public function show($id)
   {
     $user = Auth::user();
-    if (!$user || !$user->can('product.view')) {
+    if (!$user || $user->cannot('product.view')) {
       return response()->json([
-        'code'   => 401,
+        'code' => 401,
         'response' => 'You are unauthorized to access this resource'
       ]);
     }
@@ -196,9 +203,9 @@ class ProductController extends Controller
   public function destroy(Product $product)
   {
     $user = Auth::user();
-    if (!$user || !$user->can('product.delete')) {
+    if (!$user || $user->cannot('product.delete')) {
       return response()->json([
-        'code'   => 401,
+        'code' => 401,
         'response' => 'You are unauthorized to access this resource'
       ]);
     }

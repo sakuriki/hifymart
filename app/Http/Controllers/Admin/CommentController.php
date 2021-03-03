@@ -76,8 +76,11 @@ class CommentController extends Controller
       return response()->noContent();
     } catch (\Exception $exception) {
       return response()->json([
-        "success" => false,
-        "errors" => $exception->getMessage()
+        'errors' => [
+          'error' => [
+            $exception->getMessage()
+          ]
+        ]
       ], 422);
     }
   }
@@ -98,8 +101,11 @@ class CommentController extends Controller
       ]);
     } catch (\Exception $exception) {
       return response()->json([
-        "success" => false,
-        "errors" => $exception->getMessage()
+        'errors' => [
+          'error' => [
+            $exception->getMessage()
+          ]
+        ]
       ], 422);
     }
   }

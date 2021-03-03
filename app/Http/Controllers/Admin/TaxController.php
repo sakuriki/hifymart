@@ -59,8 +59,11 @@ class TaxController extends Controller
       ]);
     } catch (\Exception $exception) {
       return response()->json([
-        "success" => false,
-        "errors" => $exception->getMessage()
+        'errors' => [
+          'error' => [
+            $exception->getMessage()
+          ]
+        ]
       ], 422);
     }
   }
@@ -79,8 +82,11 @@ class TaxController extends Controller
       return response()->noContent();
     } catch (\Exception $exception) {
       return response()->json([
-        "success" => false,
-        "errors" => $exception->getMessage()
+        'errors' => [
+          'error' => [
+            $exception->getMessage()
+          ]
+        ]
       ], 422);
     }
   }
@@ -101,8 +107,11 @@ class TaxController extends Controller
       ]);
     } catch (\Exception $exception) {
       return response()->json([
-        "success" => false,
-        "errors" => $exception->getMessage()
+        'errors' => [
+          'error' => [
+            $exception->getMessage()
+          ]
+        ]
       ], 422);
     }
   }

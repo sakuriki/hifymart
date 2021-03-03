@@ -68,8 +68,11 @@ class UserController extends Controller
       ]);
     } catch (\Exception $exception) {
       return response()->json([
-        "success" => false,
-        "errors" => $exception->getMessage()
+        'errors' => [
+          'error' => [
+            $exception->getMessage()
+          ]
+        ]
       ], 422);
     }
   }
@@ -104,8 +107,11 @@ class UserController extends Controller
       ]);
     } catch (\Exception $exception) {
       return response()->json([
-        "success" => false,
-        "errors" => $exception->getMessage()
+        'errors' => [
+          'error' => [
+            $exception->getMessage()
+          ]
+        ]
       ], 422);
     }
   }
