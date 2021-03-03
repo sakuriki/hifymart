@@ -289,7 +289,9 @@ export default {
     removeImage(data) {
       if (data.url) {
         this.$axios.delete("/admin/slides", {
-          url: data.url
+          data: {
+            url: data.url
+          }
         })
         .then(() => {
           let index = this.data.findIndex(p => p.url == data.url);
