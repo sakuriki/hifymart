@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Subscribe;
+use App\Models\Subscriber;
 use Illuminate\Http\Request;
-use App\Http\Requests\SubscribeRequest;
+use App\Http\Requests\SubscriberRequest;
 
-class SubscribeController extends Controller
+class SubscriberController extends Controller
 {
   /**
    * Display a listing of the resource.
@@ -34,10 +34,10 @@ class SubscribeController extends Controller
    * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\Response
    */
-  public function store(SubscribeRequest $request)
+  public function store(SubscriberRequest $request)
   {
     try {
-      Subscribe::create($request->validated());
+      Subscriber::create($request->validated());
       return response()->noContent();
     } catch (\Exception $exception) {
       return response()->json([
@@ -53,10 +53,10 @@ class SubscribeController extends Controller
   /**
    * Display the specified resource.
    *
-   * @param  \App\Models\Subscribe  $subscribe
+   * @param  \App\Models\Subscriber  $subscriber
    * @return \Illuminate\Http\Response
    */
-  public function show(Subscribe $subscribe)
+  public function show(Subscriber $subscriber)
   {
     //
   }
@@ -64,10 +64,10 @@ class SubscribeController extends Controller
   /**
    * Show the form for editing the specified resource.
    *
-   * @param  \App\Models\Subscribe  $subscribe
+   * @param  \App\Models\Subscriber  $subscriber
    * @return \Illuminate\Http\Response
    */
-  public function edit(Subscribe $subscribe)
+  public function edit(Subscriber $subscriber)
   {
     //
   }
@@ -76,10 +76,10 @@ class SubscribeController extends Controller
    * Update the specified resource in storage.
    *
    * @param  \Illuminate\Http\Request  $request
-   * @param  \App\Models\Subscribe  $subscribe
+   * @param  \App\Models\Subscriber  $subscriber
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, Subscribe $subscribe)
+  public function update(Request $request, Subscriber $subscriber)
   {
     //
   }
@@ -87,13 +87,13 @@ class SubscribeController extends Controller
   /**
    * Remove the specified resource from storage.
    *
-   * @param  \App\Models\Subscribe  $subscribe
+   * @param  \App\Models\Subscriber  $subscriber
    * @return \Illuminate\Http\Response
    */
-  public function destroy(Subscribe $subscribe)
+  public function destroy(Subscriber $subscriber)
   {
     try {
-      $subscribe->delete();
+      $subscriber->delete();
       return response()->noContent();
     } catch (\Exception $exception) {
       return response()->json([
