@@ -11,9 +11,11 @@ $ cp .env.example .env
 $ composer install
 $ php artisan key:generate
 $ php artisan jwt:secret
-$ php artisan migrate --seed
 $ php artisan vietnam-zone:import
+$ php artisan migrate --seed
 ```
+
+Find and uncomment this line `App\Providers\SettingsServiceProvider::class` in `config.php/app.php`
 
 Make sure the settings (google map key, vnpay and fb page id) are set up correctly:
 
@@ -47,6 +49,8 @@ REDIS_PORT=6379
 
 ```bash
 $ yarn install
+or
+$ npm install
 ```
 
 Update nuxt.config.js to match the server:port where your Laravel API server is running:
@@ -64,7 +68,7 @@ This needs to be done in 2 places, both front/dashboard:
   },
 ```
 
-Example: baseUrl: process.env.BASE_URL || 'http://localhost:3000'
+Example: `baseUrl: process.env.BASE_URL || 'http://localhost:3000'`
 
 2. baseURL and https in the axios: {} section
 
@@ -79,16 +83,18 @@ Example: baseUrl: process.env.BASE_URL || 'http://localhost:3000'
   },
 ```
 
-Example: baseURL: "http://localhost:8000/api"
+Example: `baseURL: "http://localhost:8000/api"`
 
 Finally, start the nuxt development server.
 
 ```
 $ yarn dev
+or
+$ npm run dev
 ```
 ## Optional
 
-Change your Vuetify config in `/client/vuetify.option.js`
+Change your Vuetify config in `client/vuetify.option.js`
 
 ## Useful commands
 
