@@ -25,8 +25,12 @@ class ProductRequest extends FormRequest
   public function validationData()
   {
     $all = parent::validationData();
-    $all['description'] = Purifier::clean($all['description']);
-    $all['content'] = Purifier::clean($all['content']);
+    if (isset($all['description'])) {
+      $all['description'] = Purifier::clean($all['description']);
+    }
+    if (isset($all['content'])) {
+      $all['content'] = Purifier::clean($all['content']);
+    }
     return $all;
   }
 

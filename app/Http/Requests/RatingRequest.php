@@ -25,17 +25,16 @@ class RatingRequest extends FormRequest
   {
     return [
       'approved' => 'nullable|boolean',
-      'rating' => 'required|numeric|min:0',
-      'review' => 'required|string|max:2000',
-      'user_id' => 'required|numeric|exists:users,id',
-      'product_id' => 'required|numeric|exists:products,id',
+      'rating' => 'sometimes|numeric|min:0',
+      'review' => 'sometimes|string|max:2000',
+      'user_id' => 'sometimes|numeric|exists:users,id',
+      'product_id' => 'sometimes|numeric|exists:products,id',
     ];
   }
 
   public function messages()
   {
     return [
-      'required' => ':attribute không được bỏ trống',
       'string' => ':attribute phải là chuỗi',
       'max' => ':attribute tối đa 2000 ký tự',
       'numeric' => ':attribute phải là số',
