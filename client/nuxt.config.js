@@ -52,13 +52,13 @@ module.exports = {
    */
   plugins: [
     "~/plugins/axios",
-    "~/plugins/notifier.js",
-    "~/plugins/global-method.js",
+    "~/plugins/notifier",
+    "~/plugins/global-method",
     { src: "~/plugins/vuex-persistedstate" },
-    { src: "~/plugins/vue-apexcharts", ssr: false },
-    { src: "~/plugins/vuex-shared-mutations", ssr: false },
-    { src: "~/plugins/vue-quill-editor", ssr: false },
-    { src: "~/plugins/vue-fb-customer-chat.js", ssr: false }
+    // { src: "~/plugins/vue-apexcharts", mode: 'client' },
+    { src: "~/plugins/vuex-shared-mutations", mode: "client" },
+    { src: "~/plugins/vue-quill-editor", mode: "client" },
+    { src: "~/plugins/vue-fb-customer-chat", mode: "client" }
   ],
 
   env: {
@@ -174,11 +174,11 @@ module.exports = {
      */
     publicPath: "/dist/",
     extractCSS: true,
-    optimization: {
-      splitChunks: {
-        name: true
-      }
-    },
+    // optimization: {
+    //   splitChunks: {
+    //     name: true
+    //   }
+    // },
     plugins: [
       new webpack.ProvidePlugin({
         "window.Quill": "quill/dist/quill.js",

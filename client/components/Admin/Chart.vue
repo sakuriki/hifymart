@@ -10,6 +10,9 @@
 </template>
 <script>
 export default {
+  components: {
+    VueApexCharts: () => process.client ? import('vue-apexcharts') : null,
+  },
   props: {
     name: {
       type: String,
