@@ -90,17 +90,24 @@ export default {
   data() {
     return {
       phone: false,
-      searchText: "",
       drawer: null,
     }
   },
   computed: {
     ...mapGetters(['settings']),
-    ...mapGetters('cart', ['total'])
+    ...mapGetters('cart', ['total']),
+    searchText: {
+      get () {
+        return this.$store.state.search.search_text
+      },
+      set (value) {
+        this.$store.commit('search/setSearchText', value)
+      }
+    },
   },
   methods: {
     onSearchFocus() {
-
+      this.$router.push({ name: 'browser-type', params: { type: 'new' } })
     },
     openSideCart() {
       this.$nuxt.$emit("open-side-cart")

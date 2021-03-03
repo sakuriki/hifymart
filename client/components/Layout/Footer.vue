@@ -133,7 +133,7 @@ export default {
   },
   methods: {
     subscribe() {
-      this.$axios.post('/subscribes', this.data)
+      this.$axios.post('/subscribers', this.data)
       .then(() => {
         this.data.email = null;
         this.$notifier.showMessage({

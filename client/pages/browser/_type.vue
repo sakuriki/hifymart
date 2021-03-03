@@ -157,7 +157,7 @@ export default {
     let allow = ["sale-off", "best-selling", "new", "explore"];
     return allow.includes(params.type);
   },
-  async asyncData({ app, params, error }) {
+  async asyncData({ app, params, query, error }) {
     try {
       let string;
       if (params.type == "sale-off") {
@@ -166,6 +166,9 @@ export default {
         string = "orders_count"
       } else if (params.type == "explore") {
         string = "random"
+      }
+      if (query.q) {
+        string += '&q=' + query.q
       }
       let { products, pagination } = await app.$axios.$get(`/products?per_page=16&orderBy=${string}`);
       let { brands } = await app.$axios.$get('/brands');
@@ -304,9 +307,13 @@ export default {
     },
     money_range_end() {
       return this.$moneyFormat(this.data.money_range[1]);
+    },
+    searchText() {
+      return this.$store.getters['search/searchText'];
     }
   },
   watch: {
+    searchText: 'reset',
     'data.money_range': 'reset',
     'data.rating': 'reset',
     'data.category': 'reset',
@@ -330,7 +337,8 @@ export default {
           range: this.data.money_range,
           rating: this.data.rating,
           brands: this.data.brands,
-          categories: this.data.category
+          categories: this.data.category,
+          q: this.searchText || null
         }
       };
       this.$axios.get('/products', data).then(res => {

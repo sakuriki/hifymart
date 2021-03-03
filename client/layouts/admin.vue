@@ -169,6 +169,12 @@ export default {
         to: "/admin/orders",
       },
       {
+        icon: "mdi-newspaper",
+        title: "Đăng ký theo dõi",
+        permission: "subscriber.access",
+        to: "/admin/subscribers",
+      },
+      {
         group: "/admin/products",
         icon: "mdi-alpha-s-box-outline",
         title: "Sản phẩm",
