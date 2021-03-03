@@ -57,8 +57,7 @@ module.exports = {
     { src: "~/plugins/vuex-persistedstate" },
     // { src: "~/plugins/vue-apexcharts", mode: 'client' },
     { src: "~/plugins/vuex-shared-mutations", mode: "client" },
-    { src: "~/plugins/vue-quill-editor", mode: "client" },
-    { src: "~/plugins/vue-fb-customer-chat", mode: "client" }
+    { src: "~/plugins/vue-quill-editor", mode: "client" }
   ],
 
   env: {
