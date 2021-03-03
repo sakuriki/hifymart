@@ -85,6 +85,12 @@ class DatabaseSeeder extends Seeder
       array("name" => "tax.update", "group" => "tax", "description" => "Cập nhật loại thuế"),
       array("name" => "tax.view", "group" => "tax", "description" => "Xem chi tiết loại thuế"),
       array("name" => "tax.delete", "group" => "tax", "description" => "Xoá loại thuế"),
+      // quyền người theo dõi
+      array("name" => "subscriber.access", "group" => "subscriber", "description" => "Truy cập danh sách người theo dõi"),
+      array("name" => "subscriber.create", "group" => "subscriber", "description" => "Thêm người theo dõi"),
+      array("name" => "subscriber.update", "group" => "subscriber", "description" => "Cập nhật người theo dõi"),
+      array("name" => "subscriber.view", "group" => "subscriber", "description" => "Xem chi tiết người theo dõi"),
+      array("name" => "subscriber.delete", "group" => "subscriber", "description" => "Xoá người theo dõi"),
       // người dùng
       array("name" => "user.access", "group" => "user", "description" => "Truy cập danh người dùng"),
       array("name" => "user.create", "group" => "user", "description" => "Thêm người dùng"),
@@ -143,6 +149,7 @@ class DatabaseSeeder extends Seeder
       ['name' => 'youtube', 'value' => null],
       ['name' => 'bank-info', 'value' => '<p>Lưu ý: Quý khách vui lòng đợi nhân viên liên hệ xác nhận đơn hàng trước khi thực hiện thanh toán.</p><p>Công Ty TNHH HifyMart:</p><p>BIDV</p><p>Số tài khoản : 36210000123456</p><p>Ngân hàng TMCP Đầu tư và Phát triển Việt Nam – Hà Nội</p>'],
       ['name' => 'delivery', 'value' => '<p>Phí vận chuyển: 19.000đ</p><p>Miễn phí với đơn hàng từ 200.000đ trở lên</p><p>Chỉ hỗ trợ vận chuyển đối với đơn hàng từ 100.000đ. Với đơn hàng có giá trị thấp hơn, quý khách vui lòng mua tại showroom</p>'],
+      ['name' => 'slides', 'value' => null]
     ];
     Setting::insert($settings);
   }

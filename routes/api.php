@@ -23,7 +23,7 @@ Route::apiResource('taxes', 'TaxController')->only(["index", "show"]);
 Route::apiResource('orders', 'OrderController');
 Route::apiResource('categories', 'CategoryController')->only(["index", "show"]);
 Route::apiResource('ratings', 'RatingController')->only(["show"]);
-Route::apiResource('subscribes', 'SubscribeController')->only(["store", "destroy"]);
+Route::apiResource('subscribers', 'SubscriberController')->only(["store", "destroy"]);
 Route::group(['prefix' => '/auth', ['middleware' => 'throttle:20,5']], function () {
   Route::post('/register', 'Auth\AuthController@register')->name('register');
   Route::post('/login', 'Auth\AuthController@login')->name('login');
@@ -60,6 +60,7 @@ Route::group(['middleware' => 'jwtnew'], function () {
     Route::apiResource('products', 'Admin\ProductController');
     Route::apiResource('categories', 'Admin\CategoryController');
     Route::apiResource('permissions', 'Admin\PermissionController');
+    Route::apiResource('subscribers', 'Admin\SubscriberController');
     Route::apiResource('productImages', 'Admin\ProductImageController');
     Route::get('/dashboard', 'Admin\DashboardController');
   });
