@@ -54,7 +54,6 @@ $ npm install
 ```
 
 Update nuxt.config.js to match the server:port where your Laravel API server is running:
-This needs to be done in 2 places, both front/dashboard:
 
 1. baseUrl and apiUrl in the env{} section (either make sure process.env is set, or change the default)
 
