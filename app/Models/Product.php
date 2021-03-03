@@ -76,6 +76,9 @@ use Illuminate\Database\Eloquent\Builder;
  * @method static Builder|Product whereTaxId($value)
  * @method static Builder|Product whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string|null $content
+ * @property-read \App\Models\Tax|null $tax
+ * @method static Builder|Product whereContent($value)
  */
 class Product extends Model
 {

@@ -15060,6 +15060,43 @@
      
 }
 
+    namespace Mews\Purifier\Facades { 
+            /**
+     * 
+     *
+     * @see \Mews\Purifier
+     */ 
+        class Purifier {
+                    /**
+         * 
+         *
+         * @param $dirty
+         * @param null $config
+         * @param \Closure|null $postCreateConfigHook
+         * @return mixed 
+         * @static 
+         */ 
+        public static function clean($dirty, $config = null, $postCreateConfigHook = null)
+        {
+                        /** @var \Mews\Purifier\Purifier $instance */
+                        return $instance->clean($dirty, $config, $postCreateConfigHook);
+        }
+                    /**
+         * Get HTMLPurifier instance.
+         *
+         * @return \HTMLPurifier 
+         * @static 
+         */ 
+        public static function getInstance()
+        {
+                        /** @var \Mews\Purifier\Purifier $instance */
+                        return $instance->getInstance();
+        }
+         
+    }
+     
+}
+
     namespace Tymon\JWTAuth\Facades { 
             /**
      * 
@@ -18532,6 +18569,7 @@ namespace  {
             class Flare extends \Facade\Ignition\Facades\Flare {}
             class Clockwork extends \Clockwork\Support\Laravel\Facade {}
             class Excel extends \Maatwebsite\Excel\Facades\Excel {}
+            class Purifier extends \Mews\Purifier\Facades\Purifier {}
             class JWTAuth extends \Tymon\JWTAuth\Facades\JWTAuth {}
             class JWTFactory extends \Tymon\JWTAuth\Facades\JWTFactory {}
      
