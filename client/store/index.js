@@ -41,36 +41,39 @@ export const actions = {
   async nuxtServerInit(vuexContext) {
     try {
       if (vuexContext.state.auth.loggedIn) {
-        let { addresses } = await this.$axios.$get("/addressBooks");
-        vuexContext.commit("address-book/SET_ADDRESSES", addresses);
+        this.$axios.$get("/addressBooks").then(res => {
+          vuexContext.commit("address-book/SET_ADDRESSES", res.addresses);
+        });
       }
 
       let cart_id = vuexContext.state.cart.cart_id;
       let cartKeys = Object.keys(cart_id);
       if (cartKeys.length > 0) {
-        var { product: cartProduct } = await this.$axios.$get("/productlist", {
-          params: {
-            listId: cartKeys
-          }
-        });
-        cartKeys.map(function(key) {
-          if (cartProduct[key]) {
-            cartProduct[key].count = cart_id[key];
-          }
-        });
-        vuexContext.commit("cart/SET_CART_ITEM", cartProduct);
+        this.$axios
+          .$get("/productlist", {
+            params: {
+              listId: cartKeys
+            }
+          })
+          .then(res => {
+            let cartProduct = res.product;
+            cartKeys.map(function(key) {
+              if (cartProduct[key]) {
+                cartProduct[key].count = cart_id[key];
+              }
+            });
+            vuexContext.commit("cart/SET_CART_ITEM", cartProduct);
+          });
       }
-
-      let { data } = await this.$axios.$get("/settings");
-      vuexContext.commit("SET_SETTINGS", data);
-
-      let { categories } = await this.$axios.$get("/categories");
-      vuexContext.commit("SET_CATEGORIES", categories);
-
-      let { brands } = await this.$axios.$get("/brands");
-      vuexContext.commit("SET_BRANDS", brands);
-
-      let footer = await this.$axios.$get("/footer");
+      const [settings, categories, brands, footer] = await Promise.all([
+        this.$axios.$get("/settings"),
+        this.$axios.$get("/categories"),
+        this.$axios.$get("/brands"),
+        this.$axios.$get("/footer")
+      ]);
+      vuexContext.commit("SET_SETTINGS", settings.data);
+      vuexContext.commit("SET_CATEGORIES", categories.categories);
+      vuexContext.commit("SET_BRANDS", brands.brands);
       vuexContext.commit("SET_FOOTER", footer);
     } catch (e) {
       console.error("store: ", e);

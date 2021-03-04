@@ -315,18 +315,21 @@ export default {
   async asyncData({ app, params, store, error }) {
     try {
       let { product } = await app.$axios.$get("/products/" + params.slug);
-      let { ratings, pagination } = await app.$axios.$get("/ratings/" + product.id);
-      let { comments, total } = await app.$axios.$get("/comments/" + product.id);
-      store.dispatch('comment/setItem', comments);
-      store.dispatch('comment/setTotal', total);
+      const [ratings, comments] = await Promise.all([
+        app.$axios.$get("/ratings/" + product.id),
+        app.$axios.$get("/comments/" + product.id)
+      ])
+      store.dispatch('comment/setItem', comments.comments);
+      store.dispatch('comment/setTotal', comments.total);
       return {
         product: product,
-        pagination: pagination,
-        ratings: ratings,
+        pagination: ratings.pagination,
+        ratings: ratings.ratings,
         selected_image: product.featured_image
       }
     } catch (err) {
-      return error({ statusCode: err.response.status, message: err.message })
+      console.error(err);
+      return error({ statusCode: err.response.status || 422, message: err.message || 'Có lỗi sảy ra' })
     }
   },
   data() {

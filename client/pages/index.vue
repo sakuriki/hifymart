@@ -39,18 +39,20 @@
 <script>
 import { mapGetters } from 'vuex';
 export default {
-  async asyncData({ app, error }) {
+  async asyncData ({ app, error }) {
     try {
-        let { products: latestProducts } = await app.$axios.$get("/products?per_page=8");
-        let { products: randomProducts } = await app.$axios.$get("/products?per_page=8&sortBy=random");
-        let { products: saleOffProducts } = await app.$axios.$get("/products?per_page=8&onsale=true");
-        let { products: hottestProducts } = await app.$axios.$get("/products?per_page=8&sortBy=orders_count");
-        return {
-          latestProducts: latestProducts,
-          randomProducts: randomProducts,
-          saleOffProducts: saleOffProducts,
-          hottestProducts: hottestProducts,
-        }
+      const [latestProducts, randomProducts, saleOffProducts, hottestProducts] = await Promise.all([
+        app.$axios.$get("/products?per_page=8"),
+        app.$axios.$get("/products?per_page=8&sortBy=random"),
+        app.$axios.$get("/products?per_page=8&onsale=true"),
+        app.$axios.$get("/products?per_page=8&sortBy=orders_count"),
+      ])
+      return {
+        latestProducts: latestProducts.products,
+        randomProducts: randomProducts.products,
+        saleOffProducts: saleOffProducts.products,
+        hottestProducts: hottestProducts.products,
+      }
     } catch (err) {
       return error({ statusCode: err.response.status, message: err.message })
     }

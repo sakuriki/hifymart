@@ -170,9 +170,11 @@ export default {
       if (query.q) {
         string += '&q=' + query.q
       }
-      let { products, pagination } = await app.$axios.$get(`/products?per_page=16&orderBy=${string}`);
-      let { brands } = await app.$axios.$get('/brands');
-      let { categories } = await app.$axios.$get('/categories');
+      const [brands, products, categories] = await Promise.all([
+        app.$axios.$get(`/brands`),
+        app.$axios.$get(`/products?per_page=16&orderBy=${string}`),
+        app.$axios.$get(`/categories`)
+      ])
       let order, text, description;
       if (params.type == "sale-off") {
         order = "&onsale=true";
@@ -191,10 +193,10 @@ export default {
         description = "Danh sách sản phẩm mới trên cửa hàng";
       }
       return {
-        products: products,
-        pagination : pagination,
-        brands: brands,
-        categories: categories,
+        products: products.products,
+        pagination : products.pagination,
+        brands: brands.brands,
+        categories: categories.categories,
         type: params.type,
         data: {
           orderBy: order,

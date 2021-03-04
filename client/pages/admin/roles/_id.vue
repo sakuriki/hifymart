@@ -89,12 +89,14 @@ export default {
   },
   async asyncData({ app, params, error }) {
     try {
-      let { permissions } = await app.$axios.$get("/admin/permissions");
-      let { role } = await app.$axios.$get("/admin/roles/" + params.id);
+      const [permissions, role] = await Promise.all([
+        app.$axios.$get("/admin/permissions"),
+        app.$axios.$get("/admin/roles/" + params.id)
+      ])
       return {
-        permissions: permissions,
-        data: role,
-        selected_permissions: role.permissions
+        permissions: permissions.permissions,
+        data: role.role,
+        selected_permissions: role.role.permissions
       }
     } catch (err) {
       return error({ statusCode: err.response.status, message: err.message })

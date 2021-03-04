@@ -291,15 +291,17 @@ export default {
   },
   async asyncData({ app, error }) {
     try {
-      let { categories } = await app.$axios.$get("/categories");
-      let { brands } = await app.$axios.$get("/brands");
-      let { tags } = await app.$axios.$get("/tags?nameOnly=true");
-      let { taxes } = await app.$axios.$get("/taxes");
+      const [categories, brands, tags, taxes] = await Promise.all([
+        app.$axios.$get("/categories"),
+        app.$axios.$get("/brands"),
+        app.$axios.$get("/tags?nameOnly=true"),
+        app.$axios.$get("/taxes")
+      ])
       return {
-        tags: tags,
-        taxes: taxes,
-        brands: brands,
-        categories: categories
+        tags: tags.tags,
+        taxes: taxes.taxes,
+        brands: brands.brands,
+        categories: categories.categories
       }
     } catch (err) {
       return error({ statusCode: err.response.status, message: err.message })

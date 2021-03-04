@@ -132,13 +132,15 @@ export default {
   async asyncData({ app, params, error }) {
     try {
       let { brand } = await app.$axios.$get(`/brands/${params.slug}`);
-      let { products, pagination } = await app.$axios.$get(`/products?per_page=16&brands=${brand.id}`);
-      let { categories } = await app.$axios.$get(`/categories`);
+      const [products, categories] = await Promise.all([
+        app.$axios.$get(`/products?per_page=16&brands=${brand.id}`),
+        app.$axios.$get(`/categories`)
+      ])
       return {
-        products: products,
-        pagination : pagination,
+        products: products.products,
+        pagination : products.pagination,
         brand: brand,
-        categories: categories
+        categories: categories.categories
       }
     } catch (err) {
       return error({ statusCode: err.response.status, message: err.message })
