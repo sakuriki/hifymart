@@ -5,6 +5,8 @@ Website thương mại điện tử sử dụng Nuxtjs và Laravel API
 ## Demo
 
 [https://vietmart.ga](https://vietmart.ga)
+Admin: [https://vietmart.ga/admin](https://vietmart.ga/admin)
+Account: admin@vietmart.ga|12345678
 
 ## Setup
 
