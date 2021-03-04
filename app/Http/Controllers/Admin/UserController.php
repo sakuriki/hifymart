@@ -79,8 +79,8 @@ class UserController extends Controller
 
   public function update(User $user, UserRequest $request)
   {
-    $user = auth()->user();
-    if (!$user || $user->cannot('user.update')) {
+    $authUser = auth()->user();
+    if (($user->id == $authUser->id) || (!$authUser || $authUser->cannot('user.update'))) {
       return response()->json([
         'code' => 401,
         'response' => 'You are unauthorized to access this resource'
@@ -118,8 +118,8 @@ class UserController extends Controller
 
   public function destroy(User $user)
   {
-    $user = auth()->user();
-    if (!$user || $user->cannot('user.delete')) {
+    $authUser = auth()->user();
+    if (!$authUser || $authUser->cannot('user.delete')) {
       return response()->json([
         'code' => 401,
         'response' => 'You are unauthorized to access this resource'
