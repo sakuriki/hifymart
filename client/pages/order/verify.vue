@@ -37,7 +37,7 @@ export default {
         order: order
       }
     } catch (err) {
-      return error({ statusCode: err.response.status, message: err.message })
+      return error({ statusCode: err.response ? err.response.status : 422, message: err.message || 'Có lỗi xảy ra' })
     }
   },
   computed: {

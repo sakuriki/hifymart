@@ -328,8 +328,7 @@ export default {
         selected_image: product.featured_image
       }
     } catch (err) {
-      console.error(err);
-      return error({ statusCode: err.response.status || 422, message: err.message || 'Có lỗi sảy ra' })
+      return error({ statusCode: err.response ? err.response.status : 422, message: err.message || 'Có lỗi xảy ra' })
     }
   },
   data() {
