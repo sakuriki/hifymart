@@ -29,7 +29,6 @@ Make sure the settings (google map key, vnpay) are set up correctly:
 
 ```
 GOOGLE_MAPS_API_KEY=xxxxxxxxxxxxxxxxxxxxx
-
 VNPAY_TMNCODE=xxxxxxxxxxxxxxxxxxxxx
 VNP_HASHSECRET=xxxxxxxxxxxxxxxxxxxxx
 ```
@@ -44,6 +43,8 @@ CLIENT_HTTPS=false
 ```
 
 Don't forget to setup your Redis server and match the config inside .env file
+
+IMPORTANT: You might need to install phpredis if your server doesn't have it already, learn more [here](https://github.com/phpredis/phpredis/blob/develop/INSTALL.markdown)
 
 ```
 REDIS_HOST=127.0.0.1
