@@ -76,7 +76,7 @@ Update nuxt.config.js to match the server:port where your Laravel API server is 
 
 1. baseUrl and apiUrl in the env{} section (either make sure process.env is set, or change the default)
 
-```
+```js
   env: {
     baseUrl: process.env.CLIENT_BASE_URL || "http://localhost:3000",
     apiUrl: process.env.APP_URL || "http://localhost:8000",
@@ -89,7 +89,7 @@ Example: `baseUrl: process.env.BASE_URL || 'http://localhost:3000'`
 
 2. baseURL and https in the axios: {} section
 
-```
+```js
   /*
   ** Axios module configuration
   */
@@ -104,7 +104,7 @@ Example: `baseURL: "http://localhost:8000/api"`
 
 Finally, start the nuxt development server.
 
-```
+```bash
 $ yarn dev
 or
 $ npm run dev
