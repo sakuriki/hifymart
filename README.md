@@ -19,8 +19,8 @@ $ cp .env.example .env
 $ composer install
 $ php artisan key:generate
 $ php artisan jwt:secret
-$ php artisan vietnam-zone:import
 $ php artisan migrate --seed
+$ php artisan vietnam-zone:import
 ```
 
 Find and uncomment this line `App\Providers\SettingsServiceProvider::class` in `config.php/app.php`
